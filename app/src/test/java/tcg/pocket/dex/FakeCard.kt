@@ -7,13 +7,6 @@ val fakePikachuCardCode: Card.Code by lazy {
     )
 }
 
-val fakeRaichuCardCode: Card.Code by lazy {
-    Card.Code(
-        number = 95,
-        expansionPack = ExpansionPack.geneticApexPikachu,
-    )
-}
-
 val fakePikachuCard: Card.Pokemon by lazy {
     Card.Pokemon(
         code = fakePikachuCardCode,
@@ -58,6 +51,13 @@ val fakePikachuCard: Card.Pokemon by lazy {
     )
 }
 
+val fakeRaichuCardCode: Card.Code by lazy {
+    Card.Code(
+        number = 95,
+        expansionPack = ExpansionPack.geneticApexPikachu,
+    )
+}
+
 val fakeRaichuCard: Card.Pokemon by lazy {
     Card.Pokemon(
         code = fakeRaichuCardCode,
@@ -99,5 +99,97 @@ val fakeRaichuCard: Card.Pokemon by lazy {
                 evolveFrom = listOf(fakePikachuCardCode),
                 evolveTo = emptyList(),
             ),
+    )
+}
+
+val fakeDoubleRarePikachuExCardCode: Card.Code by lazy {
+    Card.Code(
+        number = 96,
+        expansionPack = ExpansionPack.geneticApexPikachu,
+    )
+}
+
+val fakeDoubleRarePikachuExCard: Card.Pokemon by lazy {
+    Card.Pokemon(
+        code = fakeDoubleRarePikachuExCardCode,
+        name = "Pikachu ex",
+        rarity = Rarity.Regular.doubleRare,
+        illustrator = "PLANETA CG Works",
+        relatedCardCodes = listOf(fakeImmersivePikachuExCardCode),
+        battleAttributes =
+            Card.Pokemon.BattleAttributes(
+                type = PokemonType.Electric,
+                hp = 120,
+                moves =
+                    listOf(
+                        Move(
+                            name = "Circle Circuit",
+                            effect = "This attack does 30 damage for each of your Benched ⚡️ Pokemon",
+                            damage =
+                                Move.Damage.Multiplied(
+                                    basicValue = 30,
+                                ),
+                            cost = 2,
+                        ),
+                    ),
+                ability = Card.Pokemon.BattleAttributes.Ability.NONE,
+                weakness = PokemonType.Fighting,
+                retreatCost = 1,
+            ),
+        flavorText =
+            Card.Pokemon.FlavorText(
+                dexId = 25,
+                species = "Mouse",
+                height = 0.4f,
+                weight = 6.0f,
+                description = "",
+            ),
+        evolution = Card.Pokemon.Evolution(stage = 0),
+    )
+}
+
+val fakeImmersivePikachuExCardCode: Card.Code by lazy {
+    Card.Code(
+        number = 281,
+        expansionPack = ExpansionPack.geneticApexPikachu,
+    )
+}
+
+val fakeImmersivePikachuExCard: Card.Pokemon by lazy {
+    Card.Pokemon(
+        code = fakeImmersivePikachuExCardCode,
+        name = "Pikachu ex",
+        rarity = Rarity.Regular.doubleRare,
+        illustrator = "Ryota Murayama",
+        relatedCardCodes = listOf(fakeDoubleRarePikachuExCardCode),
+        battleAttributes =
+            Card.Pokemon.BattleAttributes(
+                type = PokemonType.Electric,
+                hp = 120,
+                moves =
+                    listOf(
+                        Move(
+                            name = "Circle Circuit",
+                            effect = "This attack does 30 damage for each of your Benched ⚡️ Pokemon",
+                            damage =
+                                Move.Damage.Multiplied(
+                                    basicValue = 30,
+                                ),
+                            cost = 2,
+                        ),
+                    ),
+                ability = Card.Pokemon.BattleAttributes.Ability.NONE,
+                weakness = PokemonType.Fighting,
+                retreatCost = 1,
+            ),
+        flavorText =
+            Card.Pokemon.FlavorText(
+                dexId = 25,
+                species = "Mouse",
+                height = 0.4f,
+                weight = 6.0f,
+                description = "",
+            ),
+        evolution = Card.Pokemon.Evolution(stage = 0),
     )
 }

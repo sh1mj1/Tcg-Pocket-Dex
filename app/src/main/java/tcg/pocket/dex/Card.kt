@@ -56,8 +56,8 @@ sealed class Card {
 
         data class Evolution(
             val stage: Int,
-            val evolveFrom: List<Code>,
-            val evolveTo: List<Code>,
+            val evolveFrom: List<Code> = emptyList(),
+            val evolveTo: List<Code> = emptyList(),
         ) {
             init {
                 if (stage == 0) require(evolveFrom.isEmpty()) { "Basic pokemon must not have previous evolution" }
