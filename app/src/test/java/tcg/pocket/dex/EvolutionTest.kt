@@ -9,7 +9,7 @@ class EvolutionTest : BehaviorSpec({
         When("the evolutionFrom is not empty") {
             Then("throw IllegalArgumentException") {
                 shouldThrow<IllegalArgumentException> {
-                    Evolution(
+                    Card.Pokemon.Evolution(
                         stage = 0,
                         evolveFrom = listOf(fakePikachuCardCode),
                         evolveTo = emptyList(),
@@ -19,7 +19,7 @@ class EvolutionTest : BehaviorSpec({
             When("the evolutionFrom is empty") {
                 Then("no exception") {
                     shouldNotThrow<Exception> {
-                        Evolution(
+                        Card.Pokemon.Evolution(
                             stage = 0,
                             evolveFrom = emptyList(),
                             evolveTo = emptyList(),
@@ -33,7 +33,7 @@ class EvolutionTest : BehaviorSpec({
         When("the evolutionFrom is empty") {
             Then("throw IllegalArgumentException") {
                 shouldThrow<IllegalArgumentException> {
-                    Evolution(
+                    Card.Pokemon.Evolution(
                         stage = 1,
                         evolveFrom = emptyList(),
                         evolveTo = emptyList(),
@@ -44,7 +44,7 @@ class EvolutionTest : BehaviorSpec({
         When("thr evolutionFrom is not empty") {
             Then("no exception") {
                 shouldNotThrow<Exception> {
-                    Evolution(
+                    Card.Pokemon.Evolution(
                         stage = 1,
                         evolveFrom = listOf(fakePikachuCardCode),
                         evolveTo = emptyList(),
