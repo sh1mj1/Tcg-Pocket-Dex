@@ -70,4 +70,6 @@ dependencies {
     androidTestImplementation(libs.bundles.androidTest)
     androidTestImplementation(libs.androidx.ui.test.junit4)
     testImplementation(libs.mockwebserver)
+
+    implementation(libs.coil.compose)
 }
