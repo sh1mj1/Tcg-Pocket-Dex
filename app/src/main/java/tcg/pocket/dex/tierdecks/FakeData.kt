@@ -19,3 +19,10 @@ val fakeWaterPokemonTypeChipData =
         imageUrl = "https://static.dotgg.gg/pokepocket/icons/water.png",
         count = 1,
     )
+
+val fakePokemonTypeChipDataset =
+    listOf(
+        fakeFightingTypeChipData,
+        fakeFirePokemonTypeChipData,
+        fakeWaterPokemonTypeChipData,
+    )
