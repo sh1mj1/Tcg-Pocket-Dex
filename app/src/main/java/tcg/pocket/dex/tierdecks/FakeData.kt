@@ -26,3 +26,11 @@ val fakePokemonTypeChipDataset =
         fakeFirePokemonTypeChipData,
         fakeWaterPokemonTypeChipData,
     )
+
+val fakeTierDeckDescription =
+    "The Mewtwo ex Gardevoir deck relies heavily on Mewtwo ex (A1) as the main damage dealer, " +
+        "using its early Psychic Sphere as an early damage dealer " +
+        "to threaten to knock out most Pokemon with two attacks. " +
+        "However, Mewtwo ex (A1)'s Psydrive is where things start kicking off, " +
+        "allowing you to damage the opponent's Pokemon by 150, " +
+        "knocking out almost any Pokemon with 1 hit."

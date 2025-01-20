@@ -31,6 +31,8 @@ class DeckItemKtTest {
                 pokemonImageUrls = emptyList(),
                 expanded = expanded,
                 onExpandClick = { expanded = !expanded },
+                cost = 1990,
+                pokemonTypes = emptyList(),
             )
         }
         val notExpandedIcon = composeTestRule.onNodeWithContentDescription("not expanded icon")
@@ -58,6 +60,8 @@ class DeckItemKtTest {
                 expanded = expanded,
                 onExpandClick = { expanded = !expanded },
                 onCardClick = {},
+                cost = 1990,
+                pokemonTypes = emptyList(),
             )
         }
         val notExpandedIcon = composeTestRule.onNodeWithContentDescription("not expanded icon")

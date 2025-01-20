@@ -1,6 +1,7 @@
 package tcg.pocket.dex.tierdecks
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,10 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import tcg.pocket.dex.R
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
@@ -41,6 +40,8 @@ fun DeckItem(
     winRate: String,
     share: String,
     pokemonImageUrls: List<String>,
+    cost: Int,
+    pokemonTypes: List<PokemonTypeChipData>,
     expanded: Boolean = false,
     onExpandClick: () -> Unit,
     onCardClick: (String) -> Unit,
@@ -82,7 +83,7 @@ fun DeckItem(
                 )
 
                 IconButton(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(0.dp),
                     onClick = onExpandClick,
                 ) {
                     if (expanded) {
@@ -100,7 +101,30 @@ fun DeckItem(
             }
 
             if (expanded) {
-                Text(LoremIpsum(20).values.joinToString())
+                Column(
+                    modifier = Modifier,
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Absolute.SpaceAround,
+                    ) {
+                        Text(
+                            text = "cost: $cost",
+                            modifier = Modifier,
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        PokemonTypeChipGroup(
+                            chips = pokemonTypes,
+                            modifier = Modifier,
+                        )
+                    }
+                    Text(
+                        fakeTierDeckDescription,
+                    )
+                }
             }
         }
     }
@@ -137,7 +161,7 @@ private fun PokemonImageList(
                         .size(52.dp)
                         .aspectRatio(1f)
                         .padding(end = 4.dp),
-                placeholder = painterResource(R.drawable.ic_launcher_foreground),
+                placeholder = painterResource(temporalPokemonPlaceholderDrawable),
             )
         }
     }
@@ -155,7 +179,7 @@ private fun DeckItemInfoContent(
     ) {
         Text(
             text = deckName,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -221,23 +245,23 @@ private fun DeckItemPreview(
     @PreviewParameter(DeckCardPreviewParameters::class) expanded: Boolean,
 ) {
     TcgPocketDexTheme {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            DeckItem(
-                deckId = "",
-                rank = 1,
-                deckName = "Mewtwo ex Gardevoir",
-                winRate = "50.67%",
-                share = "17.57%",
-                pokemonImageUrls =
-                    listOf(
-                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
-                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/282.png",
-                    ),
-                expanded = expanded,
-                onExpandClick = {},
-                onCardClick = {},
-            )
-        }
+        DeckItem(
+            deckId = "",
+            rank = 1,
+            deckName = "Mewtwo ex Gardevoir",
+            winRate = "50.67%",
+            share = "17.57%",
+            pokemonImageUrls =
+                listOf(
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/282.png",
+                ),
+            expanded = expanded,
+            onExpandClick = {},
+            onCardClick = {},
+            cost = 0,
+            pokemonTypes = fakePokemonTypeChipDataset,
+        )
     }
 }
 
