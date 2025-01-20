@@ -34,7 +34,7 @@ import tcg.pocket.dex.R
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
-fun DeckCard(
+fun DeckItem(
     deckId: String,
     rank: Int,
     deckName: String,
@@ -74,7 +74,7 @@ fun DeckCard(
                     modifier = Modifier.padding(end = 12.dp),
                 )
 
-                DeckInfoContent(
+                DeckItemInfoContent(
                     deckName = deckName,
                     winRate = winRate,
                     share = share,
@@ -107,7 +107,7 @@ fun DeckCard(
 }
 
 @Composable
-fun RankText(
+private fun RankText(
     rank: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -120,7 +120,7 @@ fun RankText(
 }
 
 @Composable
-fun PokemonImageList(
+private fun PokemonImageList(
     pokemonImageUrls: List<String>,
     modifier: Modifier = Modifier,
 ) {
@@ -144,7 +144,7 @@ fun PokemonImageList(
 }
 
 @Composable
-fun DeckInfoContent(
+private fun DeckItemInfoContent(
     deckName: String,
     winRate: String,
     share: String,
@@ -203,10 +203,10 @@ private fun PokemonImageListPreview() {
 
 @Preview
 @Composable
-private fun DeckInfoContentPreview() {
+private fun DeckItemInfoContentPreview() {
     TcgPocketDexTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            DeckInfoContent(
+            DeckItemInfoContent(
                 deckName = "Mewtwo ex Gardevoir",
                 winRate = "50.67",
                 share = "17.57",
@@ -217,12 +217,12 @@ private fun DeckInfoContentPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun DeckCardPreview(
+private fun DeckItemPreview(
     @PreviewParameter(DeckCardPreviewParameters::class) expanded: Boolean,
 ) {
     TcgPocketDexTheme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            DeckCard(
+            DeckItem(
                 deckId = "",
                 rank = 1,
                 deckName = "Mewtwo ex Gardevoir",

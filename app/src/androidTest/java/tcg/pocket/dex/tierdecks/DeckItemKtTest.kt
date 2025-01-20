@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performClick
 import org.junit.Rule
 import org.junit.Test
 
-class DeckCardKtTest {
+class DeckItemKtTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -21,7 +21,7 @@ class DeckCardKtTest {
         composeTestRule.setContent {
             var expanded by remember { mutableStateOf(false) }
 
-            DeckCard(
+            DeckItem(
                 deckId = "",
                 onCardClick = {},
                 rank = 1,
@@ -48,7 +48,7 @@ class DeckCardKtTest {
         composeTestRule.setContent {
             var expanded by remember { mutableStateOf(true) }
 
-            DeckCard(
+            DeckItem(
                 deckId = "",
                 rank = 1,
                 deckName = "deckName",
