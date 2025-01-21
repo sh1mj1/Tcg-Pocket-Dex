@@ -36,3 +36,27 @@ val fakeTierDeckDescription =
         "knocking out almost any Pokemon with 1 hit."
 
 fun fakeSimpleUrl(dexNumber: Int): String = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$dexNumber.png"
+
+val fakeDeckInformation =
+    DeckInformation(
+        simple =
+            DeckSimpleInformation(
+                deckId = "deckId",
+                representativePokemonImageUrls =
+                    listOf(
+                        fakeSimpleUrl(150),
+                        fakeSimpleUrl(282),
+                    ),
+                rank = 1,
+                deckName = "Deck Name",
+                winRate = "53.64%",
+                share = "17.52%",
+            ),
+        detail =
+            DeckDetailInformation(
+                cost = 100,
+//        pokemonTypes = fakePokemonTypeChipDataset,
+                pokemonTypes = listOf(fakeWaterPokemonTypeChipData),
+                description = fakeTierDeckDescription,
+            ),
+    )

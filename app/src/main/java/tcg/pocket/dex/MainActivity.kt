@@ -7,17 +7,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import tcg.pocket.dex.tierdecks.DeckItem
-import tcg.pocket.dex.tierdecks.fakePokemonTypeChipDataset
-import tcg.pocket.dex.tierdecks.fakeSimpleUrl
+import tcg.pocket.dex.tierdecks.fakeDeckInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,18 +25,7 @@ class MainActivity : ComponentActivity() {
             TcgPocketDexTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     DeckItem(
-                        deckId = "deckId",
-                        rank = 1,
-                        deckName = "Mewtwo ex Gardevoir",
-                        winRate = "50.64%",
-                        share = "17.57%",
-                        pokemonImageUrls =
-                            listOf(
-                                fakeSimpleUrl(150),
-                                fakeSimpleUrl(282),
-                            ),
-                        cost = 1990,
-                        pokemonTypes = fakePokemonTypeChipDataset,
+                        information = fakeDeckInformation,
                         expanded = expanded,
                         onExpandClick = { expanded = !expanded },
                         onCardClick = {},
@@ -49,24 +34,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(
-    name: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TcgPocketDexTheme {
-        Greeting("Android")
     }
 }
