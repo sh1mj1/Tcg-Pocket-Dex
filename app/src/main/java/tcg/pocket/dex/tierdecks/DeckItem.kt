@@ -1,6 +1,7 @@
 package tcg.pocket.dex.tierdecks
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,10 +28,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import tcg.pocket.dex.R
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
@@ -41,6 +40,8 @@ fun DeckItem(
     winRate: String,
     share: String,
     pokemonImageUrls: List<String>,
+    cost: Int,
+    pokemonTypes: List<PokemonTypeChipData>,
     expanded: Boolean = false,
     onExpandClick: () -> Unit,
     onCardClick: (String) -> Unit,
@@ -49,8 +50,8 @@ fun DeckItem(
     Card(
         modifier =
             modifier
+                .padding(16.dp)
                 .fillMaxWidth()
-                .padding(8.dp)
                 .clickable { onCardClick(deckId) },
         shape = RoundedCornerShape(8.dp),
     ) {
@@ -71,7 +72,7 @@ fun DeckItem(
 
                 PokemonImageList(
                     pokemonImageUrls = pokemonImageUrls,
-                    modifier = Modifier.padding(end = 12.dp),
+                    modifier = Modifier,
                 )
 
                 DeckItemInfoContent(
@@ -82,7 +83,7 @@ fun DeckItem(
                 )
 
                 IconButton(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(0.dp),
                     onClick = onExpandClick,
                 ) {
                     if (expanded) {
@@ -100,9 +101,49 @@ fun DeckItem(
             }
 
             if (expanded) {
-                Text(LoremIpsum(20).values.joinToString())
+                DeckItemDetail(
+                    cost = cost,
+                    pokemonTypes = pokemonTypes,
+                    modifier = Modifier,
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun DeckItemDetail(
+    cost: Int,
+    pokemonTypes: List<PokemonTypeChipData>,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth().padding(8.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = "cost: $cost",
+                modifier = Modifier,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+
+            PokemonTypeChipGroup(
+                chips = pokemonTypes,
+                modifier = modifier,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = fakeTierDeckDescription,
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 
@@ -135,9 +176,8 @@ private fun PokemonImageList(
                 modifier =
                     Modifier
                         .size(52.dp)
-                        .aspectRatio(1f)
-                        .padding(end = 4.dp),
-                placeholder = painterResource(R.drawable.ic_launcher_foreground),
+                        .aspectRatio(1f),
+                placeholder = painterResource(temporalPokemonPlaceholderDrawable),
             )
         }
     }
@@ -155,7 +195,7 @@ private fun DeckItemInfoContent(
     ) {
         Text(
             text = deckName,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -221,23 +261,23 @@ private fun DeckItemPreview(
     @PreviewParameter(DeckCardPreviewParameters::class) expanded: Boolean,
 ) {
     TcgPocketDexTheme {
-        Surface(color = MaterialTheme.colorScheme.background) {
-            DeckItem(
-                deckId = "",
-                rank = 1,
-                deckName = "Mewtwo ex Gardevoir",
-                winRate = "50.67%",
-                share = "17.57%",
-                pokemonImageUrls =
-                    listOf(
-                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
-                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/282.png",
-                    ),
-                expanded = expanded,
-                onExpandClick = {},
-                onCardClick = {},
-            )
-        }
+        DeckItem(
+            deckId = "",
+            rank = 1,
+            deckName = "Mewtwo ex Gardevoir",
+            winRate = "50.67%",
+            share = "17.57%",
+            pokemonImageUrls =
+                listOf(
+                    fakeSimpleUrl(150),
+                    fakeSimpleUrl(282),
+                ),
+            expanded = expanded,
+            onExpandClick = {},
+            onCardClick = {},
+            cost = 0,
+            pokemonTypes = fakePokemonTypeChipDataset,
+        )
     }
 }
 

@@ -26,7 +26,7 @@ fun PokemonTypeChipGroup(
             PokemonTypeChip(
                 pokemonTypeChipData = chipData,
                 chipSize = chipSize,
-                modifier = Modifier,
+                modifier = modifier,
             )
         }
     }
