@@ -67,9 +67,7 @@ val fakeTypesUrl =
         "https://static.dotgg.gg/pokepocket/icons/fire.png",
         "https://static.dotgg.gg/pokepocket/icons/water.png",
         "https://static.dotgg.gg/pokepocket/icons/grass.png",
-        "https://static.dotgg.gg/pokepocket/icons/electric.png",
         "https://static.dotgg.gg/pokepocket/icons/dragon.png",
-        "https://static.dotgg.gg/pokepocket/icons/normal.png",
         "https://static.dotgg.gg/pokepocket/icons/fighting.png",
     )
 
