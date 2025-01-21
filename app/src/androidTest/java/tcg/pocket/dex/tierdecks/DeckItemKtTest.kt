@@ -25,7 +25,7 @@ class DeckItemKtTest {
                 information = fakeDeckInformation,
                 onCardClick = {},
                 expanded = expanded,
-                onExpandClick = { expanded = !expanded },
+                onExpandedChange = { expanded = !expanded },
             )
         }
         val notExpandedIcon = composeTestRule.onNodeWithContentDescription("not expanded icon")
@@ -46,7 +46,7 @@ class DeckItemKtTest {
             DeckItem(
                 information = fakeDeckInformation,
                 expanded = expanded,
-                onExpandClick = { expanded = !expanded },
+                onExpandedChange = { expanded = !expanded },
                 onCardClick = {},
             )
         }

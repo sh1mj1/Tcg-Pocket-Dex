@@ -5,10 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -16,7 +12,8 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
 fun DeckList(
-    deckItems: List<DeckInformation>,
+    deckItemsState: List<DeckItemState>,
+    onExpandDeck: (DeckItemState, Boolean) -> Unit,
     onDeckItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -27,15 +24,14 @@ fun DeckList(
                 .padding(8.dp),
     ) {
         items(
-            items = deckItems,
-            key = { deckItem -> deckItem.simple.deckId },
-        ) { deckItem ->
-            var expanded by rememberSaveable { mutableStateOf(false) }
+            items = deckItemsState,
+            key = { deckItem -> deckItem.content.simple.deckId },
+        ) { deckItemState ->
 
             DeckItem(
-                information = deckItem,
-                expanded = expanded,
-                onExpandClick = { expanded = !expanded },
+                information = deckItemState.content,
+                expanded = deckItemState.expanded,
+                onExpandedChange = { expanded -> onExpandDeck(deckItemState, expanded) },
                 onCardClick = onDeckItemClick,
             )
         }
@@ -47,8 +43,9 @@ fun DeckList(
 private fun DeckListPreview() {
     TcgPocketDexTheme {
         DeckList(
-            deckItems = fakeDecksInformation,
+            deckItemsState = fakeDecksInformation.map(::DeckItemState),
             onDeckItemClick = { },
+            onExpandDeck = { deckItemStata, _ -> },
         )
     }
 }

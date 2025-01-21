@@ -22,6 +22,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -37,7 +41,7 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 fun DeckItem(
     information: DeckInformation,
     expanded: Boolean = false,
-    onExpandClick: () -> Unit,
+    onExpandedChange: (Boolean) -> Unit,
     onCardClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -78,7 +82,7 @@ fun DeckItem(
 
                 IconButton(
                     modifier = Modifier.padding(0.dp),
-                    onClick = onExpandClick,
+                    onClick = { onExpandedChange(expanded) },
                 ) {
                     if (expanded) {
                         Icon(
@@ -252,13 +256,14 @@ private fun DeckItemInfoContentPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun DeckItemPreview(
-    @PreviewParameter(DeckCardPreviewParameters::class) expanded: Boolean,
+    @PreviewParameter(DeckCardPreviewParameters::class) initialExpanded: Boolean,
 ) {
     TcgPocketDexTheme {
+        var expanded by remember { mutableStateOf(initialExpanded) }
         DeckItem(
             information = fakeDeckInformation,
             expanded = expanded,
-            onExpandClick = {},
+            onExpandedChange = { expanded = !expanded },
             onCardClick = {},
         )
     }
