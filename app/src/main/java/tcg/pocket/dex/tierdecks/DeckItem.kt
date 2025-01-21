@@ -50,8 +50,8 @@ fun DeckItem(
     Card(
         modifier =
             modifier
+                .padding(16.dp)
                 .fillMaxWidth()
-                .padding(8.dp)
                 .clickable { onCardClick(deckId) },
         shape = RoundedCornerShape(8.dp),
     ) {
@@ -72,7 +72,7 @@ fun DeckItem(
 
                 PokemonImageList(
                     pokemonImageUrls = pokemonImageUrls,
-                    modifier = Modifier.padding(end = 12.dp),
+                    modifier = Modifier,
                 )
 
                 DeckItemInfoContent(
@@ -101,32 +101,49 @@ fun DeckItem(
             }
 
             if (expanded) {
-                Column(
+                DeckItemDetail(
+                    cost = cost,
+                    pokemonTypes = pokemonTypes,
                     modifier = Modifier,
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Absolute.SpaceAround,
-                    ) {
-                        Text(
-                            text = "cost: $cost",
-                            modifier = Modifier,
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        PokemonTypeChipGroup(
-                            chips = pokemonTypes,
-                            modifier = Modifier,
-                        )
-                    }
-                    Text(
-                        fakeTierDeckDescription,
-                    )
-                }
+                )
             }
         }
+    }
+}
+
+@Composable
+private fun DeckItemDetail(
+    cost: Int,
+    pokemonTypes: List<PokemonTypeChipData>,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth().padding(8.dp),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = "cost: $cost",
+                modifier = Modifier,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+
+            PokemonTypeChipGroup(
+                chips = pokemonTypes,
+                modifier = modifier,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = fakeTierDeckDescription,
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 
@@ -159,8 +176,7 @@ private fun PokemonImageList(
                 modifier =
                     Modifier
                         .size(52.dp)
-                        .aspectRatio(1f)
-                        .padding(end = 4.dp),
+                        .aspectRatio(1f),
                 placeholder = painterResource(temporalPokemonPlaceholderDrawable),
             )
         }
@@ -253,8 +269,8 @@ private fun DeckItemPreview(
             share = "17.57%",
             pokemonImageUrls =
                 listOf(
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/150.png",
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/282.png",
+                    fakeSimpleUrl(150),
+                    fakeSimpleUrl(282),
                 ),
             expanded = expanded,
             onExpandClick = {},

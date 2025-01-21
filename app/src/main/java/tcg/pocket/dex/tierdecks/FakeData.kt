@@ -34,3 +34,5 @@ val fakeTierDeckDescription =
         "However, Mewtwo ex (A1)'s Psydrive is where things start kicking off, " +
         "allowing you to damage the opponent's Pokemon by 150, " +
         "knocking out almost any Pokemon with 1 hit."
+
+fun fakeSimpleUrl(dexNumber: Int): String = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$dexNumber.png"
