@@ -44,8 +44,8 @@ fun DeckItem(
     Card(
         modifier =
             modifier
-                .padding(16.dp)
                 .fillMaxWidth()
+                .padding(4.dp)
                 .clickable { onCardClick(information.simple.deckId) },
         shape = RoundedCornerShape(8.dp),
     ) {
@@ -112,7 +112,7 @@ private fun DeckItemDetail(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

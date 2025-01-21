@@ -7,13 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import tcg.pocket.dex.tierdecks.DeckItem
-import tcg.pocket.dex.tierdecks.fakeDeckInformation
+import tcg.pocket.dex.tierdecks.DeckList
+import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,14 +17,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            var expanded by rememberSaveable { mutableStateOf(true) }
             TcgPocketDexTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    DeckItem(
-                        information = fakeDeckInformation,
-                        expanded = expanded,
-                        onExpandClick = { expanded = !expanded },
-                        onCardClick = {},
+                    DeckList(
+                        deckItems = fakeDecksInformation,
+                        onDeckItemClick = { },
                         modifier = Modifier.padding(innerPadding),
                     )
                 }

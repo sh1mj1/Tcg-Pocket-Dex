@@ -1,5 +1,6 @@
 package tcg.pocket.dex.tierdecks
 
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import tcg.pocket.dex.R
 
 val temporalPokemonPlaceholderDrawable: Int = R.drawable.tcg_pocket_unknown
@@ -60,3 +61,49 @@ val fakeDeckInformation =
                 description = fakeTierDeckDescription,
             ),
     )
+
+val fakeTypesUrl =
+    listOf(
+        "https://static.dotgg.gg/pokepocket/icons/fire.png",
+        "https://static.dotgg.gg/pokepocket/icons/water.png",
+        "https://static.dotgg.gg/pokepocket/icons/grass.png",
+        "https://static.dotgg.gg/pokepocket/icons/electric.png",
+        "https://static.dotgg.gg/pokepocket/icons/dragon.png",
+        "https://static.dotgg.gg/pokepocket/icons/normal.png",
+        "https://static.dotgg.gg/pokepocket/icons/fighting.png",
+    )
+
+val fakeDecksInformation =
+    List(15) { index ->
+        DeckInformation(
+            simple =
+                DeckSimpleInformation(
+                    deckId = "$index",
+                    representativePokemonImageUrls =
+                        listOf(
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png",
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 2}.png",
+                        ),
+                    rank = index + 1,
+                    deckName = "Deck Name $index",
+                    winRate = "${50 + index % 10}.${index % 10}%",
+                    share = "${10 + index % 5}.${index % 5}%",
+                ),
+            detail =
+                DeckDetailInformation(
+                    cost = 3 + index % 5,
+                    pokemonTypes =
+                        listOf(
+                            PokemonTypeChipData(
+                                imageUrl = fakeTypesUrl.random(),
+                                count = index % 3 + 1,
+                            ),
+                            PokemonTypeChipData(
+                                imageUrl = fakeTypesUrl.random(),
+                                count = index % 2 + 1,
+                            ),
+                        ),
+                    description = LoremIpsum(20).values.joinToString(),
+                ),
+        )
+    }
