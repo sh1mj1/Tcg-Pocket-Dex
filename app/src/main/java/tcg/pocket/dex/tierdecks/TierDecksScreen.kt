@@ -25,15 +25,13 @@ val deckItemsState =
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TierDecksScreen() {
+fun TierDecksScreen(onSearchClicked: () -> Unit = {}) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = { Text("TCG Pocket Dex") },
                 navigationIcon = {
-                    IconButton(onClick = {
-                        // TODO: navigate to search screen
-                    }) {
+                    IconButton(onClick = onSearchClicked) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = null,
