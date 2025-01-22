@@ -1,5 +1,6 @@
 package tcg.pocket.dex.setting
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -11,7 +12,8 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 @Composable
 fun SettingScreen(modifier: Modifier = Modifier) {
     Surface(
-        color = MaterialTheme.colorScheme.surface,
+        color = MaterialTheme.colorScheme.primaryContainer,
+        modifier = modifier.fillMaxSize(),
     ) {
         Text(
             text = "Setting",
@@ -24,6 +26,6 @@ fun SettingScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun SettingScreenPreview() {
     TcgPocketDexTheme {
-        Surface { SettingScreen() }
+        SettingScreen()
     }
 }
