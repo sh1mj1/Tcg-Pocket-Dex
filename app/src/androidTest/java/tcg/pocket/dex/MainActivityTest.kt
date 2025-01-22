@@ -29,7 +29,7 @@ class MainActivityTest {
             composeTestRule.activity.recreate()
         }
 
-        // then // TODO: have to succeed
-//        composeTestRule.onNodeWithText("Search Screen").assertIsDisplayed()
+        // then
+        composeTestRule.onNodeWithText("Search Screen").assertIsDisplayed()
     }
 }

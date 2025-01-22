@@ -1,10 +1,11 @@
 package tcg.pocket.dex.navigation
 
 import androidx.compose.runtime.toMutableStateList
+import androidx.lifecycle.ViewModel
 
 class NavigationManager(
     initialBackstack: List<Screen> = listOf(Screen.TierDecks),
-) {
+) : ViewModel() {
     init {
         require(initialBackstack.isNotEmpty()) { "Initial backstack must not be empty" }
     }

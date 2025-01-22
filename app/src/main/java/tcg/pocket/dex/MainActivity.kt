@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -17,22 +18,18 @@ import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 class MainActivity : ComponentActivity() {
-    private val navigationManager = NavigationManager()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        val navigationManager by viewModels<NavigationManager>()
         setContent {
             TcgPocketDexTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    val currentScreen = navigationManager.currentScreen
-
                     BackHandler(enabled = navigationManager.backstack.size > 1) {
                         navigationManager.navigateBack()
                     }
-
-                    when (currentScreen) {
+                    when (val currentScreen = navigationManager.currentScreen) {
                         is Screen.TierDecks ->
                             TierDecksScreen(
                                 onSearchClicked = { navigationManager.navigateTo(Screen.Search) },
