@@ -11,11 +11,15 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier) {
     // TODO: Implement search screen
-    Text(
-        text = "Search Screen",
-        modifier = modifier,
-        style = MaterialTheme.typography.displayLarge,
-    )
+    Surface(
+        color = MaterialTheme.colorScheme.surface,
+    ) {
+        Text(
+            text = "Search Screen",
+            modifier = modifier,
+            style = MaterialTheme.typography.displayLarge,
+        )
+    }
 }
 
 @Preview

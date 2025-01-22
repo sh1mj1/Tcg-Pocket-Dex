@@ -10,10 +10,14 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
 fun SettingScreen(modifier: Modifier = Modifier) {
-    Text(
-        text = "Setting",
-        style = MaterialTheme.typography.displayLarge,
-    )
+    Surface(
+        color = MaterialTheme.colorScheme.surface,
+    ) {
+        Text(
+            text = "Setting",
+            style = MaterialTheme.typography.displayLarge,
+        )
+    }
 }
 
 @Preview
