@@ -28,6 +28,7 @@ val deckItemsState =
 fun TierDecksScreen(
     onSearchClicked: () -> Unit = {},
     onSettingClicked: () -> Unit = {},
+    onDeckClicked: (String) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -57,7 +58,7 @@ fun TierDecksScreen(
             onExpandDeck = { deckItemState, expanded ->
                 deckItemState.toggleExpanded()
             },
-            onDeckItemClick = {},
+            onDeckItemClick = onDeckClicked,
             modifier =
                 Modifier
                     .fillMaxWidth()

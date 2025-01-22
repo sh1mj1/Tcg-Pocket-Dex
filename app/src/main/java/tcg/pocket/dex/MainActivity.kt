@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.navigation.NavigationManager
 import tcg.pocket.dex.navigation.Screen
 import tcg.pocket.dex.search.SearchScreen
@@ -36,10 +37,14 @@ class MainActivity : ComponentActivity() {
                             TierDecksScreen(
                                 onSearchClicked = { navigationManager.navigateTo(Screen.Search) },
                                 onSettingClicked = { navigationManager.navigateTo(Screen.Setting) },
+                                onDeckClicked = { deckId ->
+                                    navigationManager.navigateTo(Screen.DeckDetail(deckId))
+                                },
                             )
 
                         is Screen.Search -> SearchScreen()
                         is Screen.Setting -> SettingScreen()
+                        is Screen.DeckDetail -> DeckDetailScreen(deckId = currentScreen.deckId)
                     }
                 }
             }

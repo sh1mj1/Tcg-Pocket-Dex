@@ -6,4 +6,6 @@ sealed class Screen {
     data object Search : Screen()
 
     data object Setting : Screen()
+
+    data class DeckDetail(val deckId: String) : Screen()
 }
