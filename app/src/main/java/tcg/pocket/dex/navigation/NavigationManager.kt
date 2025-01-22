@@ -1,9 +1,15 @@
 package tcg.pocket.dex.navigation
 
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.toMutableStateList
 
-class NavigationManager {
-    private val _backstack = mutableStateListOf<Screen>(Screen.TierDecks)
+class NavigationManager(
+    initialBackstack: List<Screen> = listOf(Screen.TierDecks),
+) {
+    init {
+        require(initialBackstack.isNotEmpty()) { "Initial backstack must not be empty" }
+    }
+
+    private val _backstack = initialBackstack.toMutableStateList()
     val backstack: List<Screen> get() = _backstack
 
     val currentScreen: Screen
@@ -14,6 +20,7 @@ class NavigationManager {
     }
 
     fun navigateBack() {
+        check(backstackIsEmpty()) { "Cannot navigate back from the first screen" }
         if (backstackIsEmpty()) {
             _backstack.removeAt(_backstack.lastIndex)
         }
