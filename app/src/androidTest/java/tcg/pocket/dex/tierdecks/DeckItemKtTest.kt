@@ -22,17 +22,10 @@ class DeckItemKtTest {
             var expanded by remember { mutableStateOf(false) }
 
             DeckItem(
-                deckId = "",
+                information = fakeDeckInformation,
                 onCardClick = {},
-                rank = 1,
-                deckName = "deckName",
-                winRate = "winRate",
-                share = "share",
-                pokemonImageUrls = emptyList(),
                 expanded = expanded,
-                onExpandClick = { expanded = !expanded },
-                cost = 1990,
-                pokemonTypes = emptyList(),
+                onExpandedChange = { expanded = !expanded },
             )
         }
         val notExpandedIcon = composeTestRule.onNodeWithContentDescription("not expanded icon")
@@ -51,17 +44,10 @@ class DeckItemKtTest {
             var expanded by remember { mutableStateOf(true) }
 
             DeckItem(
-                deckId = "",
-                rank = 1,
-                deckName = "deckName",
-                winRate = "winRate",
-                share = "share",
-                pokemonImageUrls = emptyList(),
+                information = fakeDeckInformation,
                 expanded = expanded,
-                onExpandClick = { expanded = !expanded },
+                onExpandedChange = { expanded = !expanded },
                 onCardClick = {},
-                cost = 1990,
-                pokemonTypes = emptyList(),
             )
         }
         val notExpandedIcon = composeTestRule.onNodeWithContentDescription("not expanded icon")

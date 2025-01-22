@@ -1,5 +1,6 @@
 package tcg.pocket.dex.tierdecks
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,25 +39,18 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
 fun DeckItem(
-    deckId: String,
-    rank: Int,
-    deckName: String,
-    winRate: String,
-    share: String,
-    pokemonImageUrls: List<String>,
-    cost: Int,
-    pokemonTypes: List<PokemonTypeChipData>,
+    information: DeckInformation,
     expanded: Boolean = false,
-    onExpandClick: () -> Unit,
+    onExpandedChange: (Boolean) -> Unit,
     onCardClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Card(
         modifier =
             modifier
-                .padding(16.dp)
                 .fillMaxWidth()
-                .clickable { onCardClick(deckId) },
+                .padding(4.dp)
+                .clickable { onCardClick(information.simple.deckId) },
         shape = RoundedCornerShape(8.dp),
     ) {
         Column(
@@ -66,25 +64,25 @@ fun DeckItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 RankText(
-                    rank = rank,
+                    rank = information.simple.rank,
                     modifier = Modifier.padding(end = 8.dp),
                 )
 
                 PokemonImageList(
-                    pokemonImageUrls = pokemonImageUrls,
+                    pokemonImageUrls = information.simple.representativePokemonImageUrls,
                     modifier = Modifier,
                 )
 
                 DeckItemInfoContent(
-                    deckName = deckName,
-                    winRate = winRate,
-                    share = share,
+                    deckName = information.simple.deckName,
+                    winRate = information.simple.winRate,
+                    share = information.simple.share,
                     modifier = Modifier.weight(1f),
                 )
 
                 IconButton(
                     modifier = Modifier.padding(0.dp),
-                    onClick = onExpandClick,
+                    onClick = { onExpandedChange(expanded) },
                 ) {
                     if (expanded) {
                         Icon(
@@ -100,10 +98,10 @@ fun DeckItem(
                 }
             }
 
-            if (expanded) {
+            AnimatedVisibility(expanded) {
                 DeckItemDetail(
-                    cost = cost,
-                    pokemonTypes = pokemonTypes,
+                    cost = information.detail.cost,
+                    pokemonTypes = information.detail.pokemonTypes,
                     modifier = Modifier,
                 )
             }
@@ -118,7 +116,7 @@ private fun DeckItemDetail(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().padding(8.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -258,25 +256,15 @@ private fun DeckItemInfoContentPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun DeckItemPreview(
-    @PreviewParameter(DeckCardPreviewParameters::class) expanded: Boolean,
+    @PreviewParameter(DeckCardPreviewParameters::class) initialExpanded: Boolean,
 ) {
     TcgPocketDexTheme {
+        var expanded by remember { mutableStateOf(initialExpanded) }
         DeckItem(
-            deckId = "",
-            rank = 1,
-            deckName = "Mewtwo ex Gardevoir",
-            winRate = "50.67%",
-            share = "17.57%",
-            pokemonImageUrls =
-                listOf(
-                    fakeSimpleUrl(150),
-                    fakeSimpleUrl(282),
-                ),
+            information = fakeDeckInformation,
             expanded = expanded,
-            onExpandClick = {},
+            onExpandedChange = { expanded = !expanded },
             onCardClick = {},
-            cost = 0,
-            pokemonTypes = fakePokemonTypeChipDataset,
         )
     }
 }
