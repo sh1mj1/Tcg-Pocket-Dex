@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TcgPocketDex</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
 </resources>
