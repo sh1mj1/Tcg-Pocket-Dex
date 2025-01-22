@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import tcg.pocket.dex.search.SearchActivity
+import tcg.pocket.dex.setting.SettingActivity
 import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -24,6 +25,9 @@ class MainActivity : ComponentActivity() {
                     TierDecksScreen(
                         onSearchClicked = {
                             startActivity<SearchActivity>()
+                        },
+                        onSettingClicked = {
+                            startActivity<SettingActivity>()
                         },
                     )
                 }

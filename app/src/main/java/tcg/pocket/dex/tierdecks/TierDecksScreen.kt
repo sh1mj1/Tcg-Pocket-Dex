@@ -25,7 +25,10 @@ val deckItemsState =
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TierDecksScreen(onSearchClicked: () -> Unit = {}) {
+fun TierDecksScreen(
+    onSearchClicked: () -> Unit = {},
+    onSettingClicked: () -> Unit = {},
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -39,9 +42,7 @@ fun TierDecksScreen(onSearchClicked: () -> Unit = {}) {
                     }
                 },
                 actions = {
-                    IconButton(onClick = {
-                        // TODO: for the setting of the theme
-                    }) {
+                    IconButton(onClick = onSettingClicked) {
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = null,
