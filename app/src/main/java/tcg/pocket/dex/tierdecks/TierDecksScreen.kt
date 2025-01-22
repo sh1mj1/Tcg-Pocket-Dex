@@ -38,7 +38,7 @@ fun TierDecksScreen(
                     IconButton(onClick = onSearchClicked) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = null,
+                            contentDescription = "Search Icon",
                         )
                     }
                 },
@@ -46,7 +46,7 @@ fun TierDecksScreen(
                     IconButton(onClick = onSettingClicked) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = null,
+                            contentDescription = "Setting Icon",
                         )
                     }
                 },
