@@ -1,6 +1,7 @@
 package tcg.pocket.dex.tierdecks
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -39,11 +40,20 @@ fun MainScreen(
     onSearchClicked: () -> Unit = {},
     onSettingClicked: () -> Unit = {},
     onDeckClicked: (String) -> Unit = {},
+    openUrl: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("TCG Pocket Dex") },
+                title = {
+                    Text(
+                        text = "TCG Pocket Dex",
+                        modifier =
+                            Modifier.clickable(
+                                onClick = openUrl,
+                            ),
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onSearchClicked) {
                         Icon(

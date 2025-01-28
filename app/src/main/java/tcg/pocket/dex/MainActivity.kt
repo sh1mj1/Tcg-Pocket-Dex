@@ -1,5 +1,8 @@
 package tcg.pocket.dex
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -61,11 +64,25 @@ class MainActivity : ComponentActivity() {
                                 onDeckClicked = { deckId ->
                                     navigationManager.navigateTo(Screen.DeckDetail(deckId))
                                 },
+                                openUrl = {
+                                    openUrl(
+                                        this,
+                                        getString(R.string.tcg_pocket_google_play_url),
+                                    )
+                                },
                             )
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun openUrl(
+        context: Context,
+        url: String,
+    ) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        context.startActivity(intent)
     }
 }
