@@ -93,7 +93,7 @@ fun MainScreen(
         },
     ) { innerPadding ->
         BackHandler(enabled = bottomNavigationManager.navigateBackAvailable()) {
-            bottomNavigationManager.navigateBack()
+            bottomNavigationManager.navigateSingleTopTo(Screen.BottomNavigation.TierDecks)
         }
 
         when (

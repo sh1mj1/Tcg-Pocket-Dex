@@ -19,12 +19,17 @@ class BottomNavigationManager(
         get() = _backstack.last()
 
     fun navigateTo(screen: Screen.BottomNavigation) {
+        val existingIndex = _backstack.indexOf(screen)
+
+        if (existingIndex != -1) {
+            _backstack.removeAt(existingIndex)
+        }
         _backstack.add(screen)
     }
 
-    fun navigateBack() {
-        check(navigateBackAvailable()) { "Cannot navigate back from the root screen" }
-        _backstack.removeAt(_backstack.lastIndex)
+    fun navigateSingleTopTo(screen: Screen.BottomNavigation) {
+        _backstack.clear()
+        _backstack.add(screen)
     }
 
     fun navigateBackAvailable(): Boolean = backstack.size > 1
