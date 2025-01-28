@@ -9,7 +9,7 @@ class NavigationManagerTest : StringSpec({
         // given
         val navigationManager =
             NavigationManager(
-                initialBackstack = listOf(Screen.TierDecks),
+                initialBackstack = listOf(Screen.BottomNavigation.TierDecks),
             )
         // when
         navigationManager.navigateTo(Screen.Search)
@@ -18,7 +18,7 @@ class NavigationManagerTest : StringSpec({
         // then
         navigationManager.backstack shouldBe
             listOf(
-                Screen.TierDecks,
+                Screen.BottomNavigation.TierDecks,
                 Screen.Search,
                 Screen.Setting,
             )
@@ -28,14 +28,14 @@ class NavigationManagerTest : StringSpec({
         // given
         val navigationManager =
             NavigationManager(
-                initialBackstack = listOf(Screen.TierDecks, Screen.Search),
+                initialBackstack = listOf(Screen.BottomNavigation.TierDecks, Screen.Search),
             )
 
         // when
         navigationManager.navigateBack()
 
         // then
-        navigationManager.currentScreen shouldBe Screen.TierDecks
+        navigationManager.currentScreen shouldBe Screen.BottomNavigation.TierDecks
     }
 
     "NavigationManger with empty backstack at initialization throws exception" {
@@ -50,7 +50,7 @@ class NavigationManagerTest : StringSpec({
         // given
         val navigationManager =
             NavigationManager(
-                initialBackstack = listOf(Screen.TierDecks),
+                initialBackstack = listOf(Screen.BottomNavigation.TierDecks),
             )
 
         // then
@@ -63,7 +63,7 @@ class NavigationManagerTest : StringSpec({
         // given
         val navigationManager =
             NavigationManager(
-                initialBackstack = listOf(Screen.TierDecks),
+                initialBackstack = listOf(Screen.BottomNavigation.TierDecks),
             )
 
         // when

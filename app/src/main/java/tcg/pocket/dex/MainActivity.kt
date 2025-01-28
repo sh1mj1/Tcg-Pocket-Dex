@@ -9,7 +9,9 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import tcg.pocket.dex.allcards.AllCardsScreen
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
+import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.NavigationManager
 import tcg.pocket.dex.navigation.Screen
 import tcg.pocket.dex.search.SearchScreen
@@ -30,7 +32,13 @@ class MainActivity : ComponentActivity() {
                         navigationManager.navigateBack()
                     }
                     when (val currentScreen = navigationManager.currentScreen) {
-                        is Screen.TierDecks ->
+                        is Screen.Search -> SearchScreen()
+                        is Screen.Setting -> SettingScreen()
+                        is Screen.DeckDetail -> DeckDetailScreen(deckId = currentScreen.deckId)
+
+                        is Screen.BottomNavigation.AllCards -> AllCardsScreen()
+                        is Screen.BottomNavigation.ExtensionPacks -> ExtensionPacksScreen()
+                        is Screen.BottomNavigation.TierDecks -> {
                             TierDecksScreen(
                                 onSearchClicked = { navigationManager.navigateTo(Screen.Search) },
                                 onSettingClicked = { navigationManager.navigateTo(Screen.Setting) },
@@ -38,10 +46,7 @@ class MainActivity : ComponentActivity() {
                                     navigationManager.navigateTo(Screen.DeckDetail(deckId))
                                 },
                             )
-
-                        is Screen.Search -> SearchScreen()
-                        is Screen.Setting -> SettingScreen()
-                        is Screen.DeckDetail -> DeckDetailScreen(deckId = currentScreen.deckId)
+                        }
                     }
                 }
             }

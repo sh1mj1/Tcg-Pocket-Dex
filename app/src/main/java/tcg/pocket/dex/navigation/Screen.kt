@@ -1,11 +1,17 @@
 package tcg.pocket.dex.navigation
 
-sealed class Screen {
-    data object TierDecks : Screen()
+sealed interface Screen {
+    data object Search : Screen
 
-    data object Search : Screen()
+    data object Setting : Screen
 
-    data object Setting : Screen()
+    data class DeckDetail(val deckId: String) : Screen
 
-    data class DeckDetail(val deckId: String) : Screen()
+    sealed interface BottomNavigation : Screen {
+        data object TierDecks : BottomNavigation
+
+        data object AllCards : BottomNavigation
+
+        data object ExtensionPacks : BottomNavigation
+    }
 }
