@@ -2,6 +2,7 @@ package tcg.pocket.dex.navigation
 
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 
 class NavigationManager(
     initialBackstack: List<Screen> = listOf(Screen.BottomNavigation.TierDecks),
@@ -21,11 +22,22 @@ class NavigationManager(
     }
 
     fun navigateBack() {
-        check(backstackIsEmpty()) { "Cannot navigate back from the first screen" }
-        if (backstackIsEmpty()) {
-            _backstack.removeAt(_backstack.lastIndex)
-        }
+        check(navigateBackAvailable()) { "Cannot navigate back from the root screen" }
+        _backstack.removeAt(_backstack.lastIndex)
     }
 
-    private fun backstackIsEmpty() = backstack.size > 1
+    fun navigateBackAvailable(): Boolean = backstack.size > 1
+
+    companion object {
+        fun factory(initialBackstack: List<Screen> = listOf(Screen.BottomNavigation.TierDecks)): ViewModelProvider.Factory =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    if (modelClass.isAssignableFrom(NavigationManager::class.java)) {
+                        @Suppress("UNCHECKED_CAST")
+                        return NavigationManager(initialBackstack) as T
+                    }
+                    throw IllegalArgumentException("Unknown ViewModel class")
+                }
+            }
+    }
 }

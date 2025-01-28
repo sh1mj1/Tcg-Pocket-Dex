@@ -9,14 +9,14 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun AllCardsScreen(modifier: Modifier = Modifier) {
-    // TODO: Implement search screen
+    // TODO: Implement all cards screen
     Surface(
         color = MaterialTheme.colorScheme.primaryContainer,
         modifier = modifier.fillMaxSize(),
     ) {
         Text(
             text = "All Cards",
-            modifier = modifier,
+            modifier = modifier.fillMaxSize(),
             style = MaterialTheme.typography.displayLarge,
         )
     }

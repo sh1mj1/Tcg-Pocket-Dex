@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ExtensionPacksScreen(modifier: Modifier = Modifier) {
-    // TODO: Implement search screen
+    // TODO: Implement extension packs screen
     Surface(
         color = MaterialTheme.colorScheme.primaryContainer,
         modifier = modifier.fillMaxSize(),

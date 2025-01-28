@@ -9,14 +9,13 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import tcg.pocket.dex.allcards.AllCardsScreen
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
-import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
+import tcg.pocket.dex.navigation.BottomNavigationManager
 import tcg.pocket.dex.navigation.NavigationManager
 import tcg.pocket.dex.navigation.Screen
 import tcg.pocket.dex.search.SearchScreen
 import tcg.pocket.dex.setting.SettingScreen
-import tcg.pocket.dex.tierdecks.TierDecksScreen
+import tcg.pocket.dex.tierdecks.MainScreen
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,22 +23,39 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val navigationManager by viewModels<NavigationManager>()
+        val navigationManager: NavigationManager by viewModels {
+            NavigationManager.factory()
+        }
+
+        val bottomNavigationManager: BottomNavigationManager by viewModels {
+            BottomNavigationManager.factory(
+                onBackStackIsEmpty = ::finish,
+            )
+        }
         setContent {
             TcgPocketDexTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    BackHandler(enabled = navigationManager.backstack.size > 1) {
+                    BackHandler(enabled = navigationManager.navigateBackAvailable()) {
                         navigationManager.navigateBack()
                     }
-                    when (val currentScreen = navigationManager.currentScreen) {
+
+                    when (
+                        val currentScreen =
+                            try {
+                                navigationManager.currentScreen
+                            } catch (e: NoSuchElementException) {
+                                finish()
+                            }
+                    ) {
                         is Screen.Search -> SearchScreen()
                         is Screen.Setting -> SettingScreen()
                         is Screen.DeckDetail -> DeckDetailScreen(deckId = currentScreen.deckId)
 
-                        is Screen.BottomNavigation.AllCards -> AllCardsScreen()
-                        is Screen.BottomNavigation.ExtensionPacks -> ExtensionPacksScreen()
+                        is Screen.BottomNavigation.AllCards -> {}
+                        is Screen.BottomNavigation.ExtensionPacks -> {}
                         is Screen.BottomNavigation.TierDecks -> {
-                            TierDecksScreen(
+                            MainScreen(
+                                bottomNavigationManager = bottomNavigationManager,
                                 onSearchClicked = { navigationManager.navigateTo(Screen.Search) },
                                 onSettingClicked = { navigationManager.navigateTo(Screen.Setting) },
                                 onDeckClicked = { deckId ->

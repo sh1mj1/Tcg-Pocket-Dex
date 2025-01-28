@@ -42,11 +42,13 @@ class NavigationManagerTest : StringSpec({
         // then
         shouldThrow<IllegalArgumentException> {
             // when
-            NavigationManager(initialBackstack = emptyList())
+            NavigationManager(
+                initialBackstack = emptyList(),
+            )
         }
     }
 
-    "navigateBack when backstack is empty throws exception" {
+    "navigateBack when backstack has only one stack then do not remove stack" {
         // given
         val navigationManager =
             NavigationManager(
@@ -54,9 +56,7 @@ class NavigationManagerTest : StringSpec({
             )
 
         // then
-        shouldThrow<IllegalStateException> {
-            navigationManager.navigateBack()
-        }
+        navigationManager.backstack shouldBe listOf(Screen.BottomNavigation.TierDecks)
     }
 
     "navigate to DeckDetailScreen with deckId" {

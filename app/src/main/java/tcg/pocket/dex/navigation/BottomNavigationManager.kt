@@ -5,10 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class BottomNavigationManager(
-    initialBackStack: List<Screen.BottomNavigation> = listOf(Screen.BottomNavigation.TierDecks),
+    initialBackstack: List<Screen.BottomNavigation> = listOf(Screen.BottomNavigation.TierDecks),
     val onBackStackIsEmpty: () -> Unit,
 ) : ViewModel() {
-    private val _backstack = initialBackStack.toMutableStateList()
+    init {
+        require(initialBackstack.isNotEmpty()) { "Initial backstack must not be empty" }
+    }
+
+    private val _backstack = initialBackstack.toMutableStateList()
     val backstack: List<Screen> get() = _backstack
 
     val currentScreen: Screen.BottomNavigation
@@ -19,11 +23,11 @@ class BottomNavigationManager(
     }
 
     fun navigateBack() {
-        if (backstack.isEmpty()) {
-            onBackStackIsEmpty
-        }
+        check(navigateBackAvailable()) { "Cannot navigate back from the root screen" }
         _backstack.removeAt(_backstack.lastIndex)
     }
+
+    fun navigateBackAvailable(): Boolean = backstack.size > 1
 
     companion object {
         fun factory(
