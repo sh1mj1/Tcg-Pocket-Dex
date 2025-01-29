@@ -22,12 +22,12 @@ object AllCards : BottomNavDestination {
 
 object TierDecks : BottomNavDestination {
     override val icon = Icons.Default.Star
-    override val route = "accounts"
+    override val route = "tier_decks"
 }
 
 object ExpansionPacks : BottomNavDestination {
     override val icon = Icons.Default.AccountBox
-    override val route = "bills"
+    override val route = "expansion_packs"
 }
 
 val bottomRowScreens = listOf(AllCards, TierDecks, ExpansionPacks)
