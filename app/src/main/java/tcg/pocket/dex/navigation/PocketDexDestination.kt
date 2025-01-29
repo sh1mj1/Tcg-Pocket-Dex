@@ -9,11 +9,11 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
 // TODO: create object lazily?
-interface NavDestination {
+interface PocketDexDestination {
     val route: String
 }
 
-interface BottomNavDestination : NavDestination {
+interface BottomNavDestination : PocketDexDestination {
     val icon: ImageVector
     val text: String
 }
@@ -36,7 +36,7 @@ object ExpansionPacks : BottomNavDestination {
     override val text: String = "Expansion Packs"
 }
 
-object TierDeckDetail : NavDestination {
+object TierDeckDetail : PocketDexDestination {
     override val route: String = "tier_deck_detail"
     const val DECK_ID_ARG = "deck_id"
     val routeWithArgs = "$route/{$DECK_ID_ARG}"
@@ -47,6 +47,10 @@ object TierDeckDetail : NavDestination {
         )
 
     fun routeWithArgs(deckId: String): String = "$route/$deckId"
+}
+
+object SearchScreen : PocketDexDestination {
+    override val route: String = "search"
 }
 
 val bottomBarScreens = listOf(AllCards, TierDecks, ExpansionPacks)

@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import tcg.pocket.dex.navigation.BottomNavDestination
-import tcg.pocket.dex.navigation.NavDestination
+import tcg.pocket.dex.navigation.PocketDexDestination
 import tcg.pocket.dex.navigation.bottomBarScreens
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 import java.util.Locale
@@ -39,7 +39,7 @@ import java.util.Locale
 fun PocketDexBottomBar(
     allScreens: List<BottomNavDestination>,
     onTabSelected: (BottomNavDestination) -> Unit,
-    currentScreen: NavDestination,
+    currentScreen: PocketDexDestination,
 ) {
     BottomAppBar(
         actions = {
