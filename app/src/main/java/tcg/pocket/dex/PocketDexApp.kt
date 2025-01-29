@@ -90,8 +90,8 @@ fun PocketDexApp(
                         onDeckItemClick = { deckId ->
                             navController.navigate(TierDeckDetail.routeWithArgs(deckId))
                         },
-                        onExpandDeck = { _, _ ->
-                            // TODO
+                        onExpandDeck = { deckItemState, _ ->
+                            deckItemState.toggleExpanded()
                         },
                     )
                 }
