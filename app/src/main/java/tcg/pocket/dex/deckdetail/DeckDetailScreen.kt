@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun DeckDetailScreen(
-    deckId: String,
+    deckId: String?,
     modifier: Modifier = Modifier,
 ) {
     Surface(
