@@ -21,6 +21,7 @@ import tcg.pocket.dex.navigation.NavDestination
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.DeckList
+import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -30,11 +31,23 @@ val deckItemsState =
     }
 
 @Composable
-fun PocketDexApp(modifier: Modifier = Modifier) {
+fun PocketDexApp(
+    openUrl: () -> Unit = {},
+    onSearchClicked: () -> Unit = {},
+    onSettingClicked: () -> Unit = {},
+) {
     TcgPocketDexTheme {
         var currentScreen: NavDestination by remember { mutableStateOf(TierDecks) }
         val navController = rememberNavController()
-        Scaffold { innerPadding ->
+        Scaffold(
+            topBar = {
+                PocketDexTopBar(
+                    openUrl = openUrl,
+                    onSearchClicked = onSearchClicked,
+                    onSettingClicked = onSettingClicked,
+                )
+            },
+        ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = TierDecks.route,
