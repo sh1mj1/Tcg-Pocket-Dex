@@ -82,24 +82,24 @@ fun PocketDexTab(
 
     Row(
         modifier =
-        Modifier
-            .padding(16.dp)
-            .animateContentSize()
-            .selectable(
-                selected = selected,
-                onClick = onSelected,
-                role = Role.Tab,
-                interactionSource = remember { MutableInteractionSource() },
-                indication =
-                ripple(
-                    bounded = false,
-                    radius = Dp.Unspecified,
-                    color = Color.Unspecified,
-                ),
-            )
-            .clearAndSetSemantics {
-                contentDescription = text
-            },
+            Modifier
+                .padding(16.dp)
+                .animateContentSize()
+                .selectable(
+                    selected = selected,
+                    onClick = onSelected,
+                    role = Role.Tab,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication =
+                        ripple(
+                            bounded = false,
+                            radius = Dp.Unspecified,
+                            color = Color.Unspecified,
+                        ),
+                )
+                .clearAndSetSemantics {
+                    contentDescription = text
+                },
     ) {
         Icon(imageVector = icon, contentDescription = text, tint = tabTintColor)
         if (selected) {

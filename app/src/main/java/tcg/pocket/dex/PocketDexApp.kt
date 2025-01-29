@@ -7,6 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -54,7 +56,7 @@ fun PocketDexApp(
                 PocketDexBottomBar(
                     allScreens = bottomBarScreens,
                     onTabSelected = { newScreen ->
-                        navController.navigate(newScreen.route)
+                        navController.navigateSingleTopTo(newScreen.route)
                     },
                     currentScreen = currentScreen,
                 )
@@ -84,6 +86,17 @@ fun PocketDexApp(
         }
     }
 }
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id,
+        ) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 
 @Preview(showBackground = true)
 @Composable
