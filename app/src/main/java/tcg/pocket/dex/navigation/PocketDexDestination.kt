@@ -49,8 +49,17 @@ object TierDeckDetail : PocketDexDestination {
     fun routeWithArgs(deckId: String): String = "$route/$deckId"
 }
 
-object SearchScreen : PocketDexDestination {
+object Search : PocketDexDestination {
     override val route: String = "search"
+    const val SEARCH_TYPE_ARG = "search_type"
+    val routeWithArgs = "$route/{$SEARCH_TYPE_ARG}"
+
+    val arguments =
+        listOf(
+            navArgument(SEARCH_TYPE_ARG) { type = NavType.StringType },
+        )
+
+    fun routeWithArgs(searchType: String): String = "$route/$searchType"
 }
 
 val bottomBarScreens = listOf(AllCards, TierDecks, ExpansionPacks)

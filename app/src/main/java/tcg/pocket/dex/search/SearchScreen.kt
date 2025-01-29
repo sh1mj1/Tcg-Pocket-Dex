@@ -10,14 +10,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
+fun SearchScreenForTierDecks(modifier: Modifier = Modifier) {
     // TODO: Implement search screen
     Surface(
         color = MaterialTheme.colorScheme.primaryContainer,
         modifier = modifier.fillMaxSize(),
     ) {
         Text(
-            text = "Search Screen",
+            text = "Search Screen For Tier Decks",
+            modifier = modifier,
+            style = MaterialTheme.typography.displayLarge,
+        )
+    }
+}
+
+@Composable
+fun SearchScreenForAllCards(modifier: Modifier = Modifier) {
+    // TODO: Implement search screen
+    Surface(
+        color = MaterialTheme.colorScheme.primaryContainer,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Text(
+            text = "Search Screen For All Cards",
+            modifier = modifier,
+            style = MaterialTheme.typography.displayLarge,
+        )
+    }
+}
+
+@Composable
+fun SearchScreenForExpansionPacks(modifier: Modifier = Modifier) {
+    // TODO: Implement search screen
+    Surface(
+        color = MaterialTheme.colorScheme.primaryContainer,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Text(
+            text = "Search Screen For Expansion Packs",
             modifier = modifier,
             style = MaterialTheme.typography.displayLarge,
         )
@@ -26,8 +56,8 @@ fun SearchScreen(modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-private fun SearchScreenPreview() {
+private fun SearchScreenForTierDecksPreview() {
     TcgPocketDexTheme {
-        SearchScreen()
+        SearchScreenForTierDecks()
     }
 }

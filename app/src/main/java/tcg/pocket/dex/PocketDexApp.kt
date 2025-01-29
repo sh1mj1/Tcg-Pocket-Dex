@@ -19,9 +19,13 @@ import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.AllCards
 import tcg.pocket.dex.navigation.ExpansionPacks
+import tcg.pocket.dex.navigation.Search
 import tcg.pocket.dex.navigation.TierDeckDetail
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
+import tcg.pocket.dex.search.SearchScreenForAllCards
+import tcg.pocket.dex.search.SearchScreenForExpansionPacks
+import tcg.pocket.dex.search.SearchScreenForTierDecks
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.DeckList
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
@@ -62,7 +66,13 @@ fun PocketDexApp(
                 AnimatedVisibility(isTopBarVisible) {
                     PocketDexTopBar(
                         openUrl = openUrl,
-                        onSearchClicked = onSearchClicked,
+                        onSearchClicked = {
+                            when (currentScreen) {
+                                is AllCards -> navController.navigate(Search.routeWithArgs("all_cards"))
+                                is TierDecks -> navController.navigate(Search.routeWithArgs("tier_decks"))
+                                is ExpansionPacks -> navController.navigate(Search.routeWithArgs("expansion_packs"))
+                            }
+                        },
                         onSettingClicked = onSettingClicked,
                     )
                 }
@@ -107,6 +117,19 @@ fun PocketDexApp(
                 ) { navBackStackEntry ->
                     val deckId = navBackStackEntry.arguments?.getString(TierDeckDetail.DECK_ID_ARG)
                     DeckDetailScreen(deckId = deckId)
+                }
+                composable(
+                    route = Search.routeWithArgs,
+                    arguments = Search.arguments,
+                ) { navBackStackEntry ->
+                    val searchType = navBackStackEntry.arguments?.getString(Search.SEARCH_TYPE_ARG)
+                    // TODO: implement SearchScreen for all cards
+                    when (searchType) {
+                        "tier_decks" -> SearchScreenForTierDecks()
+                        "all_cards" -> SearchScreenForAllCards()
+                        "expansion_packs" -> SearchScreenForExpansionPacks()
+                        else -> error("Unknown search type: $searchType")
+                    }
                 }
             }
         }

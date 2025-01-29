@@ -16,7 +16,7 @@ import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.navigation.BottomNavigationManager
 import tcg.pocket.dex.navigation.NavigationManager
 import tcg.pocket.dex.navigation.Screen
-import tcg.pocket.dex.search.SearchScreen
+import tcg.pocket.dex.search.SearchScreenForTierDecks
 import tcg.pocket.dex.setting.SettingScreen
 import tcg.pocket.dex.tierdecks.MainScreen
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
@@ -50,7 +50,7 @@ class MainActivity : ComponentActivity() {
                                 finish()
                             }
                     ) {
-                        is Screen.Search -> SearchScreen()
+                        is Screen.Search -> SearchScreenForTierDecks()
                         is Screen.Setting -> SettingScreen()
                         is Screen.DeckDetail -> DeckDetailScreen(deckId = currentScreen.deckId)
 
