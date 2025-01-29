@@ -13,21 +13,25 @@ interface NavDestination {
 
 interface BottomNavDestination : NavDestination {
     val icon: ImageVector
+    val text: String
 }
 
 object AllCards : BottomNavDestination {
     override val icon = Icons.AutoMirrored.Filled.List
     override val route = "all_cards"
+    override val text: String = "All Cards"
 }
 
 object TierDecks : BottomNavDestination {
     override val icon = Icons.Default.Star
     override val route = "tier_decks"
+    override val text: String = "Tier Decks"
 }
 
 object ExpansionPacks : BottomNavDestination {
     override val icon = Icons.Default.AccountBox
     override val route = "expansion_packs"
+    override val text: String = "Expansion Packs"
 }
 
-val bottomRowScreens = listOf(AllCards, TierDecks, ExpansionPacks)
+val bottomBarScreens = listOf(AllCards, TierDecks, ExpansionPacks)
