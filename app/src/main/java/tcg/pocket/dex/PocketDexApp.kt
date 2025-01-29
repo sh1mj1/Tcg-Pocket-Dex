@@ -20,12 +20,14 @@ import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.AllCards
 import tcg.pocket.dex.navigation.ExpansionPacks
 import tcg.pocket.dex.navigation.Search
+import tcg.pocket.dex.navigation.Setting
 import tcg.pocket.dex.navigation.TierDeckDetail
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
 import tcg.pocket.dex.search.SearchScreenForAllCards
 import tcg.pocket.dex.search.SearchScreenForExpansionPacks
 import tcg.pocket.dex.search.SearchScreenForTierDecks
+import tcg.pocket.dex.setting.SettingScreen
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.DeckList
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
@@ -38,11 +40,7 @@ val deckItemsState =
     }
 
 @Composable
-fun PocketDexApp(
-    openUrl: () -> Unit = {},
-    onSearchClicked: () -> Unit = {},
-    onSettingClicked: () -> Unit = {},
-) {
+fun PocketDexApp(openUrl: () -> Unit = {}) {
     TcgPocketDexTheme {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
@@ -73,7 +71,7 @@ fun PocketDexApp(
                                 is ExpansionPacks -> navController.navigate(Search.routeWithArgs("expansion_packs"))
                             }
                         },
-                        onSettingClicked = onSettingClicked,
+                        onSettingClicked = { navController.navigate(Setting.route) },
                     )
                 }
             },
@@ -105,6 +103,10 @@ fun PocketDexApp(
                         },
                     )
                 }
+                composable(route = Setting.route) {
+                    SettingScreen()
+                }
+
                 composable(route = AllCards.route) {
                     AllCardsScreen()
                 }

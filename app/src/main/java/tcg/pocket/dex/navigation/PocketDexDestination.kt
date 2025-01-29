@@ -62,4 +62,8 @@ object Search : PocketDexDestination {
     fun routeWithArgs(searchType: String): String = "$route/$searchType"
 }
 
+object Setting : PocketDexDestination {
+    override val route: String = "setting"
+}
+
 val bottomBarScreens = listOf(AllCards, TierDecks, ExpansionPacks)
