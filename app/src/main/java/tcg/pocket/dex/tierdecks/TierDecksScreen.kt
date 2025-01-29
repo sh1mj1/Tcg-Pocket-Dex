@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
-fun DeckList(
+fun TierDecksScreen(
     deckItemsState: List<DeckItemState>,
     onExpandDeck: (DeckItemState, Boolean) -> Unit,
     onDeckItemClick: (String) -> Unit,
@@ -40,9 +40,9 @@ fun DeckList(
 
 @Preview
 @Composable
-private fun DeckListPreview() {
+private fun TierDeckScreenPreview() {
     TcgPocketDexTheme {
-        DeckList(
+        TierDecksScreen(
             deckItemsState = fakeDecksInformation.map(::DeckItemState),
             onDeckItemClick = { },
             onExpandDeck = { deckItemStata, _ -> },
