@@ -14,9 +14,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import tcg.pocket.dex.allcards.AllCardsScreen
+import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.AllCards
 import tcg.pocket.dex.navigation.ExpansionPacks
+import tcg.pocket.dex.navigation.TierDeckDetail
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
 import tcg.pocket.dex.tierdecks.DeckItemState
@@ -70,7 +72,9 @@ fun PocketDexApp(
                 composable(route = TierDecks.route) {
                     DeckList(
                         deckItemsState = deckItemsState,
-                        onDeckItemClick = { /* TODO */ },
+                        onDeckItemClick = { deckId ->
+                            navController.navigate(TierDeckDetail.routeWithArgs(deckId))
+                        },
                         onExpandDeck = { _, _ ->
                             // TODO
                         },
@@ -81,6 +85,13 @@ fun PocketDexApp(
                 }
                 composable(route = ExpansionPacks.route) {
                     ExtensionPacksScreen()
+                }
+                composable(
+                    route = TierDeckDetail.routeWithArgs,
+                    arguments = TierDeckDetail.arguments,
+                ) { navBackStackEntry ->
+                    val deckId = navBackStackEntry.arguments?.getString(TierDeckDetail.DECK_ID_ARG)
+                    DeckDetailScreen(deckId = deckId)
                 }
             }
         }

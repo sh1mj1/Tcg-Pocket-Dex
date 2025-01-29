@@ -5,6 +5,8 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 // TODO: create object lazily?
 interface NavDestination {
@@ -32,6 +34,19 @@ object ExpansionPacks : BottomNavDestination {
     override val icon = Icons.Default.AccountBox
     override val route = "expansion_packs"
     override val text: String = "Expansion Packs"
+}
+
+object TierDeckDetail : NavDestination {
+    override val route: String = "tier_deck_detail"
+    const val DECK_ID_ARG = "deck_id"
+    val routeWithArgs = "$route/{$DECK_ID_ARG}"
+
+    val arguments =
+        listOf(
+            navArgument(DECK_ID_ARG) { type = NavType.StringType },
+        )
+
+    fun routeWithArgs(deckId: String): String = "$route/$deckId"
 }
 
 val bottomBarScreens = listOf(AllCards, TierDecks, ExpansionPacks)
