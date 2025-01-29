@@ -110,26 +110,6 @@ val fakeDecksInformation =
         )
     }
 
-val fakeCardsUrls =
-    listOf(
-        // leaf
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000010_00_FUSHIGIDANE_C.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000020_00_FUSHIGISOU_U.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000030_00_FUSHIGIBANA_R.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000040_00_FUSHIGIBANAex_RR.webp",
-        // fire
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000390_00_GARDIE_C.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000400_00_WINDIE_R.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000410_00_WINDIEex_RR.webp",
-        // water
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000570_00_KODUCK_C.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000580_00_GOLDUCK_U.webp",
-        // electric
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000940_00_PIKACHU_C.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000950_00_RAICHU_R.webp",
-        "https://assets.pokemon-zone.com/game-assets/CardPreviews/cPK_10_000960_00_PIKACHUex_RR.webp",
-    )
-
 val fakeCardsData =
     listOf(
         CardData(
