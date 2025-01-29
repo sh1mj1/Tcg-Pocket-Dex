@@ -1,5 +1,6 @@
 package tcg.pocket.dex
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -46,22 +47,36 @@ fun PocketDexApp(
         val currentScreen =
             bottomBarScreens.find { it.route == currentDestination?.route } ?: TierDecks
 
+        val isTopBarVisible =
+            bottomBarScreens.any { destination ->
+                currentDestination?.route?.startsWith(destination.route) == true
+            }
+
+        val isBottomTabDestination =
+            bottomBarScreens.any { destination ->
+                currentDestination?.route?.startsWith(destination.route) == true
+            }
+
         Scaffold(
             topBar = {
-                PocketDexTopBar(
-                    openUrl = openUrl,
-                    onSearchClicked = onSearchClicked,
-                    onSettingClicked = onSettingClicked,
-                )
+                AnimatedVisibility(isTopBarVisible) {
+                    PocketDexTopBar(
+                        openUrl = openUrl,
+                        onSearchClicked = onSearchClicked,
+                        onSettingClicked = onSettingClicked,
+                    )
+                }
             },
             bottomBar = {
-                PocketDexBottomBar(
-                    allScreens = bottomBarScreens,
-                    onTabSelected = { newScreen ->
-                        navController.navigateSingleTopTo(newScreen.route)
-                    },
-                    currentScreen = currentScreen,
-                )
+                AnimatedVisibility(isBottomTabDestination) {
+                    PocketDexBottomBar(
+                        allScreens = bottomBarScreens,
+                        onTabSelected = { newScreen ->
+                            navController.navigateSingleTopTo(newScreen.route)
+                        },
+                        currentScreen = currentScreen,
+                    )
+                }
             },
         ) { innerPadding ->
             NavHost(
