@@ -33,7 +33,7 @@ import tcg.pocket.dex.tierdecks.temporalPokemonTypePlaceholderDrawable
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
-fun AllCardScreen(
+fun AllCardsScreen(
     modifier: Modifier = Modifier,
     cards: List<CardData>,
     onCardClick: (CardData) -> Unit,
@@ -111,7 +111,7 @@ fun CardItem(
 @Composable
 fun TierDecksScreenPreview() {
     TcgPocketDexTheme {
-        AllCardScreen(
+        AllCardsScreen(
             cards = fakeCardsData,
             onCardClick = {},
         )

@@ -31,6 +31,7 @@ import tcg.pocket.dex.setting.SettingScreen
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
+import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -108,7 +109,10 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 }
 
                 composable(route = AllCards.route) {
-                    AllCardsScreen()
+                    AllCardsScreen(
+                        cards = fakeCardsData,
+                        onCardClick = { /* todo */ },
+                    )
                 }
                 composable(route = ExpansionPacks.route) {
                     ExtensionPacksScreen()
