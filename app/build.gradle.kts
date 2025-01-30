@@ -72,6 +72,4 @@ dependencies {
     testImplementation(libs.mockwebserver)
 
     implementation(libs.coil.compose)
-    implementation(libs.androidx.navigation.compose)
-    androidTestImplementation(libs.androidx.navigation.testing)
 }

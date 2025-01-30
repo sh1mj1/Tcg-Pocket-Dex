@@ -16,7 +16,6 @@ junitVintageEngine = "5.10.2"
 kotestRunnerJunit5 = "5.9.0"
 androidTestRunner = "1.4.0"
 mockk = "1.13.9"
-navigationCompose = "2.8.5"
 robolectric = "4.13"
 okhttp = "4.12.0"
 
@@ -24,8 +23,6 @@ okhttp = "4.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigationCompose" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
