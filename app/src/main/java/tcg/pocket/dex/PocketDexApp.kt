@@ -29,8 +29,9 @@ import tcg.pocket.dex.search.SearchScreenForExpansionPacks
 import tcg.pocket.dex.search.SearchScreenForTierDecks
 import tcg.pocket.dex.setting.SettingScreen
 import tcg.pocket.dex.tierdecks.DeckItemState
-import tcg.pocket.dex.tierdecks.DeckList
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
+import tcg.pocket.dex.tierdecks.TierDecksScreen
+import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -93,7 +94,7 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable(route = TierDecks.route) {
-                    DeckList(
+                    TierDecksScreen(
                         deckItemsState = deckItemsState,
                         onDeckItemClick = { deckId ->
                             navController.navigate(TierDeckDetail.routeWithArgs(deckId))
@@ -108,7 +109,10 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 }
 
                 composable(route = AllCards.route) {
-                    AllCardsScreen()
+                    AllCardsScreen(
+                        cards = fakeCardsData,
+                        onCardClick = { /* todo */ },
+                    )
                 }
                 composable(route = ExpansionPacks.route) {
                     ExtensionPacksScreen()

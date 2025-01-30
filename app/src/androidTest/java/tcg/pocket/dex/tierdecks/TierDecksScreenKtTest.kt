@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import org.junit.Rule
 import org.junit.Test
 
-class DeckListKtTest {
+class TierDecksScreenKtTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -21,7 +21,7 @@ class DeckListKtTest {
     @Test
     fun deckList_expandItem() {
         composeTestRule.setContent {
-            DeckList(
+            TierDecksScreen(
                 deckItemsState = sampleDeckItemsState,
                 onExpandDeck = { itemState, expanded -> itemState.toggleExpanded() },
                 onDeckItemClick = {},
