@@ -15,9 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import tcg.pocket.dex.allcards.AllCardsScreen
+import tcg.pocket.dex.allcards.CardDetailScreen
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.AllCards
+import tcg.pocket.dex.navigation.CardDetail
 import tcg.pocket.dex.navigation.ExpansionPacks
 import tcg.pocket.dex.navigation.Search
 import tcg.pocket.dex.navigation.Setting
@@ -35,9 +37,15 @@ import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
+// TODO: move to viewmodel
 val deckItemsState =
     mutableStateListOf<DeckItemState>().apply {
-        addAll(fakeDecksInformation.map { DeckItemState(it) })
+        addAll(fakeDecksInformation.map(::DeckItemState))
+    }
+
+val relatedDeckItemState =
+    mutableStateListOf<DeckItemState>().apply {
+        addAll(fakeDecksInformation.subList(0, 4).map(::DeckItemState))
     }
 
 @Composable
@@ -111,7 +119,9 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 composable(route = AllCards.route) {
                     AllCardsScreen(
                         cards = fakeCardsData,
-                        onCardClick = { /* todo */ },
+                        onCardClick = {
+                            navController.navigate(CardDetail.routeWithArgs(it))
+                        },
                     )
                 }
                 composable(route = ExpansionPacks.route) {
@@ -136,6 +146,22 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                         "expansion_packs" -> SearchScreenForExpansionPacks()
                         else -> error("Unknown search type: $searchType")
                     }
+                }
+                composable(
+                    route = CardDetail.routeWithArgs,
+                    arguments = CardDetail.arguments,
+                ) { navBackStackEntry ->
+                    val cardId = navBackStackEntry.arguments?.getString(CardDetail.CARD_DETAIL_ARG)
+                    CardDetailScreen(
+                        cardId = cardId,
+                        deckItemsState = relatedDeckItemState,
+                        onExpandDeck = { deckItemState, _ ->
+                            deckItemState.toggleExpanded()
+                        },
+                        onDeckItemClick = { deckId ->
+                            navController.navigate(TierDeckDetail.routeWithArgs(deckId))
+                        },
+                    )
                 }
             }
         }
