@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import org.junit.Rule
 import org.junit.Test
+import tcg.pocket.dex.component.DeckItem
 
 class DeckItemKtTest {
     @get:Rule

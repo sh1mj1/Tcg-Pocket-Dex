@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tcg.pocket.dex.component.DeckItem
 import tcg.pocket.dex.component.PocketDexSectionHeader
-import tcg.pocket.dex.tierdecks.DeckItem
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
