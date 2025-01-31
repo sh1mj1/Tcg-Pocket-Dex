@@ -16,9 +16,3 @@ data class CardDetail(
     val imageUrl: String,
     val pokemonMoves: List<PokemonMove>,
 )
-
-data class DeckDetails(
-    val name: String,
-    val type: String,
-    val imageUrl: String,
-)

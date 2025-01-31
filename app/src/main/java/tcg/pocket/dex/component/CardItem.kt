@@ -1,4 +1,4 @@
-package tcg.pocket.dex.allcards
+package tcg.pocket.dex.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import tcg.pocket.dex.allcards.CardData
 import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.temporalPokemonCardPlaceholderDrawable
 import tcg.pocket.dex.tierdecks.temporalPokemonCardRarityPlaceholderDrawable
