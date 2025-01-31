@@ -24,7 +24,7 @@ import tcg.pocket.dex.ui.theme.ChipSize
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
-fun PokemonMoves(
+fun PokemonMovesSection(
     pokemonMoves: List<PokemonMove>,
     modifier: Modifier = Modifier,
 ) {
@@ -83,9 +83,9 @@ fun PokemonMoves(
 
 @Preview(showBackground = true)
 @Composable
-private fun PokemonMovesPreview() {
+private fun PokemonMovesSectionPreview() {
     TcgPocketDexTheme {
-        PokemonMoves(
+        PokemonMovesSection(
             pokemonMoves = fakeCardDetail.pokemonMoves,
         )
     }

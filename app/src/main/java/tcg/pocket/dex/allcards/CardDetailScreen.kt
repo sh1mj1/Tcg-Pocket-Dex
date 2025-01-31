@@ -44,7 +44,7 @@ fun CardDetailScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            PokemonMoves(
+            PokemonMovesSection(
                 pokemonMoves = cardDetail.pokemonMoves,
                 modifier = Modifier.fillMaxWidth(),
             )
