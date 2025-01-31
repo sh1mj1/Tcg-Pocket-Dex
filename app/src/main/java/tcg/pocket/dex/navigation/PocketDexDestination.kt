@@ -66,4 +66,17 @@ object Setting : PocketDexDestination {
     override val route: String = "setting"
 }
 
+object CardDetail : PocketDexDestination {
+    override val route: String = "card"
+    const val CARD_DETAIL_ARG = "card_detail"
+    val routeWithArgs = "$route/{$CARD_DETAIL_ARG}"
+
+    val arguments =
+        listOf(
+            navArgument(CARD_DETAIL_ARG) { type = NavType.StringType },
+        )
+
+    fun routeWithArgs(cardId: String): String = "$route/$cardId"
+}
+
 val bottomBarScreens = listOf(AllCards, TierDecks, ExpansionPacks)
