@@ -50,9 +50,9 @@ fun PokemonMoves(
                                     contentDescription = energy.type,
                                     modifier = Modifier.size(ChipSize.Small),
                                     placeholder =
-                                    painterResource(
-                                        temporalPokemonTypePlaceholderDrawable,
-                                    ),
+                                        painterResource(
+                                            temporalPokemonTypePlaceholderDrawable,
+                                        ),
                                 )
                             }
                             Spacer(modifier = Modifier.width(8.dp))

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +17,7 @@ import tcg.pocket.dex.tierdecks.temporalPokemonCardPlaceholderDrawable
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
-fun CardDetailHeader(
+fun CardDetailMetaDataSection(
     cardDetail: CardDetail,
     modifier: Modifier = Modifier,
 ) {
@@ -42,21 +41,14 @@ fun CardDetailHeader(
                 modifier = Modifier.weight(1.2f),
             )
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        PokemonMoves(
-            pokemonMoves = cardDetail.pokemonMoves,
-            modifier = Modifier.fillMaxWidth(),
-        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun CardDetailHeaderPreview() {
+private fun CardDetailMetaDataSectionPreview() {
     TcgPocketDexTheme {
-        CardDetailHeader(
+        CardDetailMetaDataSection(
             cardDetail = fakeCardDetail,
         )
     }
