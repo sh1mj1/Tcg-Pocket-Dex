@@ -3,6 +3,9 @@ package tcg.pocket.dex.tierdecks
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import tcg.pocket.dex.R
 import tcg.pocket.dex.allcards.CardData
+import tcg.pocket.dex.allcards.CardDetail
+import tcg.pocket.dex.allcards.Energy
+import tcg.pocket.dex.allcards.PokemonMove
 
 val temporalPokemonPlaceholderDrawable: Int = R.drawable.tcg_pocket_unknown
 val temporalPokemonCardPlaceholderDrawable: Int = R.drawable.pocket_dex_card_image
@@ -200,4 +203,70 @@ val fakeCardsData =
             rarityUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/RarityIcon_RR.png?height=40",
             typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Lightning.png?width=40&height=40",
         ),
+    )
+
+val fakeCardDetail =
+    CardDetail(
+        name = "Venusaur ex",
+        rarity = "★ ★ ★",
+        rarityUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/RarityIcon_RR.png?height=40",
+        type = "Grass",
+        typeImageUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Grass.png?width=40&height=40",
+        weakness = "+20",
+        weaknessType = "Fire",
+        weaknessTypeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Fire.png?width=40&height=40",
+        hp = "150",
+        retreatCost = 3,
+        stage = 1,
+        description = "Psychic Sphere: 50\nPsydrive: 150",
+        imageUrl =
+            "https://assets.pokemon-zone.com/game-assets/" +
+                "CardPreviews/cPK_10_000040_00_FUSHIGIBANAex_RR.webp",
+        pokemonMoves =
+            listOf(
+                PokemonMove(
+                    name = "Razor Leaf",
+                    damage = 50,
+                    energy =
+                        listOf(
+                            Energy(
+                                type = "Grass",
+                                typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Grass.png?width=40&height=40",
+                            ),
+                            Energy(
+                                type = "Normal",
+                                typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Colorless.png?width=40&height=40",
+                            ),
+                            Energy(
+                                type = "Normal",
+                                typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Colorless.png?width=40&height=40",
+                            ),
+                        ),
+                    description = "",
+                ),
+                PokemonMove(
+                    name = "Giant Bloom",
+                    damage = 100,
+                    energy =
+                        listOf(
+                            Energy(
+                                type = "Grass",
+                                typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Grass.png?width=40&height=40",
+                            ),
+                            Energy(
+                                type = "Grass",
+                                typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Grass.png?width=40&height=40",
+                            ),
+                            Energy(
+                                type = "Normal",
+                                typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Colorless.png?width=40&height=40",
+                            ),
+                            Energy(
+                                type = "Normal",
+                                typeUrl = "https://static.mana.wiki/tcgwiki-pokemonpocket/TypeIcon_Colorless.png?width=40&height=40",
+                            ),
+                        ),
+                    description = "Heal 30 damage from this Pokémon.",
+                ),
+            ),
     )
