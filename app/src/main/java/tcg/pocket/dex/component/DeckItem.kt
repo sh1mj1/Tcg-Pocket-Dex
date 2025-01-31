@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import tcg.pocket.dex.tierdecks.DeckInformation
 import tcg.pocket.dex.tierdecks.PokemonTypeChipData
-import tcg.pocket.dex.tierdecks.PokemonTypeChipGroup
 import tcg.pocket.dex.tierdecks.fakeDeckInformation
 import tcg.pocket.dex.tierdecks.fakeTierDeckDescription
 import tcg.pocket.dex.tierdecks.temporalPokemonPlaceholderDrawable
