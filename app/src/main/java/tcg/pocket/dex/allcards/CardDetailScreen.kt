@@ -42,20 +42,20 @@ fun CardDetailScreen(
                 modifier = modifier,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             PokemonMoves(
                 pokemonMoves = cardDetail.pokemonMoves,
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             RelatedCardsSection(
                 relatedCards = relatedCards,
                 modifier = modifier,
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
         item {
