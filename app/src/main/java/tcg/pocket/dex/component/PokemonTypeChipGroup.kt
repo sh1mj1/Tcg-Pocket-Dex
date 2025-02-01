@@ -1,4 +1,4 @@
-package tcg.pocket.dex.tierdecks
+package tcg.pocket.dex.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -7,6 +7,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import tcg.pocket.dex.tierdecks.PokemonTypeChipData
+import tcg.pocket.dex.tierdecks.fakePokemonTypeChipDataset
 import tcg.pocket.dex.ui.theme.ChipSize
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 

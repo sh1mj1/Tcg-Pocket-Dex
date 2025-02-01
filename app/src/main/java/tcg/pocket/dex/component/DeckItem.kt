@@ -1,4 +1,4 @@
-package tcg.pocket.dex.tierdecks
+package tcg.pocket.dex.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -35,6 +35,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import tcg.pocket.dex.tierdecks.DeckInformation
+import tcg.pocket.dex.tierdecks.PokemonTypeChipData
+import tcg.pocket.dex.tierdecks.fakeDeckInformation
+import tcg.pocket.dex.tierdecks.fakeTierDeckDescription
+import tcg.pocket.dex.tierdecks.temporalPokemonPlaceholderDrawable
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable

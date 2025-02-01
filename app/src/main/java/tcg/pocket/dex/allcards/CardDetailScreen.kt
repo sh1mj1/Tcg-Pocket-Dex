@@ -2,6 +2,7 @@ package tcg.pocket.dex.allcards
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,17 +37,25 @@ fun CardDetailScreen(
                 .padding(16.dp),
     ) {
         item {
-            CardDetailHeader(
+            CardDetailMetaDataSection(
                 cardDetail = cardDetail,
                 modifier = modifier,
             )
-            Spacer(modifier = Modifier.height(16.dp))
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            PokemonMovesSection(
+                pokemonMoves = cardDetail.pokemonMoves,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             RelatedCardsSection(
                 relatedCards = relatedCards,
                 modifier = modifier,
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
         item {
