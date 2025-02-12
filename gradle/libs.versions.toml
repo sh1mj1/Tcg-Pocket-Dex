@@ -53,6 +53,8 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 
 mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
 
+compose-compiler-extension = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

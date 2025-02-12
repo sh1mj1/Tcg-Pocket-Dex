@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -40,9 +42,21 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "11"
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+        sourceSets.all {
+            languageSettings.enableLanguageFeature("ExplicitBackingFields")
+        }
     }
+
+    composeCompiler {
+        enableStrongSkippingMode = true
+        includeSourceInformation = true
+    }
+
     buildFeatures {
         compose = true
     }
@@ -52,6 +66,7 @@ android {
 }
 
 dependencies {
+    compileOnly(libs.compose.compiler.extension)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -75,3 +90,29 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     androidTestImplementation(libs.androidx.navigation.testing)
 }
+
+/*
+	// AS-IS
+	//kotlinOptions {
+    //   jvmTarget = "17"
+    //}
+
+    // 🌟 TO-BE
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+	// AS-IS
+    //composeOptions {
+    //    kotlinCompilerExtensionVersion = rootProject.composeCompilerVersion
+    //}
+
+    // 🌟 TO-BE
+    composeCompiler {
+        enableStrongSkippingMode = true
+        includeSourceInformation = true
+    }
+
+
+* */

@@ -22,7 +22,7 @@ class MainActivityTest {
             .performClick()
 
         // you're on the Search Screen
-        composeTestRule.onNodeWithText("Search Screen").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Search Screen For Tier Decks").assertIsDisplayed()
 
         // when
         composeTestRule.activity.runOnUiThread {
@@ -30,6 +30,6 @@ class MainActivityTest {
         }
 
         // then
-        composeTestRule.onNodeWithText("Search Screen").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Search Screen For Tier Decks").assertIsDisplayed()
     }
 }
