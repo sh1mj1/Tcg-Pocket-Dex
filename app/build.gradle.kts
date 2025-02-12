@@ -90,29 +90,3 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     androidTestImplementation(libs.androidx.navigation.testing)
 }
-
-/*
-	// AS-IS
-	//kotlinOptions {
-    //   jvmTarget = "17"
-    //}
-
-    // 🌟 TO-BE
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-	// AS-IS
-    //composeOptions {
-    //    kotlinCompilerExtensionVersion = rootProject.composeCompilerVersion
-    //}
-
-    // 🌟 TO-BE
-    composeCompiler {
-        enableStrongSkippingMode = true
-        includeSourceInformation = true
-    }
-
-
-* */
