@@ -150,9 +150,7 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                     CardDetailScreen(
                         cardId = cardId,
                         deckItemsState = relatedDeckItemState,
-                        onExpandDeck = { deckItemState, _ ->
-                            deckItemState.toggleExpanded()
-                        },
+                        onExpandDeck = DeckItemState::expansionToggled,
                         onDeckItemClick = { deckId ->
                             navController.navigate(TierDeckDetail.routeWithArgs(deckId))
                         },

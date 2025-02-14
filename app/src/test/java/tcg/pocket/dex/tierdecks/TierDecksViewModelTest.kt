@@ -16,10 +16,9 @@ class TierDecksViewModelTest : FunSpec({
     test("expand the deck") {
         // given
         val deckItemState = viewModel.deckItemsState.value.first()
-        val expanded = true
 
         // when
-        viewModel.onExpandDeck(deckItemState, expanded)
+        viewModel.onExpandDeck(deckItemState)
 
         // then
         viewModel.deckItemsState.value.first().expanded shouldBe true

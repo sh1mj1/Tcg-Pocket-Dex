@@ -8,15 +8,16 @@ class TierDecksViewModel(
     decksInformation: List<DeckInformation> = fakeDecksInformation,
 ) : ViewModel() {
     val deckItemsState: StateFlow<List<DeckItemState>>
-        field = MutableStateFlow(decksInformation.map(::DeckItemState))
+        field: MutableStateFlow<List<DeckItemState>> = MutableStateFlow(decksInformation.map(::DeckItemState))
 
-    fun onExpandDeck(
-        deckItemState: DeckItemState,
-        expanded: Boolean,
-    ) {
-        // TODO: DeckItemState data class?
-        deckItemsState.value.forEach {
-            if (it == deckItemState) it.toggleExpanded()
-        }
+    fun onExpandDeck(deckItemState: DeckItemState) {
+        deckItemsState.value =
+            deckItemsState.value.map { state ->
+                if (state == deckItemState) {
+                    state.expansionToggled()
+                } else {
+                    state
+                }
+            }
     }
 }

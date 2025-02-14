@@ -23,7 +23,7 @@ val tempCardDetail = fakeCardDetail
 fun CardDetailScreen(
     cardId: String? = "",
     deckItemsState: List<DeckItemState>,
-    onExpandDeck: (DeckItemState, Boolean) -> Unit,
+    onExpandDeck: (DeckItemState) -> Unit,
     onDeckItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -77,7 +77,7 @@ fun CardDetailScreenPreview() {
             cardId = "1",
             deckItemsState = fakeDecksInformation.map(::DeckItemState),
             onDeckItemClick = { },
-            onExpandDeck = { deckItemStata, _ -> },
+            onExpandDeck = { deckItemState -> },
         )
     }
 }
