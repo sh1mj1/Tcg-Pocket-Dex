@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -33,16 +34,12 @@ import tcg.pocket.dex.setting.SettingScreen
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
+import tcg.pocket.dex.tierdecks.TierDecksViewModel
 import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 // TODO: move to viewmodel
-val deckItemsState =
-    mutableStateListOf<DeckItemState>().apply {
-        addAll(fakeDecksInformation.map(::DeckItemState))
-    }
-
 val relatedDeckItemState =
     mutableStateListOf<DeckItemState>().apply {
         addAll(fakeDecksInformation.subList(0, 4).map(::DeckItemState))
@@ -102,13 +99,11 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable(route = TierDecks.route) {
+                    val tierDecksViewModel = viewModel<TierDecksViewModel>()
                     TierDecksScreen(
-                        deckItemsState = deckItemsState,
+                        viewModel = tierDecksViewModel,
                         onDeckItemClick = { deckId ->
                             navController.navigate(TierDeckDetail.routeWithArgs(deckId))
-                        },
-                        onExpandDeck = { deckItemState, _ ->
-                            deckItemState.toggleExpanded()
                         },
                     )
                 }

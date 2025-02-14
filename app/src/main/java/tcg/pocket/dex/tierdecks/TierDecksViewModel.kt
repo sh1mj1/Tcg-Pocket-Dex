@@ -19,8 +19,4 @@ class TierDecksViewModel(
             if (it == deckItemState) it.toggleExpanded()
         }
     }
-
-    companion object {
-        const val TAG = "TierDecksViewModel"
-    }
 }
