@@ -15,7 +15,7 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 @Composable
 fun AllCardsScreen(
     modifier: Modifier = Modifier,
-    cards: List<CardData>,
+    viewModel: AllCardsViewModel = AllCardsViewModel(),
     onCardClick: (String) -> Unit = {},
 ) {
     LazyVerticalGrid(
@@ -25,9 +25,14 @@ fun AllCardsScreen(
                 .fillMaxSize()
                 .padding(8.dp),
     ) {
-        items(cards.size) { index ->
-            val card = cards[index]
-            CardItem(card, onClick = { onCardClick(card.Id) })
+        viewModel.cardsState.value.apply {
+            items(size) { index ->
+                val card = this@apply[index]
+                CardItem(
+                    card = card,
+                    onClick = { onCardClick(card.Id) },
+                )
+            }
         }
     }
 }
@@ -37,7 +42,7 @@ fun AllCardsScreen(
 fun TierDecksScreenPreview() {
     TcgPocketDexTheme {
         AllCardsScreen(
-            cards = fakeCardsData,
+            viewModel = AllCardsViewModel(),
             onCardClick = {},
         )
     }

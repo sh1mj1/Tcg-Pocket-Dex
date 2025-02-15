@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import tcg.pocket.dex.allcards.AllCardsScreen
+import tcg.pocket.dex.allcards.AllCardsViewModel
 import tcg.pocket.dex.allcards.CardDetailScreen
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
@@ -35,7 +36,6 @@ import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.tierdecks.TierDecksViewModel
-import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -112,8 +112,9 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 }
 
                 composable(route = AllCards.route) {
+                    val allCardsViewModel = viewModel<AllCardsViewModel>()
                     AllCardsScreen(
-                        cards = fakeCardsData,
+                        viewModel = allCardsViewModel,
                         onCardClick = {
                             navController.navigate(CardDetail.routeWithArgs(it))
                         },
