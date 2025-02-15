@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tcg.pocket.dex.component.CardItem
 import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
@@ -15,9 +17,10 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 @Composable
 fun AllCardsScreen(
     modifier: Modifier = Modifier,
-    viewModel: AllCardsViewModel = AllCardsViewModel(),
+    viewModel: AllCardsViewModel,
     onCardClick: (String) -> Unit = {},
 ) {
+    val allCardsState by viewModel.cardsState.collectAsStateWithLifecycle()
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 100.dp),
         modifier =
@@ -25,14 +28,12 @@ fun AllCardsScreen(
                 .fillMaxSize()
                 .padding(8.dp),
     ) {
-        viewModel.cardsState.value.apply {
-            items(size) { index ->
-                val card = this@apply[index]
-                CardItem(
-                    card = card,
-                    onClick = { onCardClick(card.Id) },
-                )
-            }
+        items(allCardsState.size) { index ->
+            val card = allCardsState[index]
+            CardItem(
+                card = card,
+                onClick = { onCardClick(card.Id) },
+            )
         }
     }
 }
