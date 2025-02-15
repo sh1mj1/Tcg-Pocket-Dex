@@ -7,29 +7,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tcg.pocket.dex.tierdecks.DeckItemState
-import tcg.pocket.dex.tierdecks.fakeCardDetail
-import tcg.pocket.dex.tierdecks.fakeCardsData
-import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
-val tempCardDetail = fakeCardDetail
-
-// TODO: constructor param viewmodel
 @Composable
 fun CardDetailScreen(
-    cardId: String? = "",
-    deckItemsState: List<DeckItemState>,
+    viewModel: CardDetailViewModel,
     onExpandDeck: (DeckItemState) -> Unit,
     onDeckItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: fetch the data from viewmodel
-    val cardDetail = tempCardDetail
-    val relatedCards = fakeCardsData.subList(0, 5)
+    val cardDetail by viewModel.cardDetailState.collectAsStateWithLifecycle()
+    val relatedCards by viewModel.relatedCardsState.collectAsStateWithLifecycle()
+    val relatedDecks by viewModel.relatedDecksState.collectAsStateWithLifecycle()
+
     LazyColumn(
         modifier =
             modifier
@@ -60,7 +56,7 @@ fun CardDetailScreen(
 
         item {
             RelatedDecksSection(
-                deckItemsState = deckItemsState,
+                deckItemsState = relatedDecks,
                 onExpandDeck = onExpandDeck,
                 onDeckItemClick = onDeckItemClick,
                 modifier = modifier,
@@ -74,8 +70,7 @@ fun CardDetailScreen(
 fun CardDetailScreenPreview() {
     TcgPocketDexTheme {
         CardDetailScreen(
-            cardId = "1",
-            deckItemsState = fakeDecksInformation.map(::DeckItemState),
+            viewModel = CardDetailViewModel(""),
             onDeckItemClick = { },
             onExpandDeck = { deckItemState -> },
         )

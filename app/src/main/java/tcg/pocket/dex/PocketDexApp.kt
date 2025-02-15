@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import tcg.pocket.dex.allcards.AllCardsScreen
 import tcg.pocket.dex.allcards.AllCardsViewModel
 import tcg.pocket.dex.allcards.CardDetailScreen
+import tcg.pocket.dex.allcards.CardDetailViewModel
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.AllCards
@@ -148,9 +149,14 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                     arguments = CardDetail.arguments,
                 ) { navBackStackEntry ->
                     val cardId = navBackStackEntry.arguments?.getString(CardDetail.CARD_DETAIL_ARG)
+                    checkNotNull(cardId) {
+                        "cardId is null"
+                    }
+                    val cardDetailViewModel: CardDetailViewModel =
+                        viewModel(factory = CardDetailViewModel.factory(cardId))
+
                     CardDetailScreen(
-                        cardId = cardId,
-                        deckItemsState = relatedDeckItemState,
+                        viewModel = cardDetailViewModel,
                         onExpandDeck = DeckItemState::expansionToggled,
                         onDeckItemClick = { deckId ->
                             navController.navigate(TierDeckDetail.routeWithArgs(deckId))
