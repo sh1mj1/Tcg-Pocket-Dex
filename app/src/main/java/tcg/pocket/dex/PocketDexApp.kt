@@ -20,6 +20,7 @@ import tcg.pocket.dex.allcards.AllCardsViewModel
 import tcg.pocket.dex.allcards.CardDetailScreen
 import tcg.pocket.dex.allcards.CardDetailViewModel
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
+import tcg.pocket.dex.deckdetail.DeckDetailViewModel
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.AllCards
 import tcg.pocket.dex.navigation.CardDetail
@@ -129,7 +130,14 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                     arguments = TierDeckDetail.arguments,
                 ) { navBackStackEntry ->
                     val deckId = navBackStackEntry.arguments?.getString(TierDeckDetail.DECK_ID_ARG)
-                    DeckDetailScreen(deckId = deckId)
+                    checkNotNull(deckId) {
+                        "deckId is null"
+                    }
+                    val deckDetailViewModel: DeckDetailViewModel =
+                        viewModel(factory = DeckDetailViewModel.factory(deckId))
+                    DeckDetailScreen(
+                        viewModel = deckDetailViewModel,
+                    )
                 }
                 composable(
                     route = Search.routeWithArgs,
