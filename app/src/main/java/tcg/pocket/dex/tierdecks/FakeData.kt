@@ -30,7 +30,7 @@ val fakePokemonTypeChipDataset =
         fakeWaterPokemonTypeChipData,
     )
 
-const val fakeTierDeckDescription =
+const val FAKE_TIER_DECK_DESCRIPTION =
     "The Mewtwo ex Gardevoir deck relies heavily on Mewtwo ex (A1) as the main damage dealer, " +
         "using its early Psychic Sphere as an early damage dealer " +
         "to threaten to knock out most Pokemon with two attacks. " +
