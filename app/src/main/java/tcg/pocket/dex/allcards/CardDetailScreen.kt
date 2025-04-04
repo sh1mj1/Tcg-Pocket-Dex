@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -70,7 +71,7 @@ fun CardDetailScreen(
 fun CardDetailScreenPreview() {
     TcgPocketDexTheme {
         CardDetailScreen(
-            viewModel = CardDetailViewModel(""),
+            viewModel = CardDetailViewModel(cardId = "", cardsRepo = FakeCardsRepo()),
             onDeckItemClick = { },
             onExpandDeck = { deckItemState -> },
         )

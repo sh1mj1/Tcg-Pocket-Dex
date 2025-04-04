@@ -171,7 +171,13 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                         "cardId is null"
                     }
                     val cardDetailViewModel: CardDetailViewModel =
-                        viewModel(factory = CardDetailViewModel.factory(cardId))
+                        viewModel(
+                            factory =
+                                CardDetailViewModel.factory(
+                                    cardId = cardId,
+                                    cardsRepo = FakeCardsRepo(),
+                                ),
+                        )
 
                     CardDetailScreen(
                         viewModel = cardDetailViewModel,
