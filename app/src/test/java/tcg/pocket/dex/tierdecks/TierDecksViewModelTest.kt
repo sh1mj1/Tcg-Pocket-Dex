@@ -2,11 +2,12 @@ package tcg.pocket.dex.tierdecks
 
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 
 class TierDecksViewModelTest : FunSpec({
     val viewModel =
         TierDecksViewModel(
-            fakeDecksInformation,
+            decksRepo = FakeDecksRepo(),
         )
 
     test("the deckItems are not expanded at the beginning") {
