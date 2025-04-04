@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,8 +16,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import tcg.pocket.dex.allcards.AllCardsScreen
+import tcg.pocket.dex.allcards.AllCardsViewModel
 import tcg.pocket.dex.allcards.CardDetailScreen
+import tcg.pocket.dex.allcards.CardDetailViewModel
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
+import tcg.pocket.dex.deckdetail.DeckDetailViewModel
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
 import tcg.pocket.dex.navigation.AllCards
 import tcg.pocket.dex.navigation.CardDetail
@@ -33,16 +37,12 @@ import tcg.pocket.dex.setting.SettingScreen
 import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
+import tcg.pocket.dex.tierdecks.TierDecksViewModel
 import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 // TODO: move to viewmodel
-val deckItemsState =
-    mutableStateListOf<DeckItemState>().apply {
-        addAll(fakeDecksInformation.map(::DeckItemState))
-    }
-
 val relatedDeckItemState =
     mutableStateListOf<DeckItemState>().apply {
         addAll(fakeDecksInformation.subList(0, 4).map(::DeckItemState))
@@ -102,13 +102,13 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable(route = TierDecks.route) {
+                    val tierDecksViewModel: TierDecksViewModel =
+                        viewModel(factory = TierDecksViewModel.factory(decksInformation = fakeDecksInformation))
+
                     TierDecksScreen(
-                        deckItemsState = deckItemsState,
+                        viewModel = tierDecksViewModel,
                         onDeckItemClick = { deckId ->
                             navController.navigate(TierDeckDetail.routeWithArgs(deckId))
-                        },
-                        onExpandDeck = { deckItemState, _ ->
-                            deckItemState.toggleExpanded()
                         },
                     )
                 }
@@ -117,8 +117,11 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 }
 
                 composable(route = AllCards.route) {
+                    val allCardsViewModel: AllCardsViewModel =
+                        viewModel(factory = AllCardsViewModel.factory(cards = fakeCardsData))
+
                     AllCardsScreen(
-                        cards = fakeCardsData,
+                        viewModel = allCardsViewModel,
                         onCardClick = {
                             navController.navigate(CardDetail.routeWithArgs(it))
                         },
@@ -132,7 +135,14 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                     arguments = TierDeckDetail.arguments,
                 ) { navBackStackEntry ->
                     val deckId = navBackStackEntry.arguments?.getString(TierDeckDetail.DECK_ID_ARG)
-                    DeckDetailScreen(deckId = deckId)
+                    checkNotNull(deckId) {
+                        "deckId is null"
+                    }
+                    val deckDetailViewModel: DeckDetailViewModel =
+                        viewModel(factory = DeckDetailViewModel.factory(deckId))
+                    DeckDetailScreen(
+                        viewModel = deckDetailViewModel,
+                    )
                 }
                 composable(
                     route = Search.routeWithArgs,
@@ -152,12 +162,15 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                     arguments = CardDetail.arguments,
                 ) { navBackStackEntry ->
                     val cardId = navBackStackEntry.arguments?.getString(CardDetail.CARD_DETAIL_ARG)
+                    checkNotNull(cardId) {
+                        "cardId is null"
+                    }
+                    val cardDetailViewModel: CardDetailViewModel =
+                        viewModel(factory = CardDetailViewModel.factory(cardId))
+
                     CardDetailScreen(
-                        cardId = cardId,
-                        deckItemsState = relatedDeckItemState,
-                        onExpandDeck = { deckItemState, _ ->
-                            deckItemState.toggleExpanded()
-                        },
+                        viewModel = cardDetailViewModel,
+                        onExpandDeck = DeckItemState::expansionToggled,
                         onDeckItemClick = { deckId ->
                             navController.navigate(TierDeckDetail.routeWithArgs(deckId))
                         },

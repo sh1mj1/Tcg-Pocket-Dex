@@ -7,11 +7,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun DeckDetailScreen(
-    deckId: String?,
     modifier: Modifier = Modifier,
+    viewModel: DeckDetailViewModel,
 ) {
     Surface(
         color = MaterialTheme.colorScheme.primaryContainer,
@@ -21,7 +22,7 @@ fun DeckDetailScreen(
             text =
                 """
                 Deck Detail 
-                id: $deckId
+                id: ${viewModel.deckId}
                 """.trimIndent(),
             style = MaterialTheme.typography.displayLarge,
         )
@@ -31,5 +32,7 @@ fun DeckDetailScreen(
 @Preview
 @Composable
 private fun DeckDetailScreenPreview() {
-    DeckDetailScreen(deckId = "FakeId")
+    DeckDetailScreen(
+        viewModel = viewModel(factory = DeckDetailViewModel.factory("FakeId")),
+    )
 }

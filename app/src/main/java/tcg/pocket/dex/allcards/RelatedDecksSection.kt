@@ -13,7 +13,7 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 @Composable
 fun RelatedDecksSection(
     deckItemsState: List<DeckItemState>,
-    onExpandDeck: (DeckItemState, Boolean) -> Unit,
+    onExpandDeck: (DeckItemState) -> Unit,
     onDeckItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -33,7 +33,7 @@ private fun RelatedDecksContentPreview() {
         RelatedDecksSection(
             deckItemsState = fakeDecksInformation.subList(0, 5).map(::DeckItemState),
             onDeckItemClick = { },
-            onExpandDeck = { deckItemStata, _ -> },
+            onExpandDeck = { deckItemStata -> },
         )
     }
 }

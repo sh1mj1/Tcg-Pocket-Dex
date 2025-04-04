@@ -15,7 +15,7 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 @Composable
 fun DeckList(
     deckItemsState: List<DeckItemState>,
-    onExpandDeck: (DeckItemState, Boolean) -> Unit,
+    onExpandDeck: (DeckItemState) -> Unit,
     onDeckItemClick: (String) -> Unit,
 ) {
     Surface(
@@ -31,8 +31,8 @@ fun DeckList(
                 DeckItem(
                     information = deckItemState.content,
                     expanded = deckItemState.expanded,
-                    onExpandedChange = { expanded ->
-                        onExpandDeck(deckItemState, expanded)
+                    onExpandedChange = {
+                        onExpandDeck(deckItemState)
                     },
                     onCardClick = onDeckItemClick,
                     modifier = Modifier.padding(bottom = 4.dp),
@@ -49,7 +49,7 @@ private fun DeckListPreview() {
         DeckList(
             deckItemsState = fakeDecksInformation.map(::DeckItemState),
             onDeckItemClick = { },
-            onExpandDeck = { deckItemStata, _ -> },
+            onExpandDeck = { deckItemState -> },
         )
     }
 }
