@@ -12,6 +12,8 @@ import androidx.compose.ui.test.performClick
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.junit.Rule
 import org.junit.Test
+import tcg.pocket.dex.repo.decks.DecksRepo
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 
 class TierDecksScreenKtTest {
     @get:Rule
@@ -22,7 +24,11 @@ class TierDecksScreenKtTest {
         val restorationTester =
             StateRestorationTester(composeTestRule).apply {
                 setContent {
-                    val viewModel: TierDecksViewModel = viewModel()
+                    val viewModel: TierDecksViewModel = viewModel(
+                        factory = TierDecksViewModel.factory(
+                            decksRepo = FakeDecksRepo(),
+                        ),
+                    )
                     TierDecksScreen(
                         viewModel = viewModel,
                         onDeckItemClick = {},
@@ -50,7 +56,11 @@ class TierDecksScreenKtTest {
             // Given - 초기 UI 설정
             activity.runOnUiThread {
                 activity.setContent {
-                    val viewModel: TierDecksViewModel = viewModel()
+                    val viewModel: TierDecksViewModel = viewModel(
+                        factory = TierDecksViewModel.factory(
+                            decksRepo = FakeDecksRepo(),
+                        ),
+                    )
                     TierDecksScreen(
                         viewModel = viewModel,
                         onDeckItemClick = {},
