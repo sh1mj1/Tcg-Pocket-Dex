@@ -12,6 +12,7 @@ import androidx.compose.ui.test.performClick
 import org.junit.Rule
 import org.junit.Test
 import tcg.pocket.dex.component.DeckItem
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 
 class DeckItemKtTest {
     @get:Rule
@@ -23,7 +24,7 @@ class DeckItemKtTest {
             var expanded by remember { mutableStateOf(false) }
 
             DeckItem(
-                information = fakeDeckInformation,
+                information = FakeDecksRepo.fakeTierDecksInformation[0],
                 onCardClick = {},
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded },
@@ -45,7 +46,7 @@ class DeckItemKtTest {
             var expanded by remember { mutableStateOf(true) }
 
             DeckItem(
-                information = fakeDeckInformation,
+                information = FakeDecksRepo.fakeTierDecksInformation[0],
                 expanded = expanded,
                 onExpandedChange = { expanded = !expanded },
                 onCardClick = {},

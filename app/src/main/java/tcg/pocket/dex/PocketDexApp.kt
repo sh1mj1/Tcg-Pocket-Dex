@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,14 +39,7 @@ import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.tierdecks.TierDecksViewModel
-import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
-
-// TODO: move to viewmodel
-val relatedDeckItemState =
-    mutableStateListOf<DeckItemState>().apply {
-        addAll(fakeDecksInformation.subList(0, 4).map(::DeckItemState))
-    }
 
 @Composable
 fun PocketDexApp(openUrl: () -> Unit = {}) {

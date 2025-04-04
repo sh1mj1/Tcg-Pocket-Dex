@@ -5,14 +5,18 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import tcg.pocket.dex.repo.allcards.CardsRepo
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.tierdecks.DeckInformation
 import tcg.pocket.dex.tierdecks.DeckItemState
-import tcg.pocket.dex.tierdecks.fakeDecksInformation
 
 class CardDetailViewModel(
     cardId: String,
     // TODO: fakeDecksInformation from deck Repo
-    relatedDecksInformation: List<DeckInformation> = fakeDecksInformation.subList(0, 4),
+    relatedDecksInformation: List<DeckInformation> =
+        FakeDecksRepo.fakeTierDecksInformation.subList(
+            0,
+            4,
+        ),
     cardsRepo: CardsRepo,
 ) : ViewModel() {
     val cardDetailState: StateFlow<CardDetail>

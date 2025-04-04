@@ -35,9 +35,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.tierdecks.DeckInformation
 import tcg.pocket.dex.tierdecks.PokemonTypeChipData
-import tcg.pocket.dex.tierdecks.fakeDeckInformation
 import tcg.pocket.dex.tierdecks.fakeTierDeckDescription
 import tcg.pocket.dex.tierdecks.temporalPokemonPlaceholderDrawable
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
@@ -266,7 +266,7 @@ private fun DeckItemPreview(
     TcgPocketDexTheme {
         var expanded by remember { mutableStateOf(initialExpanded) }
         DeckItem(
-            information = fakeDeckInformation,
+            information = FakeDecksRepo.fakeTierDecksInformation[0],
             expanded = expanded,
             onExpandedChange = { expanded = !expanded },
             onCardClick = {},
