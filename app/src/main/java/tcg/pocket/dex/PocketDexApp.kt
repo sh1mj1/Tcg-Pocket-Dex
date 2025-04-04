@@ -30,6 +30,7 @@ import tcg.pocket.dex.navigation.Setting
 import tcg.pocket.dex.navigation.TierDeckDetail
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.search.SearchScreenForAllCards
 import tcg.pocket.dex.search.SearchScreenForExpansionPacks
 import tcg.pocket.dex.search.SearchScreenForTierDecks
@@ -38,7 +39,6 @@ import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.tierdecks.TierDecksViewModel
-import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -118,7 +118,12 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
 
                 composable(route = AllCards.route) {
                     val allCardsViewModel: AllCardsViewModel =
-                        viewModel(factory = AllCardsViewModel.factory(cards = fakeCardsData))
+                        viewModel(
+                            factory =
+                                AllCardsViewModel.factory(
+                                    cardsRepo = FakeCardsRepo(),
+                                ),
+                        )
 
                     AllCardsScreen(
                         viewModel = allCardsViewModel,
