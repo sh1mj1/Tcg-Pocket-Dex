@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tcg.pocket.dex.component.CardItem
 import tcg.pocket.dex.repo.allcards.FakeCardsRepo
-import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
@@ -55,7 +54,7 @@ fun TierDecksScreenPreview() {
 private fun CardItemPreview() {
     TcgPocketDexTheme {
         CardItem(
-            card = fakeCardsData[0],
+            card = FakeCardsRepo.fakeCardsData[0],
             onClick = {},
         )
     }
