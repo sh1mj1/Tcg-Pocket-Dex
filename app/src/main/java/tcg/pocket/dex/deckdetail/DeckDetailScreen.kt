@@ -12,7 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun DeckDetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: DeckDetailViewModel = DeckDetailViewModel("FakeId"),
+    viewModel: DeckDetailViewModel,
 ) {
     Surface(
         color = MaterialTheme.colorScheme.primaryContainer,

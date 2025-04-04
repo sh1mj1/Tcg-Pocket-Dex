@@ -102,7 +102,9 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 modifier = Modifier.padding(innerPadding),
             ) {
                 composable(route = TierDecks.route) {
-                    val tierDecksViewModel = viewModel<TierDecksViewModel>()
+                    val tierDecksViewModel: TierDecksViewModel =
+                        viewModel(factory = TierDecksViewModel.factory(decksInformation = fakeDecksInformation))
+
                     TierDecksScreen(
                         viewModel = tierDecksViewModel,
                         onDeckItemClick = { deckId ->

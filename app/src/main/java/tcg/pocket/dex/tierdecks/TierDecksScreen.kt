@@ -40,7 +40,7 @@ fun TierDecksScreen(
 private fun TierDeckScreenPreview() {
     TcgPocketDexTheme {
         TierDecksScreen(
-            viewModel = TierDecksViewModel(),
+            viewModel = TierDecksViewModel(decksInformation = fakeDecksInformation),
             onDeckItemClick = { },
         )
     }
