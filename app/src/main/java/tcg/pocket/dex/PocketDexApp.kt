@@ -38,6 +38,7 @@ import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.tierdecks.TierDecksViewModel
+import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -114,7 +115,9 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                 }
 
                 composable(route = AllCards.route) {
-                    val allCardsViewModel = viewModel<AllCardsViewModel>()
+                    val allCardsViewModel: AllCardsViewModel =
+                        viewModel(factory = AllCardsViewModel.factory(cards = fakeCardsData))
+
                     AllCardsScreen(
                         viewModel = allCardsViewModel,
                         onCardClick = {

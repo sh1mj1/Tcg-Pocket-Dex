@@ -43,7 +43,7 @@ fun AllCardsScreen(
 fun TierDecksScreenPreview() {
     TcgPocketDexTheme {
         AllCardsScreen(
-            viewModel = AllCardsViewModel(),
+            viewModel = AllCardsViewModel(cards = fakeCardsData),
             onCardClick = {},
         )
     }
