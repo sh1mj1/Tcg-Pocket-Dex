@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import tcg.pocket.dex.tierdecks.fakeCardDetail
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.tierdecks.temporalPokemonCardPlaceholderDrawable
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -49,7 +49,7 @@ fun CardDetailMetaDataSection(
 private fun CardDetailMetaDataSectionPreview() {
     TcgPocketDexTheme {
         CardDetailMetaDataSection(
-            cardDetail = fakeCardDetail,
+            cardDetail = FakeCardsRepo.fakeCardDetail,
         )
     }
 }
