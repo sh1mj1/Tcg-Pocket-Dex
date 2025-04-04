@@ -42,7 +42,7 @@ fun CardItem(
                 .fillMaxWidth()
                 .padding(4.dp)
                 .clickable(onClick = {
-                    onClick(card.Id)
+                    onClick(card.id)
                 }),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(4.dp),

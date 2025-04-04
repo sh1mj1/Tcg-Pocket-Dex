@@ -33,7 +33,7 @@ fun AllCardsScreen(
             val card = allCardsState[index]
             CardItem(
                 card = card,
-                onClick = { onCardClick(card.Id) },
+                onClick = { onCardClick(card.id) },
             )
         }
     }
@@ -62,7 +62,7 @@ private fun CardItemPreview() {
 }
 
 data class CardData(
-    val Id: String = "",
+    val id: String = "",
     val name: String,
     val imageUrl: String,
     val rarityUrl: String,
