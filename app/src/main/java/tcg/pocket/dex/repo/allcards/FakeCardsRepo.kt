@@ -6,11 +6,15 @@ import tcg.pocket.dex.allcards.Energy
 import tcg.pocket.dex.allcards.PokemonMove
 
 class FakeCardsRepo(
-    private val fakeCards: List<CardData> = fakeCardsData,
+    private val cards: List<CardData> = fakeCardsData,
+    private val cardDetail: CardDetail = fakeCardDetail,
+    private val relatedCards: List<CardData> = fakeRelatedCards,
 ) : CardsRepo {
-    override fun allCards(): List<CardData> = fakeCards
+    override fun allCards(): List<CardData> = cards
 
-    override fun cardDetail(id: String): CardDetail = fakeCardDetail
+    override fun cardDetail(id: String): CardDetail = cardDetail
+
+    override fun relatedCards(id: String): List<CardData> = relatedCards
 
     companion object {
         val fakeCardsData =
@@ -187,5 +191,7 @@ class FakeCardsRepo(
                         ),
                     ),
             )
+
+        val fakeRelatedCards = fakeCardsData.subList(fromIndex = 0, toIndex = 5)
     }
 }

@@ -7,12 +7,11 @@ import kotlinx.coroutines.flow.StateFlow
 import tcg.pocket.dex.repo.allcards.CardsRepo
 import tcg.pocket.dex.tierdecks.DeckInformation
 import tcg.pocket.dex.tierdecks.DeckItemState
-import tcg.pocket.dex.tierdecks.fakeCardsData
 import tcg.pocket.dex.tierdecks.fakeDecksInformation
 
 class CardDetailViewModel(
     cardId: String,
-    relatedCards: List<CardData> = fakeCardsData.subList(0, 5),
+    // TODO: fakeDecksInformation from deck Repo
     relatedDecksInformation: List<DeckInformation> = fakeDecksInformation.subList(0, 4),
     cardsRepo: CardsRepo,
 ) : ViewModel() {
@@ -20,7 +19,7 @@ class CardDetailViewModel(
         field: MutableStateFlow<CardDetail> = MutableStateFlow(cardsRepo.cardDetail(cardId))
 
     val relatedCardsState: StateFlow<List<CardData>>
-        field: MutableStateFlow<List<CardData>> = MutableStateFlow(relatedCards)
+        field: MutableStateFlow<List<CardData>> = MutableStateFlow(cardsRepo.relatedCards(cardId))
 
     val relatedDecksState: StateFlow<List<DeckItemState>>
         field: MutableStateFlow<List<DeckItemState>> =
