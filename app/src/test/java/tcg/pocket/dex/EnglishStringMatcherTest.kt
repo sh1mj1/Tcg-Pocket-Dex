@@ -9,19 +9,19 @@ class EnglishStringMatcherTest : FunSpec({
     test("exact match") {
         val search = "hello"
         val target = "hello"
-        stringMatcher.isMatched(search, target) shouldBe true
+        stringMatcher.isMatched(target = target, search = search) shouldBe true
     }
 
     test("case insensitive match") {
         val search = "Hello"
         val target = "hello"
-        stringMatcher.isMatched(search, target) shouldBe true
+        stringMatcher.isMatched(target = target, search = search) shouldBe true
     }
 
     test("substring match") {
         val search = "lo"
         val target = "hello"
-        stringMatcher.isMatched(search, target) shouldBe false
+        stringMatcher.isMatched(target = target, search = search) shouldBe false
     }
 
     test("pica ex match") {
@@ -35,5 +35,13 @@ class EnglishStringMatcherTest : FunSpec({
         stringMatcher.isMatched(target = "My name", search = "m") shouldBe true
         stringMatcher.isMatched(target = "My name", search = "N") shouldBe false
         stringMatcher.isMatched(target = "My name ", search = "Na") shouldBe true
+    }
+
+    // 검색 단어가 4글자 이상이라면 target 을 split 햇을 떄 어떤 단어든지 상관 없이 이 부분 포함하는 것이 잇다면 true
+    test("sdfasdf") {
+        stringMatcher.isMatched(
+            target = "My information",
+            search = "form",
+        )
     }
 })
