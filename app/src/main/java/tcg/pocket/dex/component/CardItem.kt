@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import tcg.pocket.dex.allcards.CardData
-import tcg.pocket.dex.tierdecks.fakeCardsData
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.tierdecks.temporalPokemonCardPlaceholderDrawable
 import tcg.pocket.dex.tierdecks.temporalPokemonCardRarityPlaceholderDrawable
 import tcg.pocket.dex.tierdecks.temporalPokemonTypePlaceholderDrawable
@@ -42,7 +42,7 @@ fun CardItem(
                 .fillMaxWidth()
                 .padding(4.dp)
                 .clickable(onClick = {
-                    onClick(card.Id)
+                    onClick(card.id)
                 }),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(4.dp),
@@ -95,7 +95,7 @@ fun CardItem(
 private fun CardItemPreview() {
     TcgPocketDexTheme {
         CardItem(
-            card = fakeCardsData[0],
+            card = FakeCardsRepo.fakeCardsData[0],
             onClick = {},
         )
     }

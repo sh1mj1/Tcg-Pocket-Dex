@@ -10,6 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tcg.pocket.dex.component.DeckList
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
@@ -40,7 +41,7 @@ fun TierDecksScreen(
 private fun TierDeckScreenPreview() {
     TcgPocketDexTheme {
         TierDecksScreen(
-            viewModel = TierDecksViewModel(decksInformation = fakeDecksInformation),
+            viewModel = TierDecksViewModel(decksRepo = FakeDecksRepo()),
             onDeckItemClick = { },
         )
     }

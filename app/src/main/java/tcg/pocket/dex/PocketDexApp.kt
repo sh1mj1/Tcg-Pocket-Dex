@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -30,6 +29,8 @@ import tcg.pocket.dex.navigation.Setting
 import tcg.pocket.dex.navigation.TierDeckDetail
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.search.SearchScreenForAllCards
 import tcg.pocket.dex.search.SearchScreenForExpansionPacks
 import tcg.pocket.dex.search.SearchScreenForTierDecks
@@ -38,15 +39,7 @@ import tcg.pocket.dex.tierdecks.DeckItemState
 import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.tierdecks.TierDecksViewModel
-import tcg.pocket.dex.tierdecks.fakeCardsData
-import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
-
-// TODO: move to viewmodel
-val relatedDeckItemState =
-    mutableStateListOf<DeckItemState>().apply {
-        addAll(fakeDecksInformation.subList(0, 4).map(::DeckItemState))
-    }
 
 @Composable
 fun PocketDexApp(openUrl: () -> Unit = {}) {
@@ -103,7 +96,7 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
             ) {
                 composable(route = TierDecks.route) {
                     val tierDecksViewModel: TierDecksViewModel =
-                        viewModel(factory = TierDecksViewModel.factory(decksInformation = fakeDecksInformation))
+                        viewModel(factory = TierDecksViewModel.factory(decksRepo = FakeDecksRepo()))
 
                     TierDecksScreen(
                         viewModel = tierDecksViewModel,
@@ -118,7 +111,12 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
 
                 composable(route = AllCards.route) {
                     val allCardsViewModel: AllCardsViewModel =
-                        viewModel(factory = AllCardsViewModel.factory(cards = fakeCardsData))
+                        viewModel(
+                            factory =
+                                AllCardsViewModel.factory(
+                                    cardsRepo = FakeCardsRepo(),
+                                ),
+                        )
 
                     AllCardsScreen(
                         viewModel = allCardsViewModel,
@@ -166,7 +164,13 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                         "cardId is null"
                     }
                     val cardDetailViewModel: CardDetailViewModel =
-                        viewModel(factory = CardDetailViewModel.factory(cardId))
+                        viewModel(
+                            factory =
+                                CardDetailViewModel.factory(
+                                    cardId = cardId,
+                                    cardsRepo = FakeCardsRepo(),
+                                ),
+                        )
 
                     CardDetailScreen(
                         viewModel = cardDetailViewModel,

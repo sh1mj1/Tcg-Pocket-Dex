@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.tierdecks.DeckItemState
-import tcg.pocket.dex.tierdecks.fakeDecksInformation
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
@@ -47,7 +47,7 @@ fun DeckList(
 private fun DeckListPreview() {
     TcgPocketDexTheme {
         DeckList(
-            deckItemsState = fakeDecksInformation.map(::DeckItemState),
+            deckItemsState = FakeDecksRepo.fakeTierDecksInformation.map(::DeckItemState),
             onDeckItemClick = { },
             onExpandDeck = { deckItemState -> },
         )

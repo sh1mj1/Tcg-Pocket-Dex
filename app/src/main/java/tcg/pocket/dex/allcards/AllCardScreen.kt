@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import tcg.pocket.dex.component.CardItem
-import tcg.pocket.dex.tierdecks.fakeCardsData
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
@@ -32,7 +32,7 @@ fun AllCardsScreen(
             val card = allCardsState[index]
             CardItem(
                 card = card,
-                onClick = { onCardClick(card.Id) },
+                onClick = { onCardClick(card.id) },
             )
         }
     }
@@ -43,7 +43,7 @@ fun AllCardsScreen(
 fun TierDecksScreenPreview() {
     TcgPocketDexTheme {
         AllCardsScreen(
-            viewModel = AllCardsViewModel(cards = fakeCardsData),
+            viewModel = AllCardsViewModel(cardsRepo = FakeCardsRepo()),
             onCardClick = {},
         )
     }
@@ -54,14 +54,14 @@ fun TierDecksScreenPreview() {
 private fun CardItemPreview() {
     TcgPocketDexTheme {
         CardItem(
-            card = fakeCardsData[0],
+            card = FakeCardsRepo.fakeCardsData[0],
             onClick = {},
         )
     }
 }
 
 data class CardData(
-    val Id: String = "",
+    val id: String = "",
     val name: String,
     val imageUrl: String,
     val rarityUrl: String,

@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import tcg.pocket.dex.component.PocketDexSectionHeader
-import tcg.pocket.dex.tierdecks.fakeCardDetail
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.tierdecks.temporalPokemonTypePlaceholderDrawable
 import tcg.pocket.dex.ui.theme.ChipSize
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
@@ -86,7 +86,7 @@ fun PokemonMovesSection(
 private fun PokemonMovesSectionPreview() {
     TcgPocketDexTheme {
         PokemonMovesSection(
-            pokemonMoves = fakeCardDetail.pokemonMoves,
+            pokemonMoves = FakeCardsRepo.fakeCardDetail.pokemonMoves,
         )
     }
 }

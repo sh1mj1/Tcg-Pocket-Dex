@@ -12,14 +12,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import tcg.pocket.dex.component.CardItem
 import tcg.pocket.dex.component.PocketDexSectionHeader
-import tcg.pocket.dex.tierdecks.fakeCardsData
+import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
 @Composable
 fun RelatedCardsSection(
     relatedCards: List<CardData>,
-    onCardClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    onCardClick: (String) -> Unit = {},
 ) {
     Column(modifier = modifier) {
         PocketDexSectionHeader(
@@ -53,7 +53,7 @@ fun RelatedCardsSection(
 private fun RelatedCardSectionPreview() {
     TcgPocketDexTheme {
         RelatedCardsSection(
-            relatedCards = fakeCardsData.subList(0, 5),
+            relatedCards = FakeCardsRepo.fakeCardsData.subList(0, 5),
             onCardClick = {},
         )
     }
