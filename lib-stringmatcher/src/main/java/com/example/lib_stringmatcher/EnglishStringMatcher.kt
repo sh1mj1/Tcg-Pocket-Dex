@@ -1,4 +1,4 @@
-package tcg.pocket.dex
+package com.example.lib_stringmatcher
 
 class EnglishStringMatcher : StringMatcher {
     private val rabinKarpMatcher by lazy { RabinKarpMatcher() }
