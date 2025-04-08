@@ -35,7 +35,7 @@ private fun RelatedDecksContentPreview() {
                 FakeDecksRepo.fakeTierDecksInformation.subList(0, 5)
                     .map(::DeckItemState),
             onDeckItemClick = { },
-            onExpandDeck = { deckItemStata -> },
+            onExpandDeck = { deckItemState -> },
         )
     }
 }

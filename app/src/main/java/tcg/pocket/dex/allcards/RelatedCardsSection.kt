@@ -18,8 +18,8 @@ import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 @Composable
 fun RelatedCardsSection(
     relatedCards: List<CardData>,
-    onCardClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
+    onCardClick: (String) -> Unit = {},
 ) {
     Column(modifier = modifier) {
         PocketDexSectionHeader(
