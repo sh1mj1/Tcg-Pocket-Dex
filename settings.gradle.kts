@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TcgPocketDex"
 include(":app")
- 
+include(":lib-stringmatcher")
