@@ -38,8 +38,7 @@ class EnglishStringMatcherTest : FunSpec({
         stringMatcher.isMatched(target = "My name ", search = "Na") shouldBe true
     }
 
-    // 검색 단어가 4글자 이상이라면 target 을 split 햇을 떄 어떤 단어든지 상관 없이 이 부분 포함하는 것이 잇다면 true
-    test("sdfasdf") {
+    test("contain substring when search is four or more characters") {
         stringMatcher.isMatched(
             target = "My information",
             search = "form",
