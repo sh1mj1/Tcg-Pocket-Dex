@@ -1,4 +1,4 @@
-package com.example.lib_stringmatcher
+package com.example.stringmatcher
 
 class EnglishStringMatcher : StringMatcher {
     private val rabinKarpMatcher by lazy { RabinKarpMatcher() }

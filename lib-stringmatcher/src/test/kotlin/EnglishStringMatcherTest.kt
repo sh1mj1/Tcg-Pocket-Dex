@@ -1,6 +1,6 @@
 package tcg.pocket.dex
 
-import com.example.lib_stringmatcher.EnglishStringMatcher
+import com.example.stringmatcher.EnglishStringMatcher
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 

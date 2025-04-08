@@ -1,6 +1,6 @@
 package tcg.pocket.dex
 
-import com.example.lib_stringmatcher.RabinKarpMatcher
+import com.example.stringmatcher.RabinKarpMatcher
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 

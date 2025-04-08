@@ -1,4 +1,4 @@
-package com.example.lib_stringmatcher
+package com.example.stringmatcher
 
 class RabinKarpMatcher {
     private val base = 256

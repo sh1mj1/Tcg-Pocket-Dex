@@ -1,4 +1,4 @@
-package com.example.lib_stringmatcher
+package com.example.stringmatcher
 
 interface StringMatcher {
     fun isMatched(
