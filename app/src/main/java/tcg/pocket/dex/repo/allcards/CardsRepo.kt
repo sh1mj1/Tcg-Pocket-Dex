@@ -4,7 +4,7 @@ import tcg.pocket.dex.allcards.CardData
 import tcg.pocket.dex.allcards.CardDetail
 
 interface CardsRepo {
-    fun allCards(): List<CardData>
+    suspend fun allCards(): List<CardData>
 
     fun cardDetail(id: String): CardDetail
 

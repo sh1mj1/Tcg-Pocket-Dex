@@ -56,6 +56,7 @@ fun CardItem(
                         .fillMaxWidth(),
                 contentScale = ContentScale.Fit,
                 placeholder = painterResource(temporalPokemonCardPlaceholderDrawable),
+                error = painterResource(temporalPokemonCardPlaceholderDrawable),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
