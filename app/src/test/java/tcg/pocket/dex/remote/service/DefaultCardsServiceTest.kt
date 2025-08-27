@@ -19,17 +19,18 @@ class DefaultCardsServiceTest : BehaviorSpec({
     beforeSpec {
         server = MockWebServer()
         server.start()
-        val client = HttpClient(CIO) {
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        prettyPrint = true
-                        isLenient = true
-                        ignoreUnknownKeys = true
-                    },
-                )
+        val client =
+            HttpClient(CIO) {
+                install(ContentNegotiation) {
+                    json(
+                        Json {
+                            prettyPrint = true
+                            isLenient = true
+                            ignoreUnknownKeys = true
+                        },
+                    )
+                }
             }
-        }
         service = DefaultCardsService(client, server.url("/").toString())
     }
 
@@ -41,7 +42,8 @@ class DefaultCardsServiceTest : BehaviorSpec({
         When("성공적인 응답을 받을 때") {
             Then("카드 목록을 반환해야 한다") {
                 // Given
-                val responseBody = """
+                val responseBody =
+                    """
                     [
                         {
                             "id": "sv3-1",
@@ -56,17 +58,23 @@ class DefaultCardsServiceTest : BehaviorSpec({
                             "image": "https://assets.tcgdex.net/en/sv/sv3/2"
                         }
                     ]
-                """.trimIndent()
-                server.enqueue(MockResponse().setBody(responseBody).setResponseCode(200))
+                    """.trimIndent()
+                server.enqueue(
+                    MockResponse()
+                        .setBody(responseBody)
+                        .setResponseCode(200)
+                        .addHeader("Content-Type", "application/json"),
+                )
 
                 // When
                 val result = service.briefCards()
 
                 // Then
-                val expected = listOf(
-                    BriefCardResponse("sv3-1", "1", "Bulbasaur", "https://assets.tcgdex.net/en/sv/sv3/1"),
-                    BriefCardResponse("sv3-2", "2", "Ivysaur", "https://assets.tcgdex.net/en/sv/sv3/2")
-                )
+                val expected =
+                    listOf(
+                        BriefCardResponse("sv3-1", "1", "Bulbasaur", "https://assets.tcgdex.net/en/sv/sv3/1"),
+                        BriefCardResponse("sv3-2", "2", "Ivysaur", "https://assets.tcgdex.net/en/sv/sv3/2"),
+                    )
                 result shouldBe expected
             }
         }
@@ -81,7 +89,7 @@ class DefaultCardsServiceTest : BehaviorSpec({
                 try {
                     service.briefCards()
                     throw AssertionError("예외가 발생해야 하지만 발생하지 않았습니다.")
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     // 예외가 잡히면 테스트 통과
                     true shouldBe true
                 }
