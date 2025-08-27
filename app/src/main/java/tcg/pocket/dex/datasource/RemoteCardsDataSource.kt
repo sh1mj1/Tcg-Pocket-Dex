@@ -7,7 +7,7 @@ import tcg.pocket.dex.remote.service.CardsService
 
 class RemoteCardsDataSource(
     private val cardsService: CardsService,
-): CardsDataSource {
+) : CardsDataSource {
     override suspend fun allCards(): List<CardData> {
         return cardsService.briefCards().toCardDataList()
     }
