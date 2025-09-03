@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import tcg.pocket.dex.R
 import tcg.pocket.dex.allcards.CardData
 import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.tierdecks.temporalPokemonCardPlaceholderDrawable
@@ -56,7 +57,7 @@ fun CardItem(
                         .fillMaxWidth(),
                 contentScale = ContentScale.Fit,
                 placeholder = painterResource(temporalPokemonCardPlaceholderDrawable),
-                error = painterResource(temporalPokemonCardPlaceholderDrawable),
+                error = painterResource(R.drawable.tcg_pocket_unknown),
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -80,11 +81,13 @@ fun CardItem(
                     model = card.rarityUrl,
                     contentDescription = "Rarity",
                     placeholder = painterResource(temporalPokemonCardRarityPlaceholderDrawable),
+                    error = painterResource(R.drawable.tcg_pocket_unknown),
                 )
                 AsyncImage(
                     model = card.typeUrl,
                     contentDescription = "Type",
                     placeholder = painterResource(temporalPokemonTypePlaceholderDrawable),
+                    error = painterResource(R.drawable.tcg_pocket_unknown),
                 )
             }
         }
