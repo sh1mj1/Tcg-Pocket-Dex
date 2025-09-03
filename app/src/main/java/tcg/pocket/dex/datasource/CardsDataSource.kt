@@ -1,9 +1,9 @@
-package tcg.pocket.dex.repo.allcards
+package tcg.pocket.dex.datasource
 
 import tcg.pocket.dex.allcards.CardData
 import tcg.pocket.dex.allcards.CardDetail
 
-interface CardsRepo {
+interface CardsDataSource {
     suspend fun allCards(): List<CardData>
 
     fun cardDetail(id: String): CardDetail

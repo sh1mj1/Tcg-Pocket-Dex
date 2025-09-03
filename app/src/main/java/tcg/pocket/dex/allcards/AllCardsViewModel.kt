@@ -2,15 +2,27 @@ package tcg.pocket.dex.allcards
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import tcg.pocket.dex.repo.allcards.CardsRepo
 
 class AllCardsViewModel(
-    cardsRepo: CardsRepo,
+    private val cardsRepo: CardsRepo,
 ) : ViewModel() {
     val cardsState: StateFlow<List<CardData>>
-        field: MutableStateFlow<List<CardData>> = MutableStateFlow(cardsRepo.allCards())
+        field: MutableStateFlow<List<CardData>> = MutableStateFlow(emptyList())
+
+    init {
+        fetchAllCards()
+    }
+
+    private fun fetchAllCards() {
+        viewModelScope.launch {
+            cardsState.value = cardsRepo.allCards()
+        }
+    }
 
     companion object {
         fun factory(cardsRepo: CardsRepo): ViewModelProvider.Factory =

@@ -10,7 +10,7 @@ class FakeCardsRepo(
     private val cardDetail: CardDetail = fakeCardDetail,
     private val relatedCards: List<CardData> = fakeRelatedCards,
 ) : CardsRepo {
-    override fun allCards(): List<CardData> = cards
+    override suspend fun allCards(): List<CardData> = cards
 
     override fun cardDetail(id: String): CardDetail = cardDetail
 

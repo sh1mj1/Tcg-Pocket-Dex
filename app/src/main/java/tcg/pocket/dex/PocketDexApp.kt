@@ -18,6 +18,7 @@ import tcg.pocket.dex.allcards.AllCardsScreen
 import tcg.pocket.dex.allcards.AllCardsViewModel
 import tcg.pocket.dex.allcards.CardDetailScreen
 import tcg.pocket.dex.allcards.CardDetailViewModel
+import tcg.pocket.dex.datasource.RemoteCardsDataSource
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.deckdetail.DeckDetailViewModel
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
@@ -29,6 +30,8 @@ import tcg.pocket.dex.navigation.Setting
 import tcg.pocket.dex.navigation.TierDeckDetail
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
+import tcg.pocket.dex.remote.service.DefaultCardsService
+import tcg.pocket.dex.repo.allcards.DefaultCardsRepo
 import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.search.SearchScreenForAllCards
@@ -114,7 +117,13 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                         viewModel(
                             factory =
                                 AllCardsViewModel.factory(
-                                    cardsRepo = FakeCardsRepo(),
+                                    cardsRepo =
+                                        DefaultCardsRepo(
+                                            remoteCardsDataSource =
+                                                RemoteCardsDataSource(
+                                                    cardsService = DefaultCardsService(),
+                                                ),
+                                        ),
                                 ),
                         )
 
