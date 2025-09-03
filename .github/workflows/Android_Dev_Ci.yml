@@ -1,52 +1,27 @@
-name: Android Dev CI
+name: Android Dev CI & Code Review
 
 on:
   pull_request:
     branches:
       - dev
+    types: [opened, synchronize]
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
-  ktlintCheck:
-    name: ktLint Check
+  build-and-test:
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
-
-      - name: Run ktlint
-        run: ./gradlew ktlintCheck
-
-  unitTests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: 17
-
-      - name: Run unit tests
-        run: ./gradlew test
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: zulu
+          distribution: 'temurin'
           java-version: 17
 
       - name: Cache Gradle and wrapper
@@ -62,5 +37,113 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
+      - name: Run ktlint check
+        run: ./gradlew ktlintCheck
+
+      - name: Run unit tests
+        run: ./gradlew test
+
+      - name: Build project
         run: ./gradlew build
+
+  code-review:
+    name: Gemini Code Review
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get PR diff
+        id: pr_diff
+        run: |
+          DIFF_CONTENT=$(git diff --no-color ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+          echo "PR_DIFF<<EOF" >> $GITHUB_ENV
+          echo "$DIFF_CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Call Gemini API for review
+        id: gemini_review
+        env:
+          PR_DIFF: ${{ env.PR_DIFF }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const diff = process.env.PR_DIFF;
+            if (!diff || diff.trim() === "") {
+              console.log("No changes detected. Skipping review.");
+              core.setOutput('review', 'No code changes to review.');
+              return;
+            }
+
+            const prompt = `
+            You are an expert Android code reviewer with deep knowledge of Jetpack Compose and Kotlin Multiplatform (KMP) architecture.
+
+            **Project Context:**
+            - The current goal is a fast initial release on the Android Native platform. Android-specific dependencies are acceptable for now.
+            - There is a long-term plan to migrate this project to KMP.
+            - The developer is a beginner in Jetpack Compose.
+
+            **Review Guidelines:**
+            1.  **Prioritize Feedback into Two Categories:**
+                - **[Critical for Android]:** Focus on immediate issues for the Android app like potential bugs, performance problems, and major UI/UX flaws.
+                - **[Note for Future KMP Migration]:** Identify code tightly coupled to Android APIs, framed as helpful notes for future refactoring.
+
+            2.  **Be Concise and Guide Learning:** Keep explanations for each point brief. If a topic requires a detailed explanation (like a design pattern or complex concept), do not explain it fully. Instead, **briefly state the problem and suggest relevant keywords for self-study.**
+
+            3.  **Be Constructive for Compose Beginners:** When pointing out issues, explain the standard "Compose way" of doing things in a simple and helpful manner.
+
+            **Output Format:**
+            - Provide your feedback in Markdown and keep it concise.
+            - When suggesting keywords for study, use the format: **[Study Keywords]**: Keyword1, Keyword2
+            - Use a friendly and encouraging tone.
+
+            Here is the code diff to review:
+            \`\`\`diff
+            ${diff}
+            \`\`\`
+            `;
+
+            const apiKey = process.env.GEMINI_API_KEY;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${apiKey}`;
+
+            try {
+              const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  contents: [{ parts: [{ text: prompt }] }]
+                })
+              });
+
+              if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`API call failed with status ${response.status}: ${errorBody}`);
+              }
+
+              const result = await response.json();
+              const reviewText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+              if (reviewText) {
+                core.setOutput('review', reviewText);
+              } else {
+                core.setOutput('review', 'Gemini did not provide a review. The response might be empty or blocked due to safety settings.');
+                console.error("Gemini API response was invalid:", JSON.stringify(result, null, 2));
+              }
+            } catch (error) {
+              core.setOutput('review', `An error occurred while calling the Gemini API: ${error.message}`);
+              core.setFailed(error.message);
+            }
+
+      - name: Post review comment to PR
+        if: steps.gemini_review.outputs.review != 'No code changes to review.'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+
+            ${{ steps.gemini_review.outputs.review }}
+          token: ${{ secrets.GITHUB_TOKEN }}
