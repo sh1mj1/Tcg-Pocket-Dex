@@ -1,14 +1,16 @@
 package tcg.pocket.dex.allcards
 
+import androidx.annotation.DrawableRes
+
 data class CardDetail(
     val name: String,
     val rarity: String,
-    val rarityUrl: String,
+    @DrawableRes val rarityIcon: Int,
     val type: String,
-    val typeImageUrl: String,
+    @DrawableRes val typeIcon: Int,
     val weakness: String,
     val weaknessType: String,
-    val weaknessTypeUrl: String,
+    @DrawableRes val weaknessTypeIcon: Int,
     val hp: String,
     val retreatCost: Int,
     val stage: Int,

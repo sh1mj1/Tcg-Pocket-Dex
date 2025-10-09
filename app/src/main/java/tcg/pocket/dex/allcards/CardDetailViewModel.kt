@@ -2,8 +2,10 @@ package tcg.pocket.dex.allcards
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import tcg.pocket.dex.repo.allcards.CardsRepo
 import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.tierdecks.DeckInformation
@@ -17,10 +19,10 @@ class CardDetailViewModel(
             0,
             4,
         ),
-    cardsRepo: CardsRepo,
+    private val cardsRepo: CardsRepo,
 ) : ViewModel() {
-    val cardDetailState: StateFlow<CardDetail>
-        field: MutableStateFlow<CardDetail> = MutableStateFlow(cardsRepo.cardDetail(cardId))
+    val cardDetailState: StateFlow<CardDetail?>
+        field: MutableStateFlow<CardDetail?> = MutableStateFlow(null)
 
     val relatedCardsState: StateFlow<List<CardData>>
         field: MutableStateFlow<List<CardData>> = MutableStateFlow(cardsRepo.relatedCards(cardId))
@@ -30,6 +32,12 @@ class CardDetailViewModel(
         MutableStateFlow(
             relatedDecksInformation.map(::DeckItemState),
         )
+
+    init {
+        viewModelScope.launch {
+            cardDetailState.value = cardsRepo.cardDetail(cardId)
+        }
+    }
 
     companion object {
         fun factory(
