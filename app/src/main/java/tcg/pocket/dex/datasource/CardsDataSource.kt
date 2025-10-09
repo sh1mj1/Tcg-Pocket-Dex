@@ -6,7 +6,7 @@ import tcg.pocket.dex.allcards.CardDetail
 interface CardsDataSource {
     suspend fun allCards(): List<CardData>
 
-    fun cardDetail(id: String): CardDetail
+    suspend fun cardDetail(id: String): CardDetail
 
     fun relatedCards(id: String): List<CardData>
 }

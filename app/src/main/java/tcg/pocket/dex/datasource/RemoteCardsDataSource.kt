@@ -1,19 +1,30 @@
 package tcg.pocket.dex.datasource
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import tcg.pocket.dex.allcards.CardData
 import tcg.pocket.dex.allcards.CardDetail
-import tcg.pocket.dex.remote.response.BriefCardResponse
+import tcg.pocket.dex.remote.response.BriefCard
+import tcg.pocket.dex.remote.response.toCardDetail
 import tcg.pocket.dex.remote.service.CardsService
 
 class RemoteCardsDataSource(
     private val cardsService: CardsService,
 ) : CardsDataSource {
-    override suspend fun allCards(): List<CardData> {
-        return cardsService.briefCards().toCardDataList()
+    private val setIds = listOf("P-A", "A1", "A1a", "A2", "A2a", "A2b", "A3", "A3a", "A3b", "A4", "A4a")
+
+    override suspend fun allCards(): List<CardData> = coroutineScope {
+        val deferredCards = setIds.map { setId ->
+            async {
+                cardsService.briefCards(setId).cards
+            }
+        }
+        deferredCards.awaitAll().flatten().toCardDataList()
     }
 
-    override fun cardDetail(id: String): CardDetail {
-        TODO("Not yet implemented")
+    override suspend fun cardDetail(id: String): CardDetail {
+        return cardsService.cardDetail(id).toCardDetail()
     }
 
     override fun relatedCards(id: String): List<CardData> {
@@ -21,11 +32,7 @@ class RemoteCardsDataSource(
     }
 }
 
-// TODO: image 가 null 이어도 처리
-//  어디서 문제인지 모르지만 카드 뷰 계속 보고 있으면 스크린 나가짐.
-//  다시 들어가면 터짐.
-//  LiveEdit: Error instantiating superclass: Ltcg/pocket/dex/datasource/RemoteCardsDataSource$allCards$1;.
-private fun BriefCardResponse.toCardData(): CardData? {
+private fun BriefCard.toCardData(): CardData? {
     if (this.image == null) {
         return null
     }
@@ -33,9 +40,9 @@ private fun BriefCardResponse.toCardData(): CardData? {
         id = this.id,
         name = this.name,
         imageUrl = this.image + "/low.webp",
-        rarityUrl = "",
-        typeUrl = "",
+        rarityUrl = "", // TODO: This will be filled later if needed
+        typeUrl = "", // TODO: This will be filled later if needed
     )
 }
 
-private fun List<BriefCardResponse>.toCardDataList(): List<CardData> = this.mapNotNull(BriefCardResponse::toCardData)
+private fun List<BriefCard>.toCardDataList(): List<CardData> = this.mapNotNull(BriefCard::toCardData)
