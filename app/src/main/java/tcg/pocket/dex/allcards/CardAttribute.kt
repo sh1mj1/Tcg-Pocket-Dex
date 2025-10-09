@@ -34,12 +34,25 @@ fun CardAttribute(
         shadowElevation = 2.dp,
     ) {
         Column {
-            PokemonCardRarity(cardDetail)
-            PokemonType(cardDetail)
-            PokemonWeakness(cardDetail)
-            PokemonHp(cardDetail)
-            PokemonRetreatCost(cardDetail)
-            PokemonEvolutionStage(cardDetail)
+            with(cardDetail) {
+                if (rarity != "None") {
+                    PokemonCardRarity(cardDetail)
+                }
+                if (category == "Pokemon") {
+                    PokemonType(cardDetail)
+                    PokemonWeakness(cardDetail)
+                    PokemonHp(cardDetail)
+                    PokemonRetreatCost(cardDetail)
+                    PokemonEvolutionStage(cardDetail)
+                } else {
+                    effect?.let {
+                        Text(
+                            text = it,
+                            modifier = Modifier.padding(8.dp),
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -196,12 +209,22 @@ private fun PokemonEvolutionStage(cardDetail: CardDetail) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Pokemon Card")
 @Composable
-private fun CardAttributePreview() {
+private fun PokemonCardAttributePreview() {
     TcgPocketDexTheme {
         CardAttribute(
             cardDetail = FakeCardsRepo.fakeCardDetail,
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Trainer Card")
+@Composable
+private fun TrainerCardAttributePreview() {
+    TcgPocketDexTheme {
+        CardAttribute(
+            cardDetail = FakeCardsRepo.fakeTrainerCardDetail,
         )
     }
 }
