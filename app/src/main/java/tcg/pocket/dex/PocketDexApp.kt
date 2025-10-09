@@ -1,5 +1,6 @@
 package tcg.pocket.dex
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -32,7 +33,6 @@ import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
 import tcg.pocket.dex.remote.service.DefaultCardsService
 import tcg.pocket.dex.repo.allcards.DefaultCardsRepo
-import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.search.SearchScreenForAllCards
 import tcg.pocket.dex.search.SearchScreenForExpansionPacks
@@ -130,6 +130,7 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                     AllCardsScreen(
                         viewModel = allCardsViewModel,
                         onCardClick = {
+                            Log.d("PocketDexApp AllCardsScreen", "onCardClick: $it")
                             navController.navigate(CardDetail.routeWithArgs(it))
                         },
                     )
@@ -177,7 +178,13 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                             factory =
                                 CardDetailViewModel.factory(
                                     cardId = cardId,
-                                    cardsRepo = FakeCardsRepo(),
+                                    cardsRepo =
+                                        DefaultCardsRepo(
+                                            remoteCardsDataSource =
+                                                RemoteCardsDataSource(
+                                                    cardsService = DefaultCardsService(),
+                                                ),
+                                        ),
                                 ),
                         )
 
