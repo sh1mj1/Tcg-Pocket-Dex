@@ -1,5 +1,7 @@
 package tcg.pocket.dex.allcards
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,10 +18,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import tcg.pocket.dex.PokemonType
 import tcg.pocket.dex.component.PocketDexSectionHeader
 import tcg.pocket.dex.repo.allcards.FakeCardsRepo
-import tcg.pocket.dex.tierdecks.temporalPokemonTypePlaceholderDrawable
 import tcg.pocket.dex.ui.theme.ChipSize
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
 
@@ -45,14 +46,10 @@ fun PokemonMovesSection(
                     ) {
                         Row {
                             move.energy.forEach { energy ->
-                                AsyncImage(
-                                    model = energy.typeUrl,
+                                Image(
+                                    painter = painterResource(id = energy.typeIcon),
                                     contentDescription = energy.type,
                                     modifier = Modifier.size(ChipSize.Small),
-                                    placeholder =
-                                        painterResource(
-                                            temporalPokemonTypePlaceholderDrawable,
-                                        ),
                                 )
                             }
                             Spacer(modifier = Modifier.width(8.dp))
@@ -60,7 +57,7 @@ fun PokemonMovesSection(
                                 text = move.name,
                             )
                             Text(
-                                text = move.damage.toString(),
+                                text = move.damage,
                                 modifier = Modifier.weight(1f),
                                 textAlign = TextAlign.End,
                             )
@@ -93,10 +90,15 @@ private fun PokemonMovesSectionPreview() {
 
 data class PokemonMove(
     val name: String,
-    val damage: Int,
-    val energy: List<Energy>,
+    val damage: String,
+    val energy: List<MoveEnergy>,
     val description: String,
 ) {
     val hasDescription: Boolean
         get() = description.isNotEmpty()
 }
+
+data class MoveEnergy(
+    val type: String,
+    @DrawableRes val typeIcon: Int,
+)
