@@ -45,10 +45,10 @@ sealed interface PokemonType {
     data object Fairy : PokemonType {
         override val icon: Int = R.drawable.fairy_icon
     }
+
     data object Dragon : PokemonType {
         override val icon: Int = R.drawable.dragon_icon
     }
-
 
     companion object {
         fun fromString(type: String): PokemonType {

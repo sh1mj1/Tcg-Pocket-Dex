@@ -1,7 +1,7 @@
 package tcg.pocket.dex.remote.service
 
-import tcg.pocket.dex.remote.response.CardDetailResponse
 import tcg.pocket.dex.remote.response.BriefCardsResponse
+import tcg.pocket.dex.remote.response.CardDetailResponse
 
 interface CardsService {
     suspend fun briefCards(setId: String): BriefCardsResponse

@@ -12,16 +12,22 @@ import tcg.pocket.dex.remote.service.CardsService
 class RemoteCardsDataSource(
     private val cardsService: CardsService,
 ) : CardsDataSource {
-    private val setIds = listOf("P-A", "A1", "A1a", "A2", "A2a", "A2b", "A3", "A3a", "A3b", "A4", "A4a")
+    // TODO: This should be called with the setIds from the result of https://api.tcgdex.net/v2/en/series/tcgp
+    //  Therefore, the setIds property below should later be used to fetch cards based on the results from a server call.
+    //  Caching could also be considered in the future.
+    private val setIds =
+        listOf("P-A", "A1", "A1a", "A2", "A2a", "A2b", "A3", "A3a", "A3b", "A4", "A4a")
 
-    override suspend fun allCards(): List<CardData> = coroutineScope {
-        val deferredCards = setIds.map { setId ->
-            async {
-                cardsService.briefCards(setId).cards
-            }
+    override suspend fun allCards(): List<CardData> =
+        coroutineScope {
+            val deferredCards =
+                setIds.map { setId ->
+                    async {
+                        cardsService.briefCards(setId).cards
+                    }
+                }
+            deferredCards.awaitAll().flatten().toCardDataList()
         }
-        deferredCards.awaitAll().flatten().toCardDataList()
-    }
 
     override suspend fun cardDetail(id: String): CardDetail {
         return cardsService.cardDetail(id).toCardDetail()
@@ -40,8 +46,10 @@ private fun BriefCard.toCardData(): CardData? {
         id = this.id,
         name = this.name,
         imageUrl = this.image + "/low.webp",
-        rarityUrl = "", // TODO: This will be filled later if needed
-        typeUrl = "", // TODO: This will be filled later if needed
+        // TODO: This will be filled later if needed
+        rarityUrl = "",
+        // TODO: This will be filled later if needed'
+        typeUrl = "",
     )
 }
 

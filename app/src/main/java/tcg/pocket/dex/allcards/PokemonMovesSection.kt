@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import tcg.pocket.dex.PokemonType
 import tcg.pocket.dex.component.PocketDexSectionHeader
 import tcg.pocket.dex.repo.allcards.FakeCardsRepo
 import tcg.pocket.dex.ui.theme.ChipSize

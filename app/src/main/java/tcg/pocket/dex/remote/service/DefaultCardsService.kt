@@ -3,8 +3,8 @@ package tcg.pocket.dex.remote.service
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import tcg.pocket.dex.remote.response.CardDetailResponse
 import tcg.pocket.dex.remote.response.BriefCardsResponse
+import tcg.pocket.dex.remote.response.CardDetailResponse
 import tcg.pocket.dex.remote.service.CardsService.Companion.BASE_ENGLISH_URL
 
 // TODO:Dependency Injection for HttpClient

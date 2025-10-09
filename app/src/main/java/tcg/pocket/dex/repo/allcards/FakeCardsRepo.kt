@@ -126,50 +126,53 @@ class FakeCardsRepo(
                 imageUrl =
                     "https://assets.pokemon-zone.com/game-assets/CardPreviews/" +
                         "cPK_10_000040_00_FUSHIGIBANAex_RR.webp",
-                pokemonMoves = listOf(
-                    PokemonMove(
-                        name = "Razor Leaf",
-                        damage = "50",
-                        energy = listOf(
-                            MoveEnergy(
-                                type = "Grass",
-                                typeIcon = tcg.pocket.dex.R.drawable.grass_icon,
-                            ),
-                            MoveEnergy(
-                                type = "Normal",
-                                typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
-                            ),
-                            MoveEnergy(
-                                type = "Normal",
-                                typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
-                            ),
+                pokemonMoves =
+                    listOf(
+                        PokemonMove(
+                            name = "Razor Leaf",
+                            damage = "50",
+                            energy =
+                                listOf(
+                                    MoveEnergy(
+                                        type = "Grass",
+                                        typeIcon = tcg.pocket.dex.R.drawable.grass_icon,
+                                    ),
+                                    MoveEnergy(
+                                        type = "Normal",
+                                        typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
+                                    ),
+                                    MoveEnergy(
+                                        type = "Normal",
+                                        typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
+                                    ),
+                                ),
+                            description = "",
                         ),
-                        description = "",
-                    ),
-                    PokemonMove(
-                        name = "Giant Bloom",
-                        damage = "100",
-                        energy = listOf(
-                            MoveEnergy(
-                                type = "Grass",
-                                typeIcon = tcg.pocket.dex.R.drawable.grass_icon,
-                            ),
-                            MoveEnergy(
-                                type = "Grass",
-                                typeIcon = tcg.pocket.dex.R.drawable.grass_icon,
-                            ),
-                            MoveEnergy(
-                                type = "Normal",
-                                typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
-                            ),
-                            MoveEnergy(
-                                type = "Normal",
-                                typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
-                            ),
+                        PokemonMove(
+                            name = "Giant Bloom",
+                            damage = "100",
+                            energy =
+                                listOf(
+                                    MoveEnergy(
+                                        type = "Grass",
+                                        typeIcon = tcg.pocket.dex.R.drawable.grass_icon,
+                                    ),
+                                    MoveEnergy(
+                                        type = "Grass",
+                                        typeIcon = tcg.pocket.dex.R.drawable.grass_icon,
+                                    ),
+                                    MoveEnergy(
+                                        type = "Normal",
+                                        typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
+                                    ),
+                                    MoveEnergy(
+                                        type = "Normal",
+                                        typeIcon = tcg.pocket.dex.R.drawable.pocket_dex_type_image,
+                                    ),
+                                ),
+                            description = "Heal 30 damage from this Pokémon.",
                         ),
-                        description = "Heal 30 damage from this Pokémon.",
                     ),
-                ),
             )
 
         val fakeRelatedCards = fakeCardsData.subList(fromIndex = 0, toIndex = 5)
