@@ -10,7 +10,7 @@ import tcg.pocket.dex.allcards.PokemonMove
 
 @Serializable
 data class CardDetailResponse(
-    val category: String? = null,
+    val category: String = "",
     val id: String,
     val illustrator: String? = null,
     val image: String? = null,
@@ -35,6 +35,8 @@ data class CardDetailResponse(
     val legal: LegalResponse? = null,
     val updated: String? = null,
     val pricing: PricingResponse? = null,
+    val effect: String? = null,
+    val trainerType: String? = null,
 )
 
 @Serializable
@@ -132,6 +134,7 @@ fun CardDetailResponse.toCardDetail(): CardDetail {
     val typeString = this.types?.firstOrNull() ?: ""
     val weaknessTypeString = this.weaknesses?.firstOrNull()?.type ?: ""
     return CardDetail(
+        category = this.category,
         name = this.name,
         rarity = this.rarity,
         rarityIcon = Rarity.fromString(this.rarity).icon,
@@ -146,6 +149,8 @@ fun CardDetailResponse.toCardDetail(): CardDetail {
         description = this.description ?: "",
         imageUrl = (this.image ?: "") + "/high.webp",
         pokemonMoves = this.attacks?.map { it.toPokemonMove() } ?: emptyList(),
+        trainerType = trainerType,
+        effect = this.effect,
     )
 }
 
