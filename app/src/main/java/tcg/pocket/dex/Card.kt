@@ -7,7 +7,7 @@ sealed class Card {
     abstract val illustrator: String
     abstract val relatedCardCodes: List<Code>
     val price: Int
-        get() = this.rarity.price
+        get() = 100 // TODO: rarity 에 따라 가격 조정
 
     data class Code(
         val number: Int,

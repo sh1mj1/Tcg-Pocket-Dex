@@ -11,7 +11,7 @@ val fakePikachuCard: Card.Pokemon by lazy {
     Card.Pokemon(
         code = fakePikachuCardCode,
         name = "pikachu",
-        rarity = Rarity.Regular.common,
+        rarity = Rarity.Common,
         illustrator = "sh1mj1",
         relatedCardCodes = listOf(fakeRaichuCardCode),
         battleAttributes =
@@ -62,7 +62,7 @@ val fakeRaichuCard: Card.Pokemon by lazy {
     Card.Pokemon(
         code = fakeRaichuCardCode,
         name = "raichu",
-        rarity = Rarity.Regular.rare,
+        rarity = Rarity.Rare,
         illustrator = "sh1mj1",
         relatedCardCodes = listOf(fakePikachuCardCode),
         battleAttributes =
@@ -113,7 +113,7 @@ val fakeDoubleRarePikachuExCard: Card.Pokemon by lazy {
     Card.Pokemon(
         code = fakeDoubleRarePikachuExCardCode,
         name = "Pikachu ex",
-        rarity = Rarity.Regular.doubleRare,
+        rarity = Rarity.DoubleRare,
         illustrator = "PLANETA CG Works",
         relatedCardCodes = listOf(fakeImmersivePikachuExCardCode),
         battleAttributes =
@@ -159,7 +159,7 @@ val fakeImmersivePikachuExCard: Card.Pokemon by lazy {
     Card.Pokemon(
         code = fakeImmersivePikachuExCardCode,
         name = "Pikachu ex",
-        rarity = Rarity.Regular.doubleRare,
+        rarity = Rarity.DoubleRare,
         illustrator = "Ryota Murayama",
         relatedCardCodes = listOf(fakeDoubleRarePikachuExCardCode),
         battleAttributes =

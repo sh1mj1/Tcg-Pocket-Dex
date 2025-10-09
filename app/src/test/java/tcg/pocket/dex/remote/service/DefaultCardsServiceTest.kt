@@ -9,7 +9,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import tcg.pocket.dex.remote.response.BriefCardResponse
+import tcg.pocket.dex.remote.response.BriefCard
 
 class DefaultCardsServiceTest : BehaviorSpec({
 
@@ -44,20 +44,22 @@ class DefaultCardsServiceTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    [
-                        {
-                            "id": "sv3-1",
-                            "localId": "1",
-                            "name": "Bulbasaur",
-                            "image": "https://assets.tcgdex.net/en/sv/sv3/1"
-                        },
-                        {
-                            "id": "sv3-2",
-                            "localId": "2",
-                            "name": "Ivysaur",
-                            "image": "https://assets.tcgdex.net/en/sv/sv3/2"
-                        }
-                    ]
+                    {
+                        "cards": [
+                            {
+                                "id": "sv3-1",
+                                "localId": "1",
+                                "name": "Bulbasaur",
+                                "image": "https://assets.tcgdex.net/en/sv/sv3/1"
+                            },
+                            {
+                                "id": "sv3-2",
+                                "localId": "2",
+                                "name": "Ivysaur",
+                                "image": "https://assets.tcgdex.net/en/sv/sv3/2"
+                            }
+                        ]
+                    }
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -67,15 +69,15 @@ class DefaultCardsServiceTest : BehaviorSpec({
                 )
 
                 // When
-                val result = service.briefCards()
+                val result = service.briefCards("A-1")
 
                 // Then
                 val expected =
                     listOf(
-                        BriefCardResponse("sv3-1", "1", "Bulbasaur", "https://assets.tcgdex.net/en/sv/sv3/1"),
-                        BriefCardResponse("sv3-2", "2", "Ivysaur", "https://assets.tcgdex.net/en/sv/sv3/2"),
+                        BriefCard("sv3-1", "https://assets.tcgdex.net/en/sv/sv3/1", "1", "Bulbasaur"),
+                        BriefCard("sv3-2", "https://assets.tcgdex.net/en/sv/sv3/2", "2", "Ivysaur"),
                     )
-                result shouldBe expected
+                result.cards shouldBe expected
             }
         }
 
@@ -85,9 +87,8 @@ class DefaultCardsServiceTest : BehaviorSpec({
                 server.enqueue(MockResponse().setResponseCode(500))
 
                 // When & Then
-                // Ktor는 에러에 따라 다른 예외를 던지므로, 일반적인 예외를 잡습니다.
                 try {
-                    service.briefCards()
+                    service.briefCards("A-1")
                     throw AssertionError("예외가 발생해야 하지만 발생하지 않았습니다.")
                 } catch (_: Exception) {
                     // 예외가 잡히면 테스트 통과
