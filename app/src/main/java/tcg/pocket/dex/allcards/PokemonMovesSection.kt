@@ -29,6 +29,9 @@ fun PokemonMovesSection(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
+        if (pokemonMoves.isEmpty()) {
+            return@Column
+        }
         PocketDexSectionHeader(
             text = "Moves",
         )

@@ -2,12 +2,15 @@ package tcg.pocket.dex.allcards
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,46 +33,50 @@ fun CardDetailScreen(
     val relatedCards by viewModel.relatedCardsState.collectAsStateWithLifecycle()
     val relatedDecks by viewModel.relatedDecksState.collectAsStateWithLifecycle()
 
-    cardDetail?.let { cardDetail ->
-        LazyColumn(
-            modifier =
-                modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-        ) {
-            item {
-                CardDetailMetaDataSection(
-                    cardDetail = cardDetail,
-                    modifier = modifier,
-                )
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+    ) {
+        cardDetail?.let { cardDetail ->
+            LazyColumn(
+                modifier =
+                    modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+            ) {
+                item {
+                    CardDetailMetaDataSection(
+                        cardDetail = cardDetail,
+                        modifier = Modifier.fillMaxHeight(),
+                    )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                PokemonMovesSection(
-                    pokemonMoves = cardDetail.pokemonMoves,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                    PokemonMovesSection(
+                        pokemonMoves = cardDetail.pokemonMoves,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                RelatedCardsSection(
-                    relatedCards = relatedCards,
-                    modifier = modifier,
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+//                RelatedCardsSection(
+//                    relatedCards = relatedCards,
+//                    modifier = modifier,
+//                )
+//                Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                item {
+                    RelatedDecksSection(
+                        deckItemsState = relatedDecks,
+                        onExpandDeck = onExpandDeck,
+                        onDeckItemClick = onDeckItemClick,
+                        modifier = modifier,
+                    )
+                }
             }
-
-            item {
-                RelatedDecksSection(
-                    deckItemsState = relatedDecks,
-                    onExpandDeck = onExpandDeck,
-                    onDeckItemClick = onDeckItemClick,
-                    modifier = modifier,
-                )
-            }
+        } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
         }
-    } ?: Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
     }
 }
 
