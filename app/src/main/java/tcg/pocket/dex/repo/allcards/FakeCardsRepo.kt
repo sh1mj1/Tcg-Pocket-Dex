@@ -111,6 +111,7 @@ class FakeCardsRepo(
 
         val fakeCardDetail =
             CardDetail(
+                category = "Pokemon",
                 name = "Venusaur ex",
                 rarity = "Double Rare",
                 rarityIcon = tcg.pocket.dex.R.drawable.double_rare_or_ultra_rare,
@@ -173,6 +174,29 @@ class FakeCardsRepo(
                             description = "Heal 30 damage from this Pokémon.",
                         ),
                     ),
+                trainerType = null,
+                effect = null,
+            )
+
+        val fakeTrainerCardDetail =
+            CardDetail(
+                category = "Trainer",
+                name = "Professor's Research",
+                rarity = "Uncommon",
+                rarityIcon = tcg.pocket.dex.R.drawable.uncommon,
+                type = "",
+                typeIcon = 0,
+                weakness = "",
+                weaknessType = "",
+                weaknessTypeIcon = 0,
+                hp = "",
+                retreatCost = 0,
+                stage = 0,
+                description = "",
+                effect = "Discard your hand and draw 7 cards.",
+                imageUrl = "https://assets.tcgdex.net/en/sv/sv1/189/",
+                pokemonMoves = emptyList(),
+                trainerType = "Supporter",
             )
 
         val fakeRelatedCards = fakeCardsData.subList(fromIndex = 0, toIndex = 5)

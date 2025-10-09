@@ -3,6 +3,7 @@ package tcg.pocket.dex.allcards
 import androidx.annotation.DrawableRes
 
 data class CardDetail(
+    val category: String = "",
     val name: String,
     val rarity: String,
     @DrawableRes val rarityIcon: Int,
@@ -17,4 +18,6 @@ data class CardDetail(
     val description: String,
     val imageUrl: String,
     val pokemonMoves: List<PokemonMove>,
+    val trainerType: String? = null,
+    val effect: String? = null,
 )
