@@ -46,20 +46,24 @@ sealed interface Rarity {
         override val icon: Int = R.drawable.double_shiny_rare
     }
 
+    data object Unknown : Rarity {
+        override val icon: Int = R.drawable.unknown
+    }
+
     companion object {
         fun fromString(rarity: String): Rarity {
             return when (rarity) {
-                "Common" -> Common
-                "Uncommon" -> Uncommon
-                "Rare" -> Rare
-                "Double Rare", "Ultra Rare" -> DoubleRare
-                "Illustration Rare", "Art Rare" -> IllustrationRare
-                "Super Rare", "Special Illustration Rare", "Special Art Rare" -> SuperRare
-                "Immersive Rare" -> ImmersiveRare
-                "Crown Rare" -> CrownRare
-                "Shiny Rare" -> ShinyRare
-                "Double Shiny Rare" -> DoubleShinyRare
-                else -> Common // Default case
+                "Common", "One Diamond" -> Common
+                "Uncommon", "Two Diamond" -> Uncommon
+                "Rare", "Three Diamond" -> Rare
+                "Double Rare", "Ultra Rare", "Four Diamond" -> DoubleRare
+                "Illustration Rare", "Art Rare", "One Star" -> IllustrationRare
+                "Super Rare", "Special Illustration Rare", "Special Art Rare", "Two Star" -> SuperRare
+                "Immersive Rare", "Three Star" -> ImmersiveRare
+                "Crown Rare", "Crown" -> CrownRare
+                "Shiny Rare", "One Shiny" -> ShinyRare
+                "Double Shiny Rare", "Two Shiny" -> DoubleShinyRare
+                else -> Unknown // Default case
             }
         }
     }

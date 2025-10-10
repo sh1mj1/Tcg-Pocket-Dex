@@ -35,9 +35,7 @@ fun CardAttribute(
     ) {
         Column {
             with(cardDetail) {
-                if (rarity != "None") {
-                    PokemonCardRarity(cardDetail)
-                }
+                PokemonCardRarity(cardDetail)
                 if (category == "Pokemon") {
                     PokemonType(cardDetail)
                     PokemonWeakness(cardDetail)
