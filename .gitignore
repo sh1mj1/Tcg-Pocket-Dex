@@ -35,3 +35,7 @@ google-services.json
 # Mac OS
 .DS_Store
 .kotlin/
+
+# Claude code
+.claude/settings.local.json
+
