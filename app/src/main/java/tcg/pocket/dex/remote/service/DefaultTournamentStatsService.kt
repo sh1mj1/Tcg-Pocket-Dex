@@ -3,6 +3,7 @@ package tcg.pocket.dex.remote.service
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import tcg.pocket.dex.remote.response.StandingsResponse
 import tcg.pocket.dex.remote.response.TournamentResponse
 import tcg.pocket.dex.remote.service.TournamentStatsService.Companion.BASE_URL
 
@@ -11,4 +12,7 @@ class DefaultTournamentStatsService(
     private val baseUrl: String = BASE_URL,
 ) : TournamentStatsService {
     override suspend fun fetchTournaments(game: String): List<TournamentResponse> = client.get("$baseUrl/tournaments?game=$game").body()
+
+    override suspend fun fetchStandings(tournamentId: String): StandingsResponse =
+        client.get("$baseUrl/tournaments/$tournamentId/standings").body()
 }
