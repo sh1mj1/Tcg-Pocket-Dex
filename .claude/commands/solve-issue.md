@@ -32,17 +32,23 @@ You receive **the GitHub issue number**, **the base branch**, and **the PR langu
 
 1. Ensure you're on the base branch specified by `--base` argument
 2. Pull latest changes from remote
-3. Create a new branch named `issue-<ISSUE_NUMBER>` (e.g., `issue-72`)
-4. Switch to the new branch
+3. Generate a descriptive branch name:
+   - Extract the issue type from labels (feature, bugfix, refactor, etc.)
+   - Convert the issue title to kebab-case for the descriptive name
+   - Format: `<type>/<descriptive-name>` (e.g., `feature/tournament-standings`, `bugfix/fix-card-display`)
+   - If no type label exists, use format: `issue-<ISSUE_NUMBER>-<descriptive-name>`
+4. Create and switch to the new branch
 
 **Commands:**
 ```bash
 git checkout <BASE_BRANCH>
 git pull origin <BASE_BRANCH>
-git checkout -b issue-<ISSUE_NUMBER>
+git checkout -b <BRANCH_NAME>
 ```
 
-Where `<BASE_BRANCH>` is the value from `--base` argument (default: `main`)
+Where:
+- `<BASE_BRANCH>` is the value from `--base` argument (default: `main`)
+- `<BRANCH_NAME>` is the generated descriptive branch name
 
 ### Step 3: Codebase Analysis
 
@@ -83,6 +89,65 @@ Where `<BASE_BRANCH>` is the value from `--base` argument (default: `main`)
    - Acceptance criteria from the issue
    - Instruction to follow existing code patterns
 
+### Step 5.5: Commit Implementation
+
+**CRITICAL: Create a checkpoint after implementation is complete**
+
+1. Ensure the code compiles without errors
+2. Stage and commit the implementation changes:
+   ```bash
+   git add .
+   git commit -m "<type>(<scope>): <subject>"
+   ```
+
+**Commit Message Convention (Angular Style):**
+
+Follow the Angular Git commit convention: `<type>(<scope>): <subject>`
+
+**Type (Required):**
+- `feat`: New feature
+- `fix`: Bug fix
+- `refactor`: Code change that neither fixes a bug nor adds a feature
+- `perf`: Performance improvement
+- `test`: Adding or updating tests
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, missing semicolons, etc.)
+- `chore`: Regular maintenance (updating dependencies, etc.)
+- `build`: Build system or external dependency changes
+- `ci`: CI configuration changes
+
+**Scope (Optional):**
+- The module or area affected (e.g., `api`, `ui`, `repo`, `service`)
+
+**Subject (Required):**
+- Start with lowercase
+- Use imperative mood ("add" not "added" or "adds")
+- No period at the end
+- Keep under 50 characters
+
+**Body (Optional):**
+- Separate from header with blank line
+- Explain motivation and contrast with previous behavior
+- Max 72 characters per line
+
+**Footer (Optional):**
+- Reference issues: `Refs #123`, `Closes #123`, `Fixes #123`
+- Breaking changes: `BREAKING CHANGE: description`
+
+**Example:**
+```bash
+git commit -m "feat(api): add tournament standings endpoint
+
+Implement new GET endpoint to fetch tournament standings data.
+Returns list of tournaments with participant rankings.
+
+Refs #72"
+```
+
+**IMPORTANT:**
+- **NEVER** include Claude Code attribution or co-author messages
+- Focus on WHAT was implemented and WHY it matters
+
 ### Step 6: Write Comprehensive Tests
 
 **CRITICAL: Use parallel test writing agents**
@@ -95,6 +160,34 @@ Where `<BASE_BRANCH>` is the value from `--base` argument (default: `main`)
    - Aim for 80%+ code coverage
    - Follow existing test patterns in the codebase
    - Use appropriate testing frameworks (JUnit, Kotest, etc.)
+
+### Step 6.5: Commit Tests
+
+**CRITICAL: Create a checkpoint after test implementation is complete**
+
+1. Ensure all tests are properly written and compile without errors
+2. Stage and commit the test changes:
+   ```bash
+   git add .
+   git commit -m "test(<scope>): add tests for <feature-name>"
+   ```
+
+**Example:**
+```bash
+git commit -m "test(api): add tests for tournament standings endpoint
+
+Add comprehensive unit tests covering:
+- Successful data retrieval
+- Error handling for invalid inputs
+- Edge cases with empty results
+
+Refs #72"
+```
+
+**IMPORTANT:**
+- Use `test:` type for test-only commits
+- **NEVER** include Claude Code attribution messages
+- Describe what is being tested and coverage achieved
 
 ### Step 7: Validation
 
@@ -120,20 +213,33 @@ Launch **THREE Task agents in parallel** in a SINGLE message:
 If any validation fails:
 - Analyze the errors
 - Fix the issues
+- **Commit the fixes** using Angular convention:
+  ```bash
+  git add .
+  git commit -m "fix(<scope>): resolve <issue-description>"
+  ```
 - Re-run validation until all pass
+
+**Example fix commit:**
+```bash
+git commit -m "fix(test): resolve failing unit tests
+
+Fix null pointer exception in tournament standings test.
+Update mock data to match actual API response format.
+
+Refs #72"
+```
 
 ### Step 8: Create Pull Request
 
-1. Stage and commit all changes:
+**Note:** All implementation, tests, and fixes should already be committed from previous steps.
+
+1. Push the branch:
    ```bash
-   git add .
-   git commit -m "[Appropriate commit message]"
+   git push -u origin <BRANCH_NAME>
    ```
 
-2. Push the branch:
-   ```bash
-   git push -u origin issue-<ISSUE_NUMBER>
-   ```
+   Where `<BRANCH_NAME>` is the descriptive branch name created in Step 2.
 
 3. Create PR using `gh pr create` with language specified by `--lang` argument:
 
@@ -163,8 +269,6 @@ If any validation fails:
 ## 관련 이슈
 
 Closes #<ISSUE_NUMBER>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
 
 **English PR Template (`--lang en`):**
@@ -193,8 +297,6 @@ Closes #<ISSUE_NUMBER>
 ## Related Issues
 
 Closes #<ISSUE_NUMBER>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
 
 ## 🎯 Usage Examples
@@ -220,32 +322,37 @@ Closes #<ISSUE_NUMBER>
 3. **Pattern Following**: Strictly adhere to existing code patterns in the codebase
 4. **Comprehensive Testing**: Edge cases are critical - don't skip them
 5. **Validation**: Never skip test/lint/build checks
-6. **Clean Commits**: Write clear, descriptive commit messages
-7. **PR Quality**: Ensure PR description clearly explains what was done and why
+6. **Incremental Commits**: Commit after each independent milestone (implementation, tests, fixes)
+7. **Clean Commits**: Use Angular Git commit convention for all commit messages
+8. **PR Quality**: Ensure PR description clearly explains what was done and why
 
 ## ⚠️ Critical Requirements
 
 - **NEVER** commit directly to the base branch
-- **ALWAYS** create a new branch for the issue
+- **ALWAYS** create a new descriptive branch for the issue
 - **ALWAYS** launch parallel agents in a SINGLE message (not sequentially)
 - **ALWAYS** run all validations before creating PR
 - **ALWAYS** ensure tests achieve 80%+ coverage
 - **ALWAYS** follow existing code patterns and architecture
+- **ALWAYS** use Angular Git commit convention for all commits
+- **NEVER** include Claude Code attribution or co-author messages in commits or PR
 
 ## 🚀 Execution
 
 When this command is invoked:
 
 1. Fetch issue #<ISSUE_NUMBER> using `gh issue view`
-2. Create and switch to `issue-<ISSUE_NUMBER>` branch from `<BASE_BRANCH>`
+2. Generate descriptive branch name and create branch from `<BASE_BRANCH>`
 3. Launch parallel research agents (up to 10, in ONE message)
 4. Show scratchpad with implementation plan
 5. Launch implementation agent
-6. Launch parallel test writing agents (in ONE message)
-7. Launch parallel validation agents (test/lint/build in ONE message)
-8. Fix any issues found during validation
-9. Commit, push, and create PR in the specified language (`--lang`)
-10. Output the PR URL
+6. **Commit implementation** using Angular convention
+7. Launch parallel test writing agents (in ONE message)
+8. **Commit tests** using Angular convention
+9. Launch parallel validation agents (test/lint/build in ONE message)
+10. Fix any issues found during validation and **commit fixes**
+11. Push branch and create PR in the specified language (`--lang`)
+12. Output the PR URL
 
 ---
 
