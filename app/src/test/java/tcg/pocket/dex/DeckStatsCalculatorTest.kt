@@ -540,7 +540,8 @@ class DeckStatsCalculatorTest : BehaviorSpec({
                             "deck$i",
                             "Viable Deck $i",
                             count = 50,
-                            wins = 25 + (i % 5) - 2, // Win rates vary 46%-54%
+                            // Win rates vary 46%-54%
+                            wins = 25 + (i % 5) - 2,
                             losses = 25 - (i % 5) + 2,
                         )
                 }
