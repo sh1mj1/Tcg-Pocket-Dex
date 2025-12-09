@@ -75,22 +75,27 @@
   - 위치: `app/src/main/java/tcg/pocket/dex/repo/decks/`
   - 인터페이스: `DecksRepo` 구현
 
-- [ ] `RemoteTournamentDataSource` 연결
+- [x] `RemoteTournamentDataSource` 연결 ✅ (Issues #24-25 완료)
   - 위치: `app/src/main/java/tcg/pocket/dex/datasource/`
   - API: Limitless TCG 토너먼트 데이터
 
-- [ ] 덱 통계 집계 로직 구현 (README 3-4단계)
+- [x] 덱 통계 집계 로직 구현 (README 3-4단계) ✅ (Issues #26-27 완료)
   - 토너먼트 결과 → 덱별 집계
   - 승률 계산 (승/전체)
   - 점유율 계산 (덱 사용 횟수/전체)
   - 참고: `DeckStatsAggregatorTest.kt`
 
+- [x] `TournamentStatsRepo` 생성 ✅ (Issue #28 완료)
+  - 위치: `app/src/main/java/tcg/pocket/dex/repo/tournamentstats/`
+  - 전체 파이프라인 오케스트레이션 레이어
+  - `getDeckStatistics()` → `List<CalculatedDeck>` 반환
+
 - [ ] `TierDecksViewModel` 수정
   - `FakeDecksRepo` → `DefaultDecksRepo` 교체
   - 에러 처리 추가
 
-- [ ] 테스트 작성
-  - `DefaultDecksRepoTest.kt`
+- [x] 테스트 작성 ✅ (Issue #28 완료)
+  - `DefaultTournamentStatsRepoTest.kt` (16 테스트)
   - API 연동 검증
 
 **완료 조건**:
@@ -434,7 +439,8 @@
 ## ✅ 체크리스트
 
 ### Phase 1: 핵심 기능
-- [ ] DefaultDecksRepo 구현 완료
+- [x] TournamentStatsRepo 구현 완료 ✅ (Issue #28 - 2025-12-10)
+- [ ] DefaultDecksRepo 구현 완료 (TournamentStatsRepo 사용)
 - [ ] 티어 덱 실제 데이터 표시
 - [ ] DeckDetailScreen UI 완성
 - [ ] 모든 ViewModel 에러 처리
