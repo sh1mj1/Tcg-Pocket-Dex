@@ -89,16 +89,56 @@ Where:
    - Acceptance criteria from the issue
    - Instruction to follow existing code patterns
 
-### Step 5.5: Commit Implementation
+### Step 5.5: User Review and Commit Implementation
 
-**CRITICAL: Create a checkpoint after implementation is complete**
+**CRITICAL: MUST get user confirmation before committing**
 
-1. Ensure the code compiles without errors
-2. Stage and commit the implementation changes:
+**This step follows `.claude/rules/git-workflow.md` rules strictly**
+
+1. **Show implementation summary to user**:
+   ```
+   📊 Implementation Complete
+
+   Changed files:
+   - app/src/.../DefaultDecksRepo.kt (new, 120 lines)
+   - app/src/.../TierDecksViewModel.kt (modified, +15/-3)
+
+   Build: ✅ SUCCESS
+   Tests: ✅ 15/15 passed
+
+   Proposed commit message:
+   feat(repo): add DefaultDecksRepo implementation
+
+   - Implement DecksRepo interface
+   - Connect RemoteTournamentDataSource
+   - Add deck statistics aggregation logic
+
+   Refs #<ISSUE_NUMBER>
+   ```
+
+2. **Request user decision**:
+   ```
+   Proceed with commit?
+   - Type "yes" to commit
+   - Type "no" to skip
+   - Type "modify" to change commit message
+   ```
+
+3. **Only after user approval**:
    ```bash
    git add .
-   git commit -m "<type>(<scope>): <subject>"
+   git commit -m "<type>(<scope>): <subject>
+
+   <body>
+
+   Refs #<ISSUE_NUMBER>"
    ```
+
+**IMPORTANT**:
+- ⛔ DO NOT auto-commit without user approval
+- ✅ Follow `.claude/rules/git-workflow.md` rules strictly
+- ✅ Show all changes before committing
+- ✅ User must explicitly approve
 
 **Commit Message Convention (Angular Style):**
 
@@ -161,33 +201,60 @@ Refs #72"
    - Follow existing test patterns in the codebase
    - Use appropriate testing frameworks (JUnit, Kotest, etc.)
 
-### Step 6.5: Commit Tests
+### Step 6.5: User Review and Commit Tests
 
-**CRITICAL: Create a checkpoint after test implementation is complete**
+**CRITICAL: MUST get user confirmation before committing**
 
-1. Ensure all tests are properly written and compile without errors
-2. Stage and commit the test changes:
-   ```bash
-   git add .
-   git commit -m "test(<scope>): add tests for <feature-name>"
+**This step follows `.claude/rules/git-workflow.md` rules strictly**
+
+1. **Show test summary to user**:
+   ```
+   📊 Tests Complete
+
+   Test files created:
+   - app/src/test/.../DefaultDecksRepoTest.kt (new, 80 lines)
+   - app/src/test/.../DeckStatsTest.kt (modified, +20 lines)
+
+   Test execution:
+   - ✅ All 15 tests pass
+   - ✅ Code coverage: 87%
+
+   Build: ✅ SUCCESS
+   Lint: ✅ No violations
+
+   Proposed commit message:
+   test(repo): add tests for DefaultDecksRepo
+
+   - Add comprehensive unit tests
+   - Cover edge cases and error scenarios
+   - Achieve 87% code coverage
+
+   Refs #<ISSUE_NUMBER>
    ```
 
-**Example:**
-```bash
-git commit -m "test(api): add tests for tournament standings endpoint
+2. **Request user decision**:
+   ```
+   Proceed with commit?
+   - Type "yes" to commit
+   - Type "no" to skip
+   - Type "modify" to change commit message
+   ```
 
-Add comprehensive unit tests covering:
-- Successful data retrieval
-- Error handling for invalid inputs
-- Edge cases with empty results
+3. **Only after user approval**:
+   ```bash
+   git add .
+   git commit -m "test(<scope>): add tests for <feature-name>
 
-Refs #72"
-```
+   <body>
+
+   Refs #<ISSUE_NUMBER>"
+   ```
 
 **IMPORTANT:**
-- Use `test:` type for test-only commits
-- **NEVER** include Claude Code attribution messages
-- Describe what is being tested and coverage achieved
+- ⛔ DO NOT auto-commit without user approval
+- ✅ Use `test:` type for test-only commits
+- ✅ **NEVER** include Claude Code attribution messages
+- ✅ Describe what is being tested and coverage achieved
 
 ### Step 7: Validation
 
@@ -211,24 +278,55 @@ Launch **THREE Task agents in parallel** in a SINGLE message:
    ```
 
 If any validation fails:
-- Analyze the errors
-- Fix the issues
-- **Commit the fixes** using Angular convention:
-  ```bash
-  git add .
-  git commit -m "fix(<scope>): resolve <issue-description>"
-  ```
-- Re-run validation until all pass
+1. **Analyze the errors**
+2. **Fix the issues**
+3. **Show fixes summary to user**:
+   ```
+   🔧 Validation Fixes
 
-**Example fix commit:**
-```bash
-git commit -m "fix(test): resolve failing unit tests
+   Issues found:
+   - Lint error: Unused import in DefaultDecksRepo.kt
+   - Test failure: Null pointer in DeckStatsTest.kt
 
-Fix null pointer exception in tournament standings test.
-Update mock data to match actual API response format.
+   Fixed files:
+   - app/.../DefaultDecksRepo.kt (modified, -1 line)
+   - app/.../DeckStatsTest.kt (modified, +3 lines)
 
-Refs #72"
-```
+   Re-run validation:
+   - Build: ✅ SUCCESS
+   - Tests: ✅ 15/15 passed
+   - Lint: ✅ No violations
+
+   Proposed commit message:
+   fix(repo): resolve lint and test issues
+
+   - Remove unused import in DefaultDecksRepo
+   - Fix null pointer exception in DeckStatsTest
+   - Update mock data to match API response format
+
+   Refs #<ISSUE_NUMBER>
+   ```
+
+4. **Request user confirmation**:
+   ```
+   Proceed with commit?
+   - Type "yes" to commit
+   - Type "no" to skip
+   ```
+
+5. **Only after user approval**, commit the fixes:
+   ```bash
+   git add .
+   git commit -m "fix(<scope>): resolve <issue-description>
+
+   <body>
+
+   Refs #<ISSUE_NUMBER>"
+   ```
+
+6. **Re-run validation until all pass**
+
+**CRITICAL**: Never skip user confirmation, even for small fixes
 
 ### Step 8: Create Pull Request
 
@@ -331,11 +429,13 @@ Closes #<ISSUE_NUMBER>
 - **NEVER** commit directly to the base branch
 - **ALWAYS** create a new descriptive branch for the issue
 - **ALWAYS** launch parallel agents in a SINGLE message (not sequentially)
+- **ALWAYS** get user confirmation BEFORE EACH commit (follows `.claude/rules/git-workflow.md`)
 - **ALWAYS** run all validations before creating PR
 - **ALWAYS** ensure tests achieve 80%+ coverage
 - **ALWAYS** follow existing code patterns and architecture
 - **ALWAYS** use Angular Git commit convention for all commits
 - **NEVER** include Claude Code attribution or co-author messages in commits or PR
+- **NEVER** auto-commit without explicit user approval
 
 ## 🚀 Execution
 
