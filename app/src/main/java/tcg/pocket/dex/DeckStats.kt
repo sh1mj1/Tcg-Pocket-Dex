@@ -40,8 +40,8 @@ data class DeckStats(
         }
 
     init {
-        require(count >= 0) { "Count must be non-negative, but was $count" }
-        require(totalWins >= 0) { "Total wins must be non-negative, but was $totalWins" }
-        require(totalLosses >= 0) { "Total losses must be non-negative, but was $totalLosses" }
+        require(count >= 0) { "count must be non-negative, but was $count" }
+        require(totalWins >= 0) { "totalWins must be non-negative, but was $totalWins" }
+        require(totalLosses >= 0) { "totalLosses must be non-negative, but was $totalLosses" }
     }
 }
