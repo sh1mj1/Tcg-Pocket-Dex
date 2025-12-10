@@ -2,22 +2,28 @@ package tcg.pocket.dex.tierdecks
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import tcg.pocket.dex.repo.decks.DecksRepo
 
 class TierDecksViewModel(
-    decksRepo: DecksRepo,
+    private val decksRepo: DecksRepo,
 ) : ViewModel() {
-    val deckItemsState: StateFlow<List<DeckItemState>>
-        field: MutableStateFlow<List<DeckItemState>> =
-        MutableStateFlow(
-            decksRepo.allTierDecks().map(::DeckItemState),
-        )
+    private val _deckItemsState = MutableStateFlow<List<DeckItemState>>(emptyList())
+    val deckItemsState: StateFlow<List<DeckItemState>> = _deckItemsState
+
+    init {
+        viewModelScope.launch {
+            val decks = decksRepo.allTierDecks()
+            _deckItemsState.value = decks.map(::DeckItemState)
+        }
+    }
 
     fun onExpandDeck(deckItemState: DeckItemState) {
-        deckItemsState.value =
-            deckItemsState.value.map { state ->
+        _deckItemsState.value =
+            _deckItemsState.value.map { state ->
                 if (state == deckItemState) {
                     state.expansionToggled()
                 } else {
