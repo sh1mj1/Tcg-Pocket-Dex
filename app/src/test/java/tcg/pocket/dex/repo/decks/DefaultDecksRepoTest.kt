@@ -377,7 +377,7 @@ class DefaultDecksRepoTest : BehaviorSpec({
 
                 result shouldHaveSize 5
                 result.map { it.simple.deckName } shouldContainExactly
-                    listOf("Deck 2", "Deck 4", "Deck 3", "Deck 1", "Deck 5")
+                    listOf("Deck 2", "Deck 4", "Deck 3", "Deck 5", "Deck 1")
                 result.map { it.simple.rank } shouldContainExactly listOf(1, 2, 3, 4, 5)
             }
         }

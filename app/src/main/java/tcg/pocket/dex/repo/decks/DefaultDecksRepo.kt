@@ -21,24 +21,27 @@ class DefaultDecksRepo(
 private fun CalculatedDeck.toDeckInformation(rank: Int): DeckInformation {
     val pokemonNames = deckId.split("|")
     return DeckInformation(
-        simple = DeckSimpleInformation(
-            deckId = deckId,
-            // TODO: Replace with actual Pokémon image URLs from card data (Issue #36)
-            representativePokemonImageUrls = pokemonNames.take(2).map {
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
-            },
-            rank = rank,
-            deckName = deckName,
-            winRate = winRate,
-            share = usageShare,
-        ),
-        detail = DeckDetailInformation(
-            // TODO: Calculate actual deck cost from card data (Issue #36)
-            cost = 0,
-            // TODO: Extract Pokémon types from card data (Issue #36)
-            pokemonTypes = emptyList(),
-            // TODO: Generate deck description or fetch from backend (Issue #36)
-            description = "",
-        ),
+        simple =
+            DeckSimpleInformation(
+                deckId = deckId,
+                // TODO: Replace with actual Pokémon image URLs from card data (Issue #36)
+                representativePokemonImageUrls =
+                    pokemonNames.take(2).map {
+                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
+                    },
+                rank = rank,
+                deckName = deckName,
+                winRate = winRate,
+                share = usageShare,
+            ),
+        detail =
+            DeckDetailInformation(
+                // TODO: Calculate actual deck cost from card data (Issue #36)
+                cost = 0,
+                // TODO: Extract Pokémon types from card data (Issue #36)
+                pokemonTypes = emptyList(),
+                // TODO: Generate deck description or fetch from backend (Issue #36)
+                description = "",
+            ),
     )
 }
