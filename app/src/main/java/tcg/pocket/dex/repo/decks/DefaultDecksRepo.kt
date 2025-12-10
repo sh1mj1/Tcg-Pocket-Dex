@@ -1,6 +1,5 @@
 package tcg.pocket.dex.repo.decks
 
-import kotlinx.coroutines.runBlocking
 import tcg.pocket.dex.CalculatedDeck
 import tcg.pocket.dex.repo.tournamentstats.TournamentStatsRepo
 import tcg.pocket.dex.tierdecks.DeckDetailInformation
@@ -10,15 +9,12 @@ import tcg.pocket.dex.tierdecks.DeckSimpleInformation
 class DefaultDecksRepo(
     private val tournamentStatsRepo: TournamentStatsRepo,
 ) : DecksRepo {
-    override fun allTierDecks(): List<DeckInformation> {
-        // TODO: Remove runBlocking once DecksRepo interface is converted to suspend (Issue #40)
-        return runBlocking {
-            tournamentStatsRepo.getDeckStatistics()
-                .sortedByDescending { it.appearances }
-                .mapIndexed { index, calculatedDeck ->
-                    calculatedDeck.toDeckInformation(rank = index + 1)
-                }
-        }
+    override suspend fun allTierDecks(): List<DeckInformation> {
+        return tournamentStatsRepo.getDeckStatistics()
+            .sortedByDescending { it.appearances }
+            .mapIndexed { index, calculatedDeck ->
+                calculatedDeck.toDeckInformation(rank = index + 1)
+            }
     }
 }
 
