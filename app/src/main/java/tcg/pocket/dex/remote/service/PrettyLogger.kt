@@ -1,13 +1,11 @@
 package tcg.pocket.dex.remote.service
 
-import android.util.Log
 import io.ktor.client.plugins.logging.Logger
 import org.json.JSONArray
 import org.json.JSONObject
+import timber.log.Timber
 
 object PrettyLogger : Logger {
-    private const val TAG = "KtorLogger"
-
     override fun log(message: String) {
         if (message.startsWith("{") || message.startsWith("[")) {
             try {
@@ -17,12 +15,12 @@ object PrettyLogger : Logger {
                         message.startsWith("[") -> JSONArray(message).toString(4)
                         else -> message
                     }
-                Log.d(TAG, prettyJson)
+                Timber.d(prettyJson)
             } catch (e: Exception) {
-                Log.d(TAG, message) // Log as is if formatting fails
+                Timber.d(message) // Log as is if formatting fails
             }
         } else {
-            Log.d(TAG, message) // Regular log
+            Timber.d(message) // Regular log
         }
     }
 }

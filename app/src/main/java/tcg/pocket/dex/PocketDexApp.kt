@@ -1,6 +1,5 @@
 package tcg.pocket.dex
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -46,6 +45,7 @@ import tcg.pocket.dex.tierdecks.PocketDexTopBar
 import tcg.pocket.dex.tierdecks.TierDecksScreen
 import tcg.pocket.dex.tierdecks.TierDecksViewModel
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
+import timber.log.Timber
 
 @Composable
 fun PocketDexApp(openUrl: () -> Unit = {}) {
@@ -147,7 +147,7 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                     AllCardsScreen(
                         viewModel = allCardsViewModel,
                         onCardClick = {
-                            Log.d("PocketDexApp AllCardsScreen", "onCardClick: $it")
+                            Timber.d("onCardClick: $it")
                             navController.navigate(CardDetail.routeWithArgs(it))
                         },
                     )
