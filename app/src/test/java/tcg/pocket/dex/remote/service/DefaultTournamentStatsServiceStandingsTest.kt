@@ -15,7 +15,6 @@ import tcg.pocket.dex.remote.response.DeckResponse
 import tcg.pocket.dex.remote.response.PlayerResponse
 import tcg.pocket.dex.remote.response.RecordResponse
 import tcg.pocket.dex.remote.response.StandingResponse
-import tcg.pocket.dex.remote.response.StandingsResponse
 
 class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
 
@@ -49,12 +48,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
             Then("올바른 URL 경로로 요청되어야 한다") {
                 // Given
                 val tournamentId = "tournament-path-test"
-                val responseBody =
-                    """
-                    {
-                        "standings": []
-                    }
-                    """.trimIndent()
+                val responseBody = "[]"
                 server.enqueue(
                     MockResponse()
                         .setBody(responseBody)
@@ -79,8 +73,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -89,7 +82,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "North America"
                                 },
                                 "deck": {
-                                    "pokemon": ["Pikachu ex", "Mewtwo ex"]
+                                    "icons": ["Pikachu ex", "Mewtwo ex"]
                                 },
                                 "record": {
                                     "wins": 5,
@@ -97,8 +90,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 0
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -112,26 +104,23 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
 
                 // Then
                 val expected =
-                    StandingsResponse(
-                        standings =
-                            listOf(
-                                StandingResponse(
-                                    placing = 1,
-                                    player =
-                                        PlayerResponse(
-                                            name = "John Doe",
-                                            country = "US",
-                                            region = "North America",
-                                        ),
-                                    deck = DeckResponse(pokemon = listOf("Pikachu ex", "Mewtwo ex")),
-                                    record =
-                                        RecordResponse(
-                                            wins = 5,
-                                            losses = 0,
-                                            ties = 0,
-                                        ),
+                    listOf(
+                        StandingResponse(
+                            placing = 1,
+                            player =
+                                PlayerResponse(
+                                    name = "John Doe",
+                                    country = "US",
+                                    region = "North America",
                                 ),
-                            ),
+                            deck = DeckResponse(icons = listOf("Pikachu ex", "Mewtwo ex")),
+                            record =
+                                RecordResponse(
+                                    wins = 5,
+                                    losses = 0,
+                                    ties = 0,
+                                ),
+                        ),
                     )
                 result shouldBe expected
             }
@@ -140,12 +129,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
         When("빈 순위표 응답을 받을 때") {
             Then("빈 리스트를 반환해야 한다") {
                 // Given
-                val responseBody =
-                    """
-                    {
-                        "standings": []
-                    }
-                    """.trimIndent()
+                val responseBody = "[]"
                 server.enqueue(
                     MockResponse()
                         .setBody(responseBody)
@@ -157,7 +141,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-456")
 
                 // Then
-                result.standings.shouldBeEmpty()
+                result.shouldBeEmpty()
             }
         }
 
@@ -166,8 +150,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -176,7 +159,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "North America"
                                 },
                                 "deck": {
-                                    "pokemon": ["Pikachu ex", "Zapdos ex"]
+                                    "icons": ["Pikachu ex", "Zapdos ex"]
                                 },
                                 "record": {
                                     "wins": 6,
@@ -192,7 +175,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "Asia"
                                 },
                                 "deck": {
-                                    "pokemon": ["Mewtwo ex", "Gardevoir"]
+                                    "icons": ["Mewtwo ex", "Gardevoir"]
                                 },
                                 "record": {
                                     "wins": 5,
@@ -208,7 +191,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "Europe"
                                 },
                                 "deck": {
-                                    "pokemon": ["Charizard ex", "Moltres ex"]
+                                    "icons": ["Charizard ex", "Moltres ex"]
                                 },
                                 "record": {
                                     "wins": 5,
@@ -224,7 +207,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "North America"
                                 },
                                 "deck": {
-                                    "pokemon": ["Starmie ex", "Articuno ex"]
+                                    "icons": ["Starmie ex", "Articuno ex"]
                                 },
                                 "record": {
                                     "wins": 4,
@@ -240,7 +223,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "Europe"
                                 },
                                 "deck": {
-                                    "pokemon": ["Venusaur ex", "Lilligant"]
+                                    "icons": ["Venusaur ex", "Lilligant"]
                                 },
                                 "record": {
                                     "wins": 4,
@@ -256,7 +239,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "Europe"
                                 },
                                 "deck": {
-                                    "pokemon": ["Blastoise ex", "Starmie ex"]
+                                    "icons": ["Blastoise ex", "Starmie ex"]
                                 },
                                 "record": {
                                     "wins": 4,
@@ -272,7 +255,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "Oceania"
                                 },
                                 "deck": {
-                                    "pokemon": ["Marowak ex", "Sandslash"]
+                                    "icons": ["Marowak ex", "Sandslash"]
                                 },
                                 "record": {
                                     "wins": 3,
@@ -288,7 +271,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "South America"
                                 },
                                 "deck": {
-                                    "pokemon": ["Gengar ex", "Haunter"]
+                                    "icons": ["Gengar ex", "Haunter"]
                                 },
                                 "record": {
                                     "wins": 3,
@@ -296,8 +279,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 0
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -310,18 +292,18 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-789")
 
                 // Then
-                result.standings shouldHaveSize 8
-                result.standings[0].placing shouldBe 1
-                result.standings[0].player.name shouldBe "Player One"
-                result.standings[0].deck?.pokemon shouldBe listOf("Pikachu ex", "Zapdos ex")
-                result.standings[0].record.wins shouldBe 6
-                result.standings[0].record.losses shouldBe 0
+                result shouldHaveSize 8
+                result[0].placing shouldBe 1
+                result[0].player.name shouldBe "Player One"
+                result[0].deck?.icons shouldBe listOf("Pikachu ex", "Zapdos ex")
+                result[0].record.wins shouldBe 6
+                result[0].record.losses shouldBe 0
 
-                result.standings[7].placing shouldBe 8
-                result.standings[7].player.name shouldBe "Player Eight"
-                result.standings[7].deck?.pokemon shouldBe listOf("Gengar ex", "Haunter")
-                result.standings[7].record.wins shouldBe 3
-                result.standings[7].record.losses shouldBe 3
+                result[7].placing shouldBe 8
+                result[7].player.name shouldBe "Player Eight"
+                result[7].deck?.icons shouldBe listOf("Gengar ex", "Haunter")
+                result[7].record.wins shouldBe 3
+                result[7].record.losses shouldBe 3
             }
         }
 
@@ -330,8 +312,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -352,7 +333,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": null
                                 },
                                 "deck": {
-                                    "pokemon": null
+                                    "icons": null
                                 },
                                 "record": {
                                     "wins": 3,
@@ -360,8 +341,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 0
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -374,16 +354,16 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-nulltest")
 
                 // Then
-                result.standings shouldHaveSize 2
-                result.standings[0].player.name shouldBe "Anonymous Player"
-                result.standings[0].player.country shouldBe null
-                result.standings[0].player.region shouldBe null
-                result.standings[0].deck shouldBe null
+                result shouldHaveSize 2
+                result[0].player.name shouldBe "Anonymous Player"
+                result[0].player.country shouldBe null
+                result[0].player.region shouldBe null
+                result[0].deck shouldBe null
 
-                result.standings[1].player.name shouldBe "Another Player"
-                result.standings[1].player.country shouldBe null
-                result.standings[1].player.region shouldBe null
-                result.standings[1].deck?.pokemon shouldBe null
+                result[1].player.name shouldBe "Another Player"
+                result[1].player.country shouldBe null
+                result[1].player.region shouldBe null
+                result[1].deck?.icons shouldBe null
             }
         }
 
@@ -392,8 +372,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -402,7 +381,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "North America"
                                 },
                                 "deck": {
-                                    "pokemon": ["Pikachu ex"]
+                                    "icons": ["Pikachu ex"]
                                 },
                                 "record": {
                                     "wins": 4,
@@ -410,8 +389,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 2
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -424,10 +402,10 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-ties")
 
                 // Then
-                result.standings shouldHaveSize 1
-                result.standings[0].record.wins shouldBe 4
-                result.standings[0].record.losses shouldBe 0
-                result.standings[0].record.ties shouldBe 2
+                result shouldHaveSize 1
+                result[0].record.wins shouldBe 4
+                result[0].record.losses shouldBe 0
+                result[0].record.ties shouldBe 2
             }
         }
 
@@ -468,8 +446,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -478,7 +455,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "North America"
                                 },
                                 "deck": {
-                                    "pokemon": []
+                                    "icons": []
                                 },
                                 "record": {
                                     "wins": 5,
@@ -486,8 +463,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 0
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -500,8 +476,8 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-emptydeck")
 
                 // Then
-                result.standings shouldHaveSize 1
-                result.standings[0].deck?.pokemon shouldBe emptyList()
+                result shouldHaveSize 1
+                result[0].deck?.icons shouldBe emptyList()
             }
         }
 
@@ -510,8 +486,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -520,7 +495,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "Asia"
                                 },
                                 "deck": {
-                                    "pokemon": [
+                                    "icons": [
                                         "Pikachu ex",
                                         "Zapdos ex",
                                         "Mewtwo ex",
@@ -534,8 +509,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 0
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -548,8 +522,8 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-fulldeck")
 
                 // Then
-                result.standings shouldHaveSize 1
-                result.standings[0].deck?.pokemon shouldBe
+                result shouldHaveSize 1
+                result[0].deck?.icons shouldBe
                     listOf(
                         "Pikachu ex",
                         "Zapdos ex",
@@ -565,8 +539,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -575,7 +548,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "Asia"
                                 },
                                 "deck": {
-                                    "pokemon": ["Mewtwo ex", "Gardevoir"]
+                                    "icons": ["Mewtwo ex", "Gardevoir"]
                                 },
                                 "record": {
                                     "wins": 7,
@@ -583,8 +556,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 0
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -597,10 +569,10 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-undefeated")
 
                 // Then
-                result.standings shouldHaveSize 1
-                result.standings[0].record.wins shouldBe 7
-                result.standings[0].record.losses shouldBe 0
-                result.standings[0].record.ties shouldBe 0
+                result shouldHaveSize 1
+                result[0].record.wins shouldBe 7
+                result[0].record.losses shouldBe 0
+                result[0].record.ties shouldBe 0
             }
         }
 
@@ -609,8 +581,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 // Given
                 val responseBody =
                     """
-                    {
-                        "standings": [
+                    [
                             {
                                 "placing": 1,
                                 "player": {
@@ -619,7 +590,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "region": "North America"
                                 },
                                 "deck": {
-                                    "pokemon": ["Charizard ex", "Moltres ex"]
+                                    "icons": ["Charizard ex", "Moltres ex"]
                                 },
                                 "record": {
                                     "wins": 5,
@@ -627,8 +598,7 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                                     "ties": 1
                                 }
                             }
-                        ]
-                    }
+                    ]
                     """.trimIndent()
                 server.enqueue(
                     MockResponse()
@@ -641,13 +611,13 @@ class DefaultTournamentStatsServiceStandingsTest : BehaviorSpec({
                 val result = service.fetchStandings("tournament-complete")
 
                 // Then
-                result.standings shouldHaveSize 1
-                val standing = result.standings[0]
+                result shouldHaveSize 1
+                val standing = result[0]
                 standing.placing shouldBe 1
                 standing.player.name shouldBe "Complete Player"
                 standing.player.country shouldBe "US"
                 standing.player.region shouldBe "North America"
-                standing.deck?.pokemon shouldBe listOf("Charizard ex", "Moltres ex")
+                standing.deck?.icons shouldBe listOf("Charizard ex", "Moltres ex")
                 standing.record.wins shouldBe 5
                 standing.record.losses shouldBe 1
                 standing.record.ties shouldBe 1

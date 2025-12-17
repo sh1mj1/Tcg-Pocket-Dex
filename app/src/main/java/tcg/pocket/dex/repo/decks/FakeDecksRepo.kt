@@ -10,7 +10,7 @@ import tcg.pocket.dex.tierdecks.fakeTypesUrl
 class FakeDecksRepo(
     private val tierDecks: List<DeckInformation> = fakeTierDecksInformation,
 ) : DecksRepo {
-    override fun allTierDecks(): List<DeckInformation> = tierDecks
+    override suspend fun allTierDecks(): List<DeckInformation> = tierDecks
 
     companion object {
         val fakeTierDecksInformation =
