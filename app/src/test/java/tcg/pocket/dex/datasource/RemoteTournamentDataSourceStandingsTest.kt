@@ -13,7 +13,6 @@ import tcg.pocket.dex.remote.response.DeckResponse
 import tcg.pocket.dex.remote.response.PlayerResponse
 import tcg.pocket.dex.remote.response.RecordResponse
 import tcg.pocket.dex.remote.response.StandingResponse
-import tcg.pocket.dex.remote.response.StandingsResponse
 import tcg.pocket.dex.remote.service.TournamentStatsService
 
 class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
@@ -33,12 +32,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "Player $placing", country = "US", region = "CA"),
-                            deck = DeckResponse(pokemon = listOf("Pikachu", "Mewtwo")),
+                            deck = DeckResponse(icons = listOf("Pikachu", "Mewtwo")),
                             record = RecordResponse(wins = 10 - placing, losses = placing - 1, ties = 0),
                         )
                     }
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -61,12 +59,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "Player $placing", country = "JP"),
-                            deck = DeckResponse(pokemon = listOf("Charizard")),
+                            deck = DeckResponse(icons = listOf("Charizard")),
                             record = RecordResponse(wins = 16 - placing, losses = placing - 1, ties = 0),
                         )
                     }
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -88,7 +85,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "T1-Player$placing", country = "US"),
-                            deck = DeckResponse(pokemon = listOf("Pikachu")),
+                            deck = DeckResponse(icons = listOf("Pikachu")),
                             record = RecordResponse(wins = 6 - placing, losses = 0, ties = 0),
                         )
                     }
@@ -97,7 +94,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "T2-Player$placing", country = "UK"),
-                            deck = DeckResponse(pokemon = listOf("Mewtwo")),
+                            deck = DeckResponse(icons = listOf("Mewtwo")),
                             record = RecordResponse(wins = 7 - placing, losses = 0, ties = 0),
                         )
                     }
@@ -106,17 +103,14 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "T3-Player$placing", country = "JP"),
-                            deck = DeckResponse(pokemon = listOf("Charizard")),
+                            deck = DeckResponse(icons = listOf("Charizard")),
                             record = RecordResponse(wins = 9 - placing, losses = 0, ties = 0),
                         )
                     }
 
-                coEvery { mockService.fetchStandings("t1") } returns
-                    StandingsResponse(standings = tournament1Standings)
-                coEvery { mockService.fetchStandings("t2") } returns
-                    StandingsResponse(standings = tournament2Standings)
-                coEvery { mockService.fetchStandings("t3") } returns
-                    StandingsResponse(standings = tournament3Standings)
+                coEvery { mockService.fetchStandings("t1") } returns tournament1Standings
+                coEvery { mockService.fetchStandings("t2") } returns tournament2Standings
+                coEvery { mockService.fetchStandings("t3") } returns tournament3Standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("t1", "t2", "t3"))
@@ -137,8 +131,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
         When("토너먼트의 순위가 비어있을 때") {
             Then("빈 리스트를 반환해야 한다") {
                 // Given
-                coEvery { mockService.fetchStandings("tournament-empty") } returns
-                    StandingsResponse(standings = emptyList())
+                coEvery { mockService.fetchStandings("tournament-empty") } returns emptyList()
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-empty"))
@@ -170,7 +163,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "T1-Player$placing"),
-                            deck = DeckResponse(pokemon = listOf("Pikachu")),
+                            deck = DeckResponse(icons = listOf("Pikachu")),
                             record = RecordResponse(wins = 5 - placing, losses = 0, ties = 0),
                         )
                     }
@@ -179,17 +172,15 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "T3-Player$placing"),
-                            deck = DeckResponse(pokemon = listOf("Charizard")),
+                            deck = DeckResponse(icons = listOf("Charizard")),
                             record = RecordResponse(wins = 6 - placing, losses = 0, ties = 0),
                         )
                     }
 
-                coEvery { mockService.fetchStandings("t1") } returns
-                    StandingsResponse(standings = tournament1Standings)
+                coEvery { mockService.fetchStandings("t1") } returns tournament1Standings
                 coEvery { mockService.fetchStandings("t2") } throws
                     RuntimeException("Network error")
-                coEvery { mockService.fetchStandings("t3") } returns
-                    StandingsResponse(standings = tournament3Standings)
+                coEvery { mockService.fetchStandings("t3") } returns tournament3Standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("t1", "t2", "t3"))
@@ -238,12 +229,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                             StandingResponse(
                                 placing = 1,
                                 player = PlayerResponse(name = "Player-$id"),
-                                deck = DeckResponse(pokemon = listOf("Pokemon-$id")),
+                                deck = DeckResponse(icons = listOf("Pokemon-$id")),
                                 record = RecordResponse(wins = 10, losses = 0, ties = 0),
                             ),
                         )
-                    coEvery { mockService.fetchStandings(id) } returns
-                        StandingsResponse(standings = standings)
+                    coEvery { mockService.fetchStandings(id) } returns standings
                 }
 
                 // When
@@ -267,12 +257,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = 8,
                             player = PlayerResponse(name = "Boundary Player 8"),
-                            deck = DeckResponse(pokemon = listOf("Pikachu")),
+                            deck = DeckResponse(icons = listOf("Pikachu")),
                             record = RecordResponse(wins = 5, losses = 3, ties = 0),
                         ),
                     )
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -294,12 +283,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = 9,
                             player = PlayerResponse(name = "Boundary Player 9"),
-                            deck = DeckResponse(pokemon = listOf("Pikachu")),
+                            deck = DeckResponse(icons = listOf("Pikachu")),
                             record = RecordResponse(wins = 5, losses = 4, ties = 0),
                         ),
                     )
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -317,8 +305,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                 val tournamentIds = listOf("t1", "t2", "t3", "t4", "t5")
 
                 tournamentIds.forEach { id ->
-                    coEvery { mockService.fetchStandings(id) } returns
-                        StandingsResponse(standings = emptyList())
+                    coEvery { mockService.fetchStandings(id) } returns emptyList()
                 }
 
                 // When
@@ -347,7 +334,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                             ),
                         deck =
                             DeckResponse(
-                                pokemon = listOf("Pikachu ex", "Zapdos ex", "Electrode"),
+                                icons = listOf("Pikachu ex", "Zapdos ex", "Electrode"),
                             ),
                         record =
                             RecordResponse(
@@ -357,8 +344,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                             ),
                     )
 
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = listOf(standingResponse))
+                coEvery { mockService.fetchStandings("tournament-1") } returns listOf(standingResponse)
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -389,8 +375,7 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         record = RecordResponse(wins = 5, losses = 2, ties = 1),
                     )
 
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = listOf(standingResponse))
+                coEvery { mockService.fetchStandings("tournament-1") } returns listOf(standingResponse)
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -413,12 +398,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                                 country = null,
                                 region = null,
                             ),
-                        deck = DeckResponse(pokemon = listOf("Mewtwo")),
+                        deck = DeckResponse(icons = listOf("Mewtwo")),
                         record = RecordResponse(wins = 7, losses = 3, ties = 0),
                     )
 
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = listOf(standingResponse))
+                coEvery { mockService.fetchStandings("tournament-1") } returns listOf(standingResponse)
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -442,43 +426,42 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = 1,
                             player = PlayerResponse(name = "1st"),
-                            deck = DeckResponse(pokemon = listOf("A")),
+                            deck = DeckResponse(icons = listOf("A")),
                             record = RecordResponse(10, 0, 0),
                         ),
                         StandingResponse(
                             placing = 5,
                             player = PlayerResponse(name = "5th"),
-                            deck = DeckResponse(pokemon = listOf("B")),
+                            deck = DeckResponse(icons = listOf("B")),
                             record = RecordResponse(7, 3, 0),
                         ),
                         StandingResponse(
                             placing = 8,
                             player = PlayerResponse(name = "8th"),
-                            deck = DeckResponse(pokemon = listOf("C")),
+                            deck = DeckResponse(icons = listOf("C")),
                             record = RecordResponse(6, 4, 0),
                         ),
                         StandingResponse(
                             placing = 9,
                             player = PlayerResponse(name = "9th"),
-                            deck = DeckResponse(pokemon = listOf("D")),
+                            deck = DeckResponse(icons = listOf("D")),
                             record = RecordResponse(5, 5, 0),
                         ),
                         StandingResponse(
                             placing = 12,
                             player = PlayerResponse(name = "12th"),
-                            deck = DeckResponse(pokemon = listOf("E")),
+                            deck = DeckResponse(icons = listOf("E")),
                             record = RecordResponse(4, 6, 0),
                         ),
                         StandingResponse(
                             placing = 16,
                             player = PlayerResponse(name = "16th"),
-                            deck = DeckResponse(pokemon = listOf("F")),
+                            deck = DeckResponse(icons = listOf("F")),
                             record = RecordResponse(3, 7, 0),
                         ),
                     )
 
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -499,16 +482,13 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
 
                 tournamentIds.forEach { id ->
                     coEvery { mockService.fetchStandings(id) } returns
-                        StandingsResponse(
-                            standings =
-                                listOf(
-                                    StandingResponse(
-                                        placing = 1,
-                                        player = PlayerResponse(name = "Player-$id"),
-                                        deck = DeckResponse(pokemon = emptyList()),
-                                        record = RecordResponse(5, 0, 0),
-                                    ),
-                                ),
+                        listOf(
+                            StandingResponse(
+                                placing = 1,
+                                player = PlayerResponse(name = "Player-$id"),
+                                deck = DeckResponse(icons = emptyList()),
+                                record = RecordResponse(5, 0, 0),
+                            ),
                         )
                 }
 
@@ -527,16 +507,13 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
 
                 tournamentIds.forEach { id ->
                     coEvery { mockService.fetchStandings(id) } returns
-                        StandingsResponse(
-                            standings =
-                                listOf(
-                                    StandingResponse(
-                                        placing = 1,
-                                        player = PlayerResponse(name = "Player-$id"),
-                                        deck = DeckResponse(pokemon = emptyList()),
-                                        record = RecordResponse(5, 0, 0),
-                                    ),
-                                ),
+                        listOf(
+                            StandingResponse(
+                                placing = 1,
+                                player = PlayerResponse(name = "Player-$id"),
+                                deck = DeckResponse(icons = emptyList()),
+                                record = RecordResponse(5, 0, 0),
+                            ),
                         )
                 }
 
@@ -558,12 +535,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = placing,
                             player = PlayerResponse(name = "Player $placing"),
-                            deck = DeckResponse(pokemon = emptyList()),
+                            deck = DeckResponse(icons = emptyList()),
                             record = RecordResponse(0, 10, 0),
                         )
                     }
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -581,12 +557,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = 0,
                             player = PlayerResponse(name = "Zero Placing Player"),
-                            deck = DeckResponse(pokemon = emptyList()),
+                            deck = DeckResponse(icons = emptyList()),
                             record = RecordResponse(0, 0, 0),
                         ),
                     )
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -605,12 +580,11 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = -1,
                             player = PlayerResponse(name = "Negative Placing Player"),
-                            deck = DeckResponse(pokemon = emptyList()),
+                            deck = DeckResponse(icons = emptyList()),
                             record = RecordResponse(0, 0, 0),
                         ),
                     )
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))
@@ -633,16 +607,13 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                 coEvery { mockService.fetchStandings("t3") } throws
                     RuntimeException("Runtime error")
                 coEvery { mockService.fetchStandings("t4") } returns
-                    StandingsResponse(
-                        standings =
-                            listOf(
-                                StandingResponse(
-                                    placing = 1,
-                                    player = PlayerResponse(name = "Success"),
-                                    deck = DeckResponse(pokemon = emptyList()),
-                                    record = RecordResponse(5, 0, 0),
-                                ),
-                            ),
+                    listOf(
+                        StandingResponse(
+                            placing = 1,
+                            player = PlayerResponse(name = "Success"),
+                            deck = DeckResponse(icons = emptyList()),
+                            record = RecordResponse(5, 0, 0),
+                        ),
                     )
 
                 // When
@@ -664,25 +635,24 @@ class RemoteTournamentDataSourceStandingsTest : BehaviorSpec({
                         StandingResponse(
                             placing = 1,
                             player = PlayerResponse(name = "Perfect Record"),
-                            deck = DeckResponse(pokemon = emptyList()),
+                            deck = DeckResponse(icons = emptyList()),
                             record = RecordResponse(wins = 10, losses = 0, ties = 0),
                         ),
                         StandingResponse(
                             placing = 2,
                             player = PlayerResponse(name = "With Ties"),
-                            deck = DeckResponse(pokemon = emptyList()),
+                            deck = DeckResponse(icons = emptyList()),
                             record = RecordResponse(wins = 8, losses = 1, ties = 1),
                         ),
                         StandingResponse(
                             placing = 3,
                             player = PlayerResponse(name = "Many Losses"),
-                            deck = DeckResponse(pokemon = emptyList()),
+                            deck = DeckResponse(icons = emptyList()),
                             record = RecordResponse(wins = 5, losses = 5, ties = 0),
                         ),
                     )
 
-                coEvery { mockService.fetchStandings("tournament-1") } returns
-                    StandingsResponse(standings = standings)
+                coEvery { mockService.fetchStandings("tournament-1") } returns standings
 
                 // When
                 val result = dataSource.getTop8Standings(listOf("tournament-1"))

@@ -20,6 +20,7 @@ import tcg.pocket.dex.allcards.AllCardsViewModel
 import tcg.pocket.dex.allcards.CardDetailScreen
 import tcg.pocket.dex.allcards.CardDetailViewModel
 import tcg.pocket.dex.datasource.RemoteCardsDataSource
+import tcg.pocket.dex.datasource.RemoteTournamentDataSource
 import tcg.pocket.dex.deckdetail.DeckDetailScreen
 import tcg.pocket.dex.deckdetail.DeckDetailViewModel
 import tcg.pocket.dex.extensionpacks.ExtensionPacksScreen
@@ -32,8 +33,10 @@ import tcg.pocket.dex.navigation.TierDeckDetail
 import tcg.pocket.dex.navigation.TierDecks
 import tcg.pocket.dex.navigation.bottomBarScreens
 import tcg.pocket.dex.remote.service.DefaultCardsService
+import tcg.pocket.dex.remote.service.DefaultTournamentStatsService
 import tcg.pocket.dex.repo.allcards.DefaultCardsRepo
-import tcg.pocket.dex.repo.decks.FakeDecksRepo
+import tcg.pocket.dex.repo.decks.DefaultDecksRepo
+import tcg.pocket.dex.repo.tournamentstats.DefaultTournamentStatsRepo
 import tcg.pocket.dex.search.SearchScreenForAllCards
 import tcg.pocket.dex.search.SearchScreenForExpansionPacks
 import tcg.pocket.dex.search.SearchScreenForTierDecks
@@ -99,7 +102,21 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
             ) {
                 composable(route = TierDecks.route) {
                     val tierDecksViewModel: TierDecksViewModel =
-                        viewModel(factory = TierDecksViewModel.factory(decksRepo = FakeDecksRepo()))
+                        viewModel(
+                            factory =
+                                TierDecksViewModel.factory(
+                                    decksRepo =
+                                        DefaultDecksRepo(
+                                            tournamentStatsRepo =
+                                                DefaultTournamentStatsRepo(
+                                                    remoteTournamentDataSource =
+                                                        RemoteTournamentDataSource(
+                                                            tournamentStatsService = DefaultTournamentStatsService(),
+                                                        ),
+                                                ),
+                                        ),
+                                ),
+                        )
 
                     TierDecksScreen(
                         viewModel = tierDecksViewModel,

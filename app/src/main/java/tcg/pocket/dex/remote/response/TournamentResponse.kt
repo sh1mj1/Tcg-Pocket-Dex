@@ -9,6 +9,7 @@ data class TournamentResponse(
     val date: String? = null,
     val game: String,
     val players: Int,
+    val decklists: Boolean? = null,
 )
 
 data class TournamentId(val id: String)

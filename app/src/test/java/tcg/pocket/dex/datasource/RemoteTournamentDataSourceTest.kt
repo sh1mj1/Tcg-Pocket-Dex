@@ -357,7 +357,6 @@ class RemoteTournamentDataSourceTest : BehaviorSpec({
                             name = "Event $i",
                             date = "2025-01-01",
                             game = "POCKET",
-                            // 0부터 99까지 순환
                             players = i % 100,
                         )
                     }

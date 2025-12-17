@@ -5,31 +5,51 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import tcg.pocket.dex.common.UiState
 import tcg.pocket.dex.repo.decks.DecksRepo
+import timber.log.Timber
 
 class TierDecksViewModel(
     private val decksRepo: DecksRepo,
 ) : ViewModel() {
-    private val _deckItemsState = MutableStateFlow<List<DeckItemState>>(emptyList())
-    val deckItemsState: StateFlow<List<DeckItemState>> = _deckItemsState
+    val uiState: StateFlow<UiState<List<DeckItemState>>>
+        field = MutableStateFlow<UiState<List<DeckItemState>>>(UiState.Loading)
 
     init {
         viewModelScope.launch {
-            val decks = decksRepo.allTierDecks()
-            _deckItemsState.value = decks.map(::DeckItemState)
+            try {
+                val decks = decksRepo.allTierDecks()
+                Timber.d("Loaded ${decks.size} decks")
+
+                if (decks.isEmpty()) {
+                    uiState.value = UiState.Error("데이터를 찾을 수 없습니다")
+                } else {
+                    uiState.value = UiState.Success(decks.map(::DeckItemState))
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error loading decks")
+                uiState.value = UiState.Error(e.message ?: "Unknown error")
+            }
         }
     }
 
     fun onExpandDeck(deckItemState: DeckItemState) {
-        _deckItemsState.value =
-            _deckItemsState.value.map { state ->
-                if (state == deckItemState) {
-                    state.expansionToggled()
-                } else {
-                    state
-                }
+        val currentState = uiState.value
+        if (currentState is UiState.Success) {
+            uiState.update { _ ->
+                UiState.Success(
+                    currentState.data.map { state ->
+                        if (state == deckItemState) {
+                            state.expansionToggled()
+                        } else {
+                            state
+                        }
+                    },
+                )
             }
+        }
     }
 
     companion object {

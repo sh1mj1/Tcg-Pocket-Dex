@@ -17,7 +17,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = listOf("Pikachu ex", "Zapdos ex", "Articuno ex"),
+                        icons = listOf("Pikachu ex", "Zapdos ex", "Articuno ex"),
                     ),
                 record =
                     RecordResponse(
@@ -82,7 +82,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = null,
+                        icons = null,
                     ),
                 record =
                     RecordResponse(
@@ -131,14 +131,14 @@ class StandingsResponseTest : FunSpec({
         player.region shouldBe "Europe"
     }
 
-    test("DeckResponse should contain all Pokemon in list") {
+    test("DeckResponse should contain all icons in list") {
         val deck =
             DeckResponse(
-                pokemon = listOf("Mewtwo ex", "Gardevoir", "Ralts", "Kirlia"),
+                icons = listOf("Mewtwo ex", "Gardevoir", "Ralts", "Kirlia"),
             )
 
-        deck.pokemon shouldBe listOf("Mewtwo ex", "Gardevoir", "Ralts", "Kirlia")
-        deck.pokemon?.size shouldBe 4
+        deck.icons shouldBe listOf("Mewtwo ex", "Gardevoir", "Ralts", "Kirlia")
+        deck.icons?.size shouldBe 4
     }
 
     test("RecordResponse should have correct wins, losses, and ties") {
@@ -154,7 +154,7 @@ class StandingsResponseTest : FunSpec({
         record.ties shouldBe 1
     }
 
-    test("DeckResponse with empty Pokemon list should have empty list") {
+    test("DeckResponse with empty icons list should have empty list") {
         val response =
             StandingResponse(
                 placing = 8,
@@ -164,7 +164,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = emptyList(),
+                        icons = emptyList(),
                     ),
                 record =
                     RecordResponse(
@@ -190,7 +190,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = listOf("Charizard ex"),
+                        icons = listOf("Charizard ex"),
                     ),
                 record =
                     RecordResponse(
@@ -243,7 +243,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = listOf("ピカチュウex"),
+                        icons = listOf("ピカチュウex"),
                     ),
                 record =
                     RecordResponse(
@@ -350,7 +350,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = pokemonList,
+                        icons = pokemonList,
                     ),
                 record =
                     RecordResponse(
@@ -460,7 +460,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = listOf("Pikachu ex ⚡", "Type: Null", "Farfetch'd"),
+                        icons = listOf("Pikachu ex ⚡", "Type: Null", "Farfetch'd"),
                     ),
                 record =
                     RecordResponse(
@@ -598,7 +598,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = listOf("Mewtwo ex"),
+                        icons = listOf("Mewtwo ex"),
                     ),
                 record =
                     RecordResponse(
@@ -625,7 +625,7 @@ class StandingsResponseTest : FunSpec({
                     ),
                 deck =
                     DeckResponse(
-                        pokemon = pokemonOrder,
+                        icons = pokemonOrder,
                     ),
                 record =
                     RecordResponse(
