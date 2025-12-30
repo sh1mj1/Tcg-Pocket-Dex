@@ -6,8 +6,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun DeckDetailScreen(
@@ -27,12 +25,4 @@ fun DeckDetailScreen(
             style = MaterialTheme.typography.displayLarge,
         )
     }
-}
-
-@Preview
-@Composable
-private fun DeckDetailScreenPreview() {
-    DeckDetailScreen(
-        viewModel = viewModel(factory = DeckDetailViewModel.factory("FakeId")),
-    )
 }
