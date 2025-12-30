@@ -25,6 +25,7 @@ class DefaultDecksRepoTest : BehaviorSpec({
         winRate: String = "50.0%",
         usageShare: String = "100.0%",
         appearances: Int = 1,
+        iconUrls: List<String> = emptyList(),
     ): CalculatedDeck =
         CalculatedDeck(
             deckId = deckId,
@@ -32,6 +33,7 @@ class DefaultDecksRepoTest : BehaviorSpec({
             winRate = winRate,
             usageShare = usageShare,
             appearances = appearances,
+            iconUrls = iconUrls,
         )
 
     Given("여러 덱이 서로 다른 appearances를 가진 경우") {
@@ -122,13 +124,35 @@ class DefaultDecksRepoTest : BehaviorSpec({
     }
 
     Given("파이프로 구분된 덱 ID") {
-        When("allTierDecks를 호출할 때") {
-            Then("정확히 2개의 이미지 URL이 생성되어야 한다") {
+        When("iconUrls가 있을 때") {
+            Then("iconUrls를 사용해야 한다") {
                 val decks =
                     listOf(
                         createCalculatedDeck(
                             deckId = "Mewtwo|Pikachu",
                             deckName = "Mewtwo + Pikachu",
+                            iconUrls = listOf("http://example.com/mewtwo.png", "http://example.com/pikachu.png"),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 2
+                result[0].simple.representativePokemonImageUrls[0] shouldBe "http://example.com/mewtwo.png"
+                result[0].simple.representativePokemonImageUrls[1] shouldBe "http://example.com/pikachu.png"
+            }
+        }
+
+        When("iconUrls가 비어있을 때") {
+            Then("플레이스홀더 URL을 사용해야 한다") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Mewtwo|Pikachu",
+                            deckName = "Mewtwo + Pikachu",
+                            iconUrls = emptyList(),
                         ),
                     )
                 coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
@@ -145,13 +169,35 @@ class DefaultDecksRepoTest : BehaviorSpec({
     }
 
     Given("3개의 포켓몬이 있는 덱 ID") {
-        When("allTierDecks를 호출할 때") {
-            Then("처음 2개의 포켓몬만 이미지 URL로 변환되어야 한다") {
+        When("iconUrls가 3개일 때") {
+            Then("처음 2개의 iconUrls만 사용되어야 한다") {
                 val decks =
                     listOf(
                         createCalculatedDeck(
                             deckId = "Charizard|Mewtwo|Pikachu",
                             deckName = "Charizard + Mewtwo + Pikachu",
+                            iconUrls = listOf("http://example.com/char.png", "http://example.com/mew.png", "http://example.com/pika.png"),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 2
+                result[0].simple.representativePokemonImageUrls[0] shouldBe "http://example.com/char.png"
+                result[0].simple.representativePokemonImageUrls[1] shouldBe "http://example.com/mew.png"
+            }
+        }
+
+        When("iconUrls가 없을 때") {
+            Then("플레이스홀더 URL 2개가 생성되어야 한다") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Charizard|Mewtwo|Pikachu",
+                            deckName = "Charizard + Mewtwo + Pikachu",
+                            iconUrls = emptyList(),
                         ),
                     )
                 coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
@@ -168,13 +214,34 @@ class DefaultDecksRepoTest : BehaviorSpec({
     }
 
     Given("단일 포켓몬 덱 ID") {
-        When("allTierDecks를 호출할 때") {
-            Then("1개의 이미지 URL이 생성되어야 한다") {
+        When("iconUrl이 1개 있을 때") {
+            Then("해당 iconUrl을 사용해야 한다") {
                 val decks =
                     listOf(
                         createCalculatedDeck(
                             deckId = "Pikachu",
                             deckName = "Pikachu",
+                            iconUrls = listOf("http://example.com/pikachu.png"),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls[0] shouldBe "http://example.com/pikachu.png"
+            }
+        }
+
+        When("iconUrls가 비어있을 때") {
+            Then("1개의 플레이스홀더 URL이 생성되어야 한다") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Pikachu",
+                            deckName = "Pikachu",
+                            iconUrls = emptyList(),
                         ),
                     )
                 coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
@@ -190,13 +257,34 @@ class DefaultDecksRepoTest : BehaviorSpec({
     }
 
     Given("이미지 URL 형식 검증") {
-        When("allTierDecks를 호출할 때") {
-            Then("모든 URL이 'sprites/pokemon'을 포함해야 한다") {
+        When("iconUrls가 제공될 때") {
+            Then("iconUrls를 그대로 사용해야 한다") {
                 val decks =
                     listOf(
                         createCalculatedDeck(
                             deckId = "Mewtwo|Pikachu|Charizard",
                             deckName = "Mewtwo + Pikachu + Charizard",
+                            iconUrls = listOf("http://api.example.com/mewtwo.png", "http://api.example.com/pikachu.png"),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls[0] shouldBe "http://api.example.com/mewtwo.png"
+                result[0].simple.representativePokemonImageUrls[1] shouldBe "http://api.example.com/pikachu.png"
+            }
+        }
+
+        When("iconUrls가 없을 때") {
+            Then("플레이스홀더 URL이 'sprites/pokemon'을 포함해야 한다") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Mewtwo|Pikachu|Charizard",
+                            deckName = "Mewtwo + Pikachu + Charizard",
+                            iconUrls = emptyList(),
                         ),
                     )
                 coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks

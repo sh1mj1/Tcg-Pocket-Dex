@@ -24,10 +24,11 @@ private fun CalculatedDeck.toDeckInformation(rank: Int): DeckInformation {
         simple =
             DeckSimpleInformation(
                 deckId = deckId,
-                // TODO: Replace with actual Pokémon image URLs from card data (Issue #36)
                 representativePokemonImageUrls =
-                    pokemonNames.take(2).map {
-                        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
+                    iconUrls.take(2).ifEmpty {
+                        pokemonNames.take(2).map {
+                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
+                        }
                     },
                 rank = rank,
                 deckName = deckName,

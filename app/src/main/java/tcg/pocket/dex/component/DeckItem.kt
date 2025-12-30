@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.tierdecks.DeckInformation
-import tcg.pocket.dex.tierdecks.FAKE_TIER_DECK_DESCRIPTION
 import tcg.pocket.dex.tierdecks.PokemonTypeChipData
 import tcg.pocket.dex.tierdecks.temporalPokemonPlaceholderDrawable
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
@@ -140,13 +139,6 @@ private fun DeckItemDetail(
                 modifier = modifier,
             )
         }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = FAKE_TIER_DECK_DESCRIPTION,
-            style = MaterialTheme.typography.bodySmall,
-        )
     }
 }
 
@@ -200,7 +192,7 @@ private fun DeckItemInfoContent(
             text = deckName,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
         Spacer(modifier = Modifier.height(4.dp))

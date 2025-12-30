@@ -20,12 +20,14 @@ object DeckStatsAggregator {
             .filter { it.deckPokemon.isNotEmpty() }
             .groupBy { createDeckId(it.deckPokemon) }
             .mapValues { (deckId, standingsForDeck) ->
+                val firstStanding = standingsForDeck.first()
                 DeckStats(
                     deckId = deckId,
-                    deckName = createDeckName(standingsForDeck.first().deckPokemon),
+                    deckName = createDeckName(firstStanding.deckPokemon),
                     count = standingsForDeck.size,
                     totalWins = standingsForDeck.sumOf { it.wins },
                     totalLosses = standingsForDeck.sumOf { it.losses },
+                    iconUrls = firstStanding.deckPokemon,
                 )
             }
 
