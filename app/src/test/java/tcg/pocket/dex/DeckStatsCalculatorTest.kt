@@ -16,6 +16,7 @@ class DeckStatsCalculatorTest : BehaviorSpec({
         count: Int,
         wins: Int,
         losses: Int,
+        iconUrls: List<String> = emptyList(),
     ): DeckStats =
         DeckStats(
             deckId = id,
@@ -23,6 +24,7 @@ class DeckStatsCalculatorTest : BehaviorSpec({
             count = count,
             totalWins = wins,
             totalLosses = losses,
+            iconUrls = iconUrls,
         )
 
     Given("win rate calculation") {
@@ -632,6 +634,268 @@ class DeckStatsCalculatorTest : BehaviorSpec({
                 result[0].appearances shouldBe 50
                 result[0].winRate shouldBe "60.0%"
                 result[0].usageShare shouldBe "100.0%"
+            }
+        }
+    }
+
+    Given("iconUrls preservation") {
+        When("DeckStats has empty iconUrls") {
+            val deckStats =
+                mapOf(
+                    "deck1" to
+                        createDeckStats(
+                            "deck1",
+                            "Deck Without Icons",
+                            10,
+                            5,
+                            5,
+                            iconUrls = emptyList(),
+                        ),
+                )
+
+            Then("CalculatedDeck should have empty iconUrls") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 1
+                result[0].iconUrls.shouldBeEmpty()
+            }
+        }
+
+        When("DeckStats has single iconUrl") {
+            val deckStats =
+                mapOf(
+                    "deck1" to
+                        createDeckStats(
+                            "deck1",
+                            "Pikachu",
+                            10,
+                            5,
+                            5,
+                            iconUrls = listOf("Pikachu"),
+                        ),
+                )
+
+            Then("CalculatedDeck should preserve single iconUrl") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 1
+                result[0].iconUrls shouldHaveSize 1
+                result[0].iconUrls[0] shouldBe "Pikachu"
+            }
+        }
+
+        When("DeckStats has multiple iconUrls") {
+            val deckStats =
+                mapOf(
+                    "deck1" to
+                        createDeckStats(
+                            "deck1",
+                            "Pikachu + Mewtwo",
+                            10,
+                            5,
+                            5,
+                            iconUrls = listOf("Pikachu", "Mewtwo"),
+                        ),
+                )
+
+            Then("CalculatedDeck should preserve all iconUrls in order") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 1
+                result[0].iconUrls shouldHaveSize 2
+                result[0].iconUrls[0] shouldBe "Pikachu"
+                result[0].iconUrls[1] shouldBe "Mewtwo"
+            }
+        }
+
+        When("DeckStats has three iconUrls") {
+            val deckStats =
+                mapOf(
+                    "deck1" to
+                        createDeckStats(
+                            "deck1",
+                            "Pikachu + Mewtwo + Charizard",
+                            10,
+                            5,
+                            5,
+                            iconUrls = listOf("Pikachu", "Mewtwo", "Charizard"),
+                        ),
+                )
+
+            Then("CalculatedDeck should preserve all three iconUrls in order") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 1
+                result[0].iconUrls shouldHaveSize 3
+                result[0].iconUrls[0] shouldBe "Pikachu"
+                result[0].iconUrls[1] shouldBe "Mewtwo"
+                result[0].iconUrls[2] shouldBe "Charizard"
+            }
+        }
+
+        When("multiple decks with different iconUrls") {
+            val deckStats =
+                mapOf(
+                    "deck1" to
+                        createDeckStats(
+                            "deck1",
+                            "Pikachu",
+                            50,
+                            25,
+                            25,
+                            iconUrls = listOf("Pikachu"),
+                        ),
+                    "deck2" to
+                        createDeckStats(
+                            "deck2",
+                            "Mewtwo + Gardevoir",
+                            30,
+                            20,
+                            10,
+                            iconUrls = listOf("Mewtwo", "Gardevoir"),
+                        ),
+                    "deck3" to
+                        createDeckStats(
+                            "deck3",
+                            "No Icons",
+                            20,
+                            10,
+                            10,
+                            iconUrls = emptyList(),
+                        ),
+                )
+
+            Then("each CalculatedDeck should have correct iconUrls") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 3
+
+                val pikachuDeck = result.find { it.deckId == "deck1" }!!
+                pikachuDeck.iconUrls shouldHaveSize 1
+                pikachuDeck.iconUrls[0] shouldBe "Pikachu"
+
+                val mewtwoDeck = result.find { it.deckId == "deck2" }!!
+                mewtwoDeck.iconUrls shouldHaveSize 2
+                mewtwoDeck.iconUrls[0] shouldBe "Mewtwo"
+                mewtwoDeck.iconUrls[1] shouldBe "Gardevoir"
+
+                val noIconsDeck = result.find { it.deckId == "deck3" }!!
+                noIconsDeck.iconUrls.shouldBeEmpty()
+            }
+        }
+
+        When("iconUrls are preserved through sorting") {
+            val deckStats =
+                mapOf(
+                    "deck1" to
+                        createDeckStats(
+                            "deck1",
+                            "Low Usage",
+                            10,
+                            5,
+                            5,
+                            iconUrls = listOf("Pokemon A"),
+                        ),
+                    "deck2" to
+                        createDeckStats(
+                            "deck2",
+                            "High Usage",
+                            50,
+                            25,
+                            25,
+                            iconUrls = listOf("Pokemon B", "Pokemon C"),
+                        ),
+                )
+
+            Then("iconUrls should remain correct after sorting by usage") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 2
+
+                result[0].deckName shouldBe "High Usage"
+                result[0].iconUrls shouldHaveSize 2
+                result[0].iconUrls[0] shouldBe "Pokemon B"
+                result[0].iconUrls[1] shouldBe "Pokemon C"
+
+                result[1].deckName shouldBe "Low Usage"
+                result[1].iconUrls shouldHaveSize 1
+                result[1].iconUrls[0] shouldBe "Pokemon A"
+            }
+        }
+
+        When("iconUrls with real Pokemon names") {
+            val deckStats =
+                mapOf(
+                    "mewtwo_gardevoir" to
+                        createDeckStats(
+                            "mewtwo_gardevoir",
+                            "Mewtwo ex + Gardevoir",
+                            100,
+                            70,
+                            30,
+                            iconUrls = listOf("Mewtwo ex", "Gardevoir"),
+                        ),
+                    "pikachu_ex" to
+                        createDeckStats(
+                            "pikachu_ex",
+                            "Pikachu ex",
+                            80,
+                            55,
+                            25,
+                            iconUrls = listOf("Pikachu ex"),
+                        ),
+                )
+
+            Then("iconUrls should be preserved with real Pokemon names") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 2
+
+                val mewtwoDeck = result.find { it.deckId == "mewtwo_gardevoir" }!!
+                mewtwoDeck.iconUrls shouldHaveSize 2
+                mewtwoDeck.iconUrls[0] shouldBe "Mewtwo ex"
+                mewtwoDeck.iconUrls[1] shouldBe "Gardevoir"
+
+                val pikachuDeck = result.find { it.deckId == "pikachu_ex" }!!
+                pikachuDeck.iconUrls shouldHaveSize 1
+                pikachuDeck.iconUrls[0] shouldBe "Pikachu ex"
+            }
+        }
+    }
+
+    Given("empty map with iconUrls field") {
+        When("converting empty map") {
+            val deckStats = emptyMap<String, DeckStats>()
+
+            Then("should return empty list") {
+                val result = deckStats.toCalculatedDecks()
+                result.shouldBeEmpty()
+            }
+        }
+    }
+
+    Given("iconUrls field integration with all other fields") {
+        When("converting DeckStats with all fields populated") {
+            val deckStats =
+                mapOf(
+                    "deck1" to
+                        createDeckStats(
+                            id = "Pikachu|Mewtwo",
+                            name = "Pikachu + Mewtwo",
+                            count = 50,
+                            wins = 30,
+                            losses = 20,
+                            iconUrls = listOf("Pikachu", "Mewtwo"),
+                        ),
+                )
+
+            Then("all fields including iconUrls should be correctly populated") {
+                val result = deckStats.toCalculatedDecks()
+                result shouldHaveSize 1
+
+                with(result[0]) {
+                    deckId shouldBe "Pikachu|Mewtwo"
+                    deckName shouldBe "Pikachu + Mewtwo"
+                    winRate shouldBe "60.0%"
+                    usageShare shouldBe "100.0%"
+                    appearances shouldBe 50
+                    iconUrls shouldHaveSize 2
+                    iconUrls[0] shouldBe "Pikachu"
+                    iconUrls[1] shouldBe "Mewtwo"
+                }
             }
         }
     }
