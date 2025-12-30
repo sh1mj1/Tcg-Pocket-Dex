@@ -40,4 +40,4 @@ google-services.json
 .claude/settings.local.json
 
 # 프로젝트 루트 경로에서 실행
-.myshell/
+.myshell/.playwright-mcp/
