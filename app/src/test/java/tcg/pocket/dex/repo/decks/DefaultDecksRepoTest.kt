@@ -15,6 +15,15 @@ class DefaultDecksRepoTest : BehaviorSpec({
     val mockTournamentStatsRepo = mockk<TournamentStatsRepo>()
     val repo = DefaultDecksRepo(mockTournamentStatsRepo)
 
+    val limitlessTcgBaseUrl = "https://r2.limitlesstcg.net/pokemon/gen9"
+    val pikachuImageUrl = "$limitlessTcgBaseUrl/pikachu.png"
+    val mewtwoImageUrl = "$limitlessTcgBaseUrl/mewtwo.png"
+    val charizardImageUrl = "$limitlessTcgBaseUrl/charizard.png"
+    val zapdosImageUrl = "$limitlessTcgBaseUrl/zapdos.png"
+    val articunoImageUrl = "$limitlessTcgBaseUrl/articuno.png"
+    val moltresImageUrl = "$limitlessTcgBaseUrl/moltres.png"
+    val dittoImageUrl = "$limitlessTcgBaseUrl/ditto.png"
+
     beforeEach {
         clearMocks(mockTournamentStatsRepo)
     }
@@ -25,6 +34,7 @@ class DefaultDecksRepoTest : BehaviorSpec({
         winRate: String = "50.0%",
         usageShare: String = "100.0%",
         appearances: Int = 1,
+        iconUrls: List<String> = emptyList(),
     ): CalculatedDeck =
         CalculatedDeck(
             deckId = deckId,
@@ -32,6 +42,7 @@ class DefaultDecksRepoTest : BehaviorSpec({
             winRate = winRate,
             usageShare = usageShare,
             appearances = appearances,
+            iconUrls = iconUrls,
         )
 
     Given("여러 덱이 서로 다른 appearances를 가진 경우") {
@@ -122,13 +133,14 @@ class DefaultDecksRepoTest : BehaviorSpec({
     }
 
     Given("파이프로 구분된 덱 ID") {
-        When("allTierDecks를 호출할 때") {
-            Then("정확히 2개의 이미지 URL이 생성되어야 한다") {
+        When("iconUrls가 있을 때") {
+            Then("Pokemon names should be converted to URLs") {
                 val decks =
                     listOf(
                         createCalculatedDeck(
                             deckId = "Mewtwo|Pikachu",
                             deckName = "Mewtwo + Pikachu",
+                            iconUrls = listOf("Mewtwo ex", "Pikachu ex"),
                         ),
                     )
                 coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
@@ -137,44 +149,19 @@ class DefaultDecksRepoTest : BehaviorSpec({
 
                 result shouldHaveSize 1
                 result[0].simple.representativePokemonImageUrls shouldHaveSize 2
-                result[0].simple.representativePokemonImageUrls.forEach { url ->
-                    url shouldBe "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
-                }
+                result[0].simple.representativePokemonImageUrls[0] shouldBe mewtwoImageUrl
+                result[0].simple.representativePokemonImageUrls[1] shouldBe pikachuImageUrl
             }
         }
-    }
 
-    Given("3개의 포켓몬이 있는 덱 ID") {
-        When("allTierDecks를 호출할 때") {
-            Then("처음 2개의 포켓몬만 이미지 URL로 변환되어야 한다") {
+        When("iconUrls가 비어있을 때") {
+            Then("should use Ditto (132) as fallback") {
                 val decks =
                     listOf(
                         createCalculatedDeck(
-                            deckId = "Charizard|Mewtwo|Pikachu",
-                            deckName = "Charizard + Mewtwo + Pikachu",
-                        ),
-                    )
-                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
-
-                val result = repo.allTierDecks()
-
-                result shouldHaveSize 1
-                result[0].simple.representativePokemonImageUrls shouldHaveSize 2
-                result[0].simple.representativePokemonImageUrls.forEach { url ->
-                    url shouldBe "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
-                }
-            }
-        }
-    }
-
-    Given("단일 포켓몬 덱 ID") {
-        When("allTierDecks를 호출할 때") {
-            Then("1개의 이미지 URL이 생성되어야 한다") {
-                val decks =
-                    listOf(
-                        createCalculatedDeck(
-                            deckId = "Pikachu",
-                            deckName = "Pikachu",
+                            deckId = "Mewtwo|Pikachu",
+                            deckName = "Mewtwo + Pikachu",
+                            iconUrls = emptyList(),
                         ),
                     )
                 coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
@@ -183,20 +170,125 @@ class DefaultDecksRepoTest : BehaviorSpec({
 
                 result shouldHaveSize 1
                 result[0].simple.representativePokemonImageUrls shouldHaveSize 1
-                result[0].simple.representativePokemonImageUrls[0] shouldBe
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
+                result[0].simple.representativePokemonImageUrls[0] shouldBe dittoImageUrl
+            }
+        }
+    }
+
+    Given("3개의 포켓몬이 있는 덱 ID") {
+        When("iconUrls가 3개일 때") {
+            Then("should convert only first 2 Pokemon names to URLs") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Charizard|Mewtwo|Pikachu",
+                            deckName = "Charizard + Mewtwo + Pikachu",
+                            iconUrls = listOf("Charizard ex", "Mewtwo ex", "Pikachu ex"),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 2
+                result[0].simple.representativePokemonImageUrls[0] shouldBe charizardImageUrl
+                result[0].simple.representativePokemonImageUrls[1] shouldBe mewtwoImageUrl
+            }
+        }
+
+        When("iconUrls가 없을 때") {
+            Then("should use Ditto (132) as fallback") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Charizard|Mewtwo|Pikachu",
+                            deckName = "Charizard + Mewtwo + Pikachu",
+                            iconUrls = emptyList(),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls[0] shouldBe dittoImageUrl
+            }
+        }
+    }
+
+    Given("단일 포켓몬 덱 ID") {
+        When("iconUrl이 1개 있을 때") {
+            Then("should convert Pokemon name to URL") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Pikachu",
+                            deckName = "Pikachu",
+                            iconUrls = listOf("Pikachu ex"),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls[0] shouldBe pikachuImageUrl
+            }
+        }
+
+        When("iconUrls가 비어있을 때") {
+            Then("should use Ditto (132) as fallback") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Pikachu",
+                            deckName = "Pikachu",
+                            iconUrls = emptyList(),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls[0] shouldBe dittoImageUrl
             }
         }
     }
 
     Given("이미지 URL 형식 검증") {
-        When("allTierDecks를 호출할 때") {
-            Then("모든 URL이 'sprites/pokemon'을 포함해야 한다") {
+        When("iconUrls가 제공될 때") {
+            Then("should convert Pokemon names to PokeAPI URLs") {
                 val decks =
                     listOf(
                         createCalculatedDeck(
                             deckId = "Mewtwo|Pikachu|Charizard",
                             deckName = "Mewtwo + Pikachu + Charizard",
+                            iconUrls = listOf("Mewtwo ex", "Pikachu ex"),
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls[0] shouldBe mewtwoImageUrl
+                result[0].simple.representativePokemonImageUrls[1] shouldBe pikachuImageUrl
+            }
+        }
+
+        When("iconUrls가 없을 때") {
+            Then("should use Ditto fallback from limitlesstcg.net") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Mewtwo|Pikachu|Charizard",
+                            deckName = "Mewtwo + Pikachu + Charizard",
+                            iconUrls = emptyList(),
                         ),
                     )
                 coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
@@ -205,7 +297,7 @@ class DefaultDecksRepoTest : BehaviorSpec({
 
                 result shouldHaveSize 1
                 result[0].simple.representativePokemonImageUrls.forEach { url ->
-                    url.contains("sprites/pokemon") shouldBe true
+                    url.contains("limitlesstcg.net/pokemon/gen9") shouldBe true
                 }
             }
         }
@@ -455,6 +547,152 @@ class DefaultDecksRepoTest : BehaviorSpec({
                 result.forEachIndexed { index, deckInfo ->
                     deckInfo.simple.rank shouldBe (index + 1)
                 }
+            }
+        }
+    }
+
+    Given("Pokemon name to URL conversion") {
+        When("iconUrls contains Pokemon names") {
+            Then("should convert names to limitlesstcg.net image URLs") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Pikachu ex|Mewtwo ex",
+                            deckName = "Pikachu ex + Mewtwo ex",
+                            iconUrls = listOf("Pikachu ex", "Mewtwo ex"),
+                            appearances = 100,
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldContainExactly
+                    listOf(
+                        pikachuImageUrl,
+                        mewtwoImageUrl,
+                    )
+            }
+        }
+
+        When("iconUrls contains Pokemon names with variations") {
+            Then("should normalize names and convert to URLs") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Charizard ex|Zapdos ex",
+                            deckName = "Charizard ex + Zapdos ex",
+                            iconUrls = listOf("Charizard ex", "Zapdos ex"),
+                            appearances = 100,
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldContainExactly
+                    listOf(
+                        charizardImageUrl,
+                        zapdosImageUrl,
+                    )
+            }
+        }
+
+        When("iconUrls is empty") {
+            Then("should use Ditto (132) as fallback") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "EmptyDeck",
+                            deckName = "Empty Deck",
+                            iconUrls = emptyList(),
+                            appearances = 100,
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldContainExactly
+                    listOf(
+                        dittoImageUrl,
+                    )
+            }
+        }
+
+        When("iconUrls contains more than 2 Pokemon names") {
+            Then("should convert only the first 2 names to URLs") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Pikachu|Mewtwo|Charizard",
+                            deckName = "Pikachu + Mewtwo + Charizard",
+                            iconUrls = listOf("Pikachu ex", "Mewtwo ex", "Charizard ex"),
+                            appearances = 100,
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldHaveSize 2
+                result[0].simple.representativePokemonImageUrls shouldContainExactly
+                    listOf(
+                        pikachuImageUrl,
+                        mewtwoImageUrl,
+                    )
+            }
+        }
+
+        When("iconUrls contains mixed case and variations") {
+            Then("should normalize and convert correctly") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "PIKACHU|mewtwo",
+                            deckName = "PIKACHU + mewtwo",
+                            iconUrls = listOf("PIKACHU EX", "Mewtwo V"),
+                            appearances = 100,
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldContainExactly
+                    listOf(
+                        pikachuImageUrl,
+                        mewtwoImageUrl,
+                    )
+            }
+        }
+
+        When("iconUrls contains various popular Pokemon") {
+            Then("should convert all to correct limitlesstcg.net URLs") {
+                val decks =
+                    listOf(
+                        createCalculatedDeck(
+                            deckId = "Articuno|Moltres",
+                            deckName = "Articuno + Moltres",
+                            iconUrls = listOf("Articuno ex", "Moltres ex"),
+                            appearances = 100,
+                        ),
+                    )
+                coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns decks
+
+                val result = repo.allTierDecks()
+
+                result shouldHaveSize 1
+                result[0].simple.representativePokemonImageUrls shouldContainExactly
+                    listOf(
+                        articunoImageUrl,
+                        moltresImageUrl,
+                    )
             }
         }
     }

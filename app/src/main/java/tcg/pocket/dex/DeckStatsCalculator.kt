@@ -45,6 +45,7 @@ fun Map<String, DeckStats>.toCalculatedDecks(): List<CalculatedDeck> {
             winRate = formatPercentage(winRatePercentage),
             usageShare = formatPercentage(usageSharePercentage),
             appearances = deckStats.count,
+            iconUrls = deckStats.iconUrls,
         )
     }.sortedWith(
         // Primary sort: usage share descending (most popular first)

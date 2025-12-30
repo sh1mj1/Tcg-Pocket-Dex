@@ -18,6 +18,7 @@ data class DeckStats(
     val count: Int,
     val totalWins: Int,
     val totalLosses: Int,
+    val iconUrls: List<String> = emptyList(),
 ) {
     /**
      * Calculated win rate as a decimal value (0.0 to 1.0).

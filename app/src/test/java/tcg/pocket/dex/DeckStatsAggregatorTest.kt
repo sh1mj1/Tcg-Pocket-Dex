@@ -679,4 +679,195 @@ class DeckStatsAggregatorTest : BehaviorSpec({
             }
         }
     }
+
+    // ============================================================================
+    // Icon URL Capture Tests
+    // ============================================================================
+
+    Given("single standing with deckPokemon") {
+        val standings =
+            listOf(
+                createStanding(deckPokemon = listOf("Pikachu", "Mewtwo"), wins = 5, losses = 2),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("iconUrls should be captured from first standing's deckPokemon") {
+                result.mapsShouldHaveSize(1)
+                val deckStats = result.values.first()
+                deckStats.iconUrls shouldContainExactly listOf("Pikachu", "Mewtwo")
+            }
+        }
+    }
+
+    Given("multiple standings with same deck but different deckPokemon order") {
+        val standings =
+            listOf(
+                createStanding(deckPokemon = listOf("Pikachu", "Mewtwo"), wins = 5, losses = 2),
+                createStanding(deckPokemon = listOf("Mewtwo", "Pikachu"), wins = 3, losses = 4),
+                createStanding(deckPokemon = listOf("Pikachu", "Mewtwo"), wins = 4, losses = 3),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("iconUrls should be captured from first standing only") {
+                result.mapsShouldHaveSize(1)
+                val deckStats = result.values.first()
+                deckStats.iconUrls shouldContainExactly listOf("Pikachu", "Mewtwo")
+            }
+        }
+    }
+
+    Given("standings with empty deckPokemon") {
+        val standings =
+            listOf(
+                createStanding(deckPokemon = emptyList(), wins = 5, losses = 2),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("should filter out standings with empty deckPokemon") {
+                result.mapsShouldBeEmpty()
+            }
+        }
+    }
+
+    Given("multiple decks with different deckPokemon") {
+        val standings =
+            listOf(
+                createStanding(deckPokemon = listOf("Pikachu", "Raichu"), wins = 5, losses = 2),
+                createStanding(deckPokemon = listOf("Mewtwo", "Alakazam"), wins = 3, losses = 4),
+                createStanding(deckPokemon = listOf("Charizard"), wins = 6, losses = 1),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("each deck should have correct iconUrls") {
+                result.mapsShouldHaveSize(3)
+
+                val pikachuDeck = result["Pikachu|Raichu"]!!
+                pikachuDeck.iconUrls shouldContainExactly listOf("Pikachu", "Raichu")
+
+                val mewtwoDeck = result["Alakazam|Mewtwo"]!!
+                mewtwoDeck.iconUrls shouldContainExactly listOf("Mewtwo", "Alakazam")
+
+                val charizardDeck = result["Charizard"]!!
+                charizardDeck.iconUrls shouldContainExactly listOf("Charizard")
+            }
+        }
+    }
+
+    Given("single Pokemon deck") {
+        val standings =
+            listOf(
+                createStanding(deckPokemon = listOf("Pikachu"), wins = 5, losses = 2),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("iconUrls should contain single Pokemon") {
+                result.mapsShouldHaveSize(1)
+                val deckStats = result.values.first()
+                deckStats.iconUrls shouldContainExactly listOf("Pikachu")
+            }
+        }
+    }
+
+    Given("three Pokemon deck") {
+        val standings =
+            listOf(
+                createStanding(
+                    deckPokemon = listOf("Pikachu", "Mewtwo", "Charizard"),
+                    wins = 5,
+                    losses = 2,
+                ),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("iconUrls should contain all three Pokemon") {
+                result.mapsShouldHaveSize(1)
+                val deckStats = result.values.first()
+                deckStats.iconUrls shouldContainExactly listOf("Pikachu", "Mewtwo", "Charizard")
+            }
+        }
+    }
+
+    Given("multiple standings with same deck, first standing used for iconUrls") {
+        val standings =
+            listOf(
+                createStanding(
+                    playerName = "Player1",
+                    deckPokemon = listOf("Pikachu ex", "Zapdos ex"),
+                    wins = 6,
+                    losses = 1,
+                ),
+                createStanding(
+                    playerName = "Player2",
+                    deckPokemon = listOf("Zapdos ex", "Pikachu ex"),
+                    wins = 5,
+                    losses = 2,
+                ),
+                createStanding(
+                    playerName = "Player3",
+                    deckPokemon = listOf("Pikachu ex", "Zapdos ex"),
+                    wins = 4,
+                    losses = 3,
+                ),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("iconUrls should match first standing's deckPokemon order") {
+                result.mapsShouldHaveSize(1)
+                val deckStats = result.values.first()
+                deckStats.iconUrls shouldContainExactly listOf("Pikachu ex", "Zapdos ex")
+            }
+        }
+    }
+
+    Given("real-world scenario with mixed deck sizes and icon URLs") {
+        val standings =
+            listOf(
+                createStanding(
+                    deckPokemon = listOf("Mewtwo ex", "Gardevoir"),
+                    wins = 6,
+                    losses = 1,
+                ),
+                createStanding(
+                    deckPokemon = listOf("Charizard ex"),
+                    wins = 5,
+                    losses = 2,
+                ),
+                createStanding(
+                    deckPokemon = listOf("Pikachu ex", "Zapdos ex", "Magneton"),
+                    wins = 4,
+                    losses = 3,
+                ),
+            )
+
+        When("aggregating") {
+            val result = DeckStatsAggregator.aggregate(standings)
+
+            Then("each deck should preserve iconUrls correctly") {
+                result.mapsShouldHaveSize(3)
+
+                val mewtwoDeck = result["Gardevoir|Mewtwo ex"]!!
+                mewtwoDeck.iconUrls shouldContainExactly listOf("Mewtwo ex", "Gardevoir")
+
+                val charizardDeck = result["Charizard ex"]!!
+                charizardDeck.iconUrls shouldContainExactly listOf("Charizard ex")
+
+                val pikachuDeck = result["Magneton|Pikachu ex|Zapdos ex"]!!
+                pikachuDeck.iconUrls shouldContainExactly listOf("Pikachu ex", "Zapdos ex", "Magneton")
+            }
+        }
+    }
 })

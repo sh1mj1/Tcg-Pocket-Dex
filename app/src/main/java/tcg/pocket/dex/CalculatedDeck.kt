@@ -18,6 +18,7 @@ data class CalculatedDeck(
     val winRate: String,
     val usageShare: String,
     val appearances: Int,
+    val iconUrls: List<String> = emptyList(),
 ) {
     init {
         require(appearances >= 0) { "Appearances must be non-negative, but was $appearances" }

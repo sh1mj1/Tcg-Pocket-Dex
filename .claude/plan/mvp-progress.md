@@ -104,36 +104,123 @@
 
 ---
 
-### 1.2 덱 상세 화면 완성 ⏱️ 4시간
+### 1.2 덱 상세 화면 완성 ⏱️ 5-6시간
 
 **현재 상태**: "Deck Detail id: {deckId}" 텍스트만 표시
 
+**디자인 참고**:
+- 📐 [와이어프레임 디자인 옵션](design/deckdetail/README.md) - 3가지 테마 (API 제약 반영)
+  - [Card-Gallery (시각적 쇼케이스)](design/deckdetail/theme2-card-gallery.md) - ⭐ **MVP 추천 (95% 구현 가능)**
+  - [Stats-Focused (경쟁 분석)](design/deckdetail/theme1-stats-focused.md) - (90% 구현 가능)
+  - [Pokémon-Overview (간소화)](design/deckdetail/theme3-strategic-guide.md) - (85% 구현 가능)
+
+**중요**: 모든 테마는 **포켓몬 카드만 표시** (트레이너 카드/수량 정보는 API에 없음)
+
 **작업 목록**:
-- [ ] `DeckDetailViewModel` 데이터 로딩
-  - `DecksRepo.deckDetail(id)` API 호출
-  - 덱 정보, 구성 카드 목록 로드
 
-- [ ] `DeckDetailScreen` UI 구현
-  ```
-  Layout:
-  ├─ 덱 이름 (타이틀)
-  ├─ 통계 섹션 (순위, 승률, 점유율)
-  ├─ 덱 구성 카드 목록 (LazyVerticalGrid)
-  └─ 덱 설명/전략 (선택)
+**1. DeckDetailViewModel 생성 및 데이터 로딩**
+- [ ] TournamentStatsRepo에서 덱 통계 조회
+  ```kotlin
+  val allDecks = tournamentStatsRepo.getDeckStatistics()
+  val deck = allDecks.find { it.deckId == deckId }
   ```
 
-- [ ] 카드 클릭 네비게이션
-  - 카드 클릭 → `CardDetailScreen` 이동
-  - 카드 ID 전달
+- [ ] 포켓몬 이름 파싱
+  ```kotlin
+  val pokemonNames = deck.deckId.split("|")
+  // 예: "Pikachu|Mewtwo" → ["Pikachu", "Mewtwo"]
+  ```
 
-- [ ] 로딩/에러 상태 처리
-  - CircularProgressIndicator
-  - 에러 메시지 표시
+- [ ] 각 포켓몬 카드 상세 정보 조회 (병렬 처리)
+  ```kotlin
+  val pokemonCards = pokemonNames.mapNotNull { name ->
+      async { searchAndFetchPokemon(name, cardsRepo) }
+  }.awaitAll()
+  ```
+
+- [ ] 포켓몬 이름 매칭 로직 구현
+  - 우선순위: 정확 일치 → "ex" 변형 → 부분 일치
+  - 예: "Pikachu" 검색 → "Pikachu ex" 찾기
+
+- [ ] UI State 관리
+  ```kotlin
+  sealed class DeckDetailUiState {
+      object Loading : DeckDetailUiState()
+      data class Success(
+          val deck: CalculatedDeck,
+          val pokemonCards: List<CardDetail>
+      ) : DeckDetailUiState()
+      data class Error(val message: String) : DeckDetailUiState()
+  }
+  ```
+
+**2. DeckDetailScreen UI 구현 (Theme 2: Card-Gallery)**
+
+- [ ] Hero 캐러셀 섹션
+  ```kotlin
+  HorizontalPager(pageCount = pokemonCards.size) { page ->
+      AsyncImage(model = pokemonCards[page].imageUrl)
+  }
+  HorizontalPagerIndicator()
+  ```
+
+- [ ] 덱 정보 섹션
+  - 덱 이름 (headline typography)
+  - 랭킹 뱃지 (#3 Tier)
+  - 타입 칩 (포켓몬 타입 추출)
+
+- [ ] Quick Stats 칩 행
+  ```kotlin
+  Row {
+      StatChip("Win Rate", deck.winRate)
+      StatChip("Usage", deck.usageShare)
+  }
+  ```
+
+- [ ] Key 포켓몬 그리드 (2열)
+  ```kotlin
+  LazyVerticalGrid(
+      columns = GridCells.Fixed(2),
+      userScrollEnabled = false
+  ) {
+      items(pokemonCards) { LargePokemonCardItem(it) }
+  }
+  ```
+
+- [ ] All 포켓몬 그리드 (4열)
+  ```kotlin
+  LazyVerticalGrid(
+      columns = GridCells.Fixed(4),
+      userScrollEnabled = false
+  ) {
+      items(pokemonCards) { CompactPokemonCardItem(it) }
+  }
+  ```
+
+**3. 네비게이션 연결**
+- [ ] TierDecksScreen → DeckDetailScreen (deckId 파라미터 전달)
+- [ ] DeckDetailScreen → CardDetailScreen (포켓몬 카드 클릭 시 cardId 전달)
+
+**4. 로딩/에러 상태 처리**
+- [ ] Loading: CircularProgressIndicator + 스켈레톤 UI
+- [ ] Error: 에러 메시지 + 재시도 버튼
+- [ ] Empty: "포켓몬 정보 없음" 상태
 
 **완료 조건**:
-- 덱 클릭 시 상세 정보 정상 표시
-- 덱 구성 카드 그리드로 표시
-- 카드 클릭 시 상세 화면 이동
+- [ ] TierDecksScreen에서 덱 클릭 시 DeckDetailScreen 이동
+- [ ] 포켓몬 이미지 캐러셀 정상 작동 (스와이프 가능)
+- [ ] 승률, 사용률 통계 정확히 표시
+- [ ] 포켓몬 카드 그리드 (2열/4열) 정상 렌더링
+- [ ] 포켓몬 카드 클릭 시 CardDetailScreen 이동
+- [ ] 로딩 중 인디케이터 표시
+- [ ] 에러 발생 시 적절한 메시지 표시
+- [ ] 실제 tournament 데이터로 테스트 완료
+
+**테스트 시나리오**:
+1. 네트워크 정상: 모든 포켓몬 이미지 로드 확인
+2. 네트워크 끊김: 에러 메시지 및 재시도 버튼 확인
+3. 포켓몬 이름 매칭: "Pikachu" → "Pikachu ex" 찾기 성공
+4. 캐러셀 스와이프: 부드러운 전환 확인
 
 ---
 

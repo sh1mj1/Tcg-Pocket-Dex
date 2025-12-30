@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import tcg.pocket.dex.repo.decks.FakeDecksRepo
 import tcg.pocket.dex.tierdecks.DeckInformation
-import tcg.pocket.dex.tierdecks.FAKE_TIER_DECK_DESCRIPTION
 import tcg.pocket.dex.tierdecks.PokemonTypeChipData
 import tcg.pocket.dex.tierdecks.temporalPokemonPlaceholderDrawable
 import tcg.pocket.dex.ui.theme.TcgPocketDexTheme
@@ -140,13 +140,6 @@ private fun DeckItemDetail(
                 modifier = modifier,
             )
         }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = FAKE_TIER_DECK_DESCRIPTION,
-            style = MaterialTheme.typography.bodySmall,
-        )
     }
 }
 
@@ -175,12 +168,14 @@ private fun PokemonImageList(
         pokemonImageUrls.forEach { imageUrl ->
             AsyncImage(
                 model = imageUrl,
-                contentDescription = null,
+                contentDescription = "Pokemon sprite",
                 modifier =
                     Modifier
                         .size(52.dp)
                         .aspectRatio(1f),
                 placeholder = painterResource(temporalPokemonPlaceholderDrawable),
+                error = painterResource(temporalPokemonPlaceholderDrawable),
+                contentScale = ContentScale.Fit,
             )
         }
     }
@@ -200,7 +195,7 @@ private fun DeckItemInfoContent(
             text = deckName,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
         Spacer(modifier = Modifier.height(4.dp))
