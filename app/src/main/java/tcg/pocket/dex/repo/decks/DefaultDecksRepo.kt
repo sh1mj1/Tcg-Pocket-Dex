@@ -5,6 +5,7 @@ import tcg.pocket.dex.repo.tournamentstats.TournamentStatsRepo
 import tcg.pocket.dex.tierdecks.DeckDetailInformation
 import tcg.pocket.dex.tierdecks.DeckInformation
 import tcg.pocket.dex.tierdecks.DeckSimpleInformation
+import timber.log.Timber
 
 class DefaultDecksRepo(
     private val tournamentStatsRepo: TournamentStatsRepo,
@@ -20,15 +21,24 @@ class DefaultDecksRepo(
 
 private fun CalculatedDeck.toDeckInformation(rank: Int): DeckInformation {
     val pokemonNames = deckId.split("|")
+    Timber.d("Converting deck: $deckName, iconUrls: $iconUrls")
     return DeckInformation(
         simple =
             DeckSimpleInformation(
                 deckId = deckId,
                 representativePokemonImageUrls =
-                    iconUrls.take(2).ifEmpty {
-                        pokemonNames.take(2).map {
-                            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
-                        }
+                    iconUrls.take(2).map { pokemonName ->
+                        val normalizedName =
+                            pokemonName
+                                .lowercase()
+                                .replace(" ex", "")
+                                .replace(" v", "")
+                                .trim()
+                        val imageUrl = "https://r2.limitlesstcg.net/pokemon/gen9/$normalizedName.png"
+                        Timber.d("Pokemon image URL: '$pokemonName' -> '$imageUrl'")
+                        imageUrl
+                    }.ifEmpty {
+                        listOf("https://r2.limitlesstcg.net/pokemon/gen9/ditto.png")
                     },
                 rank = rank,
                 deckName = deckName,

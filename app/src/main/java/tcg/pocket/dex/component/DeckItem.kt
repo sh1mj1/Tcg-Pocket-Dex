@@ -28,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -167,12 +168,14 @@ private fun PokemonImageList(
         pokemonImageUrls.forEach { imageUrl ->
             AsyncImage(
                 model = imageUrl,
-                contentDescription = null,
+                contentDescription = "Pokemon sprite",
                 modifier =
                     Modifier
                         .size(52.dp)
                         .aspectRatio(1f),
                 placeholder = painterResource(temporalPokemonPlaceholderDrawable),
+                error = painterResource(temporalPokemonPlaceholderDrawable),
+                contentScale = ContentScale.Fit,
             )
         }
     }
