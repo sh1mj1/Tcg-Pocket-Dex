@@ -164,7 +164,26 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                         "deckId is null"
                     }
                     val deckDetailViewModel: DeckDetailViewModel =
-                        viewModel(factory = DeckDetailViewModel.factory(deckId))
+                        viewModel(
+                            factory =
+                                DeckDetailViewModel.factory(
+                                    deckId = deckId,
+                                    tournamentStatsRepo =
+                                        DefaultTournamentStatsRepo(
+                                            remoteTournamentDataSource =
+                                                RemoteTournamentDataSource(
+                                                    tournamentStatsService = DefaultTournamentStatsService(),
+                                                ),
+                                        ),
+                                    cardsRepo =
+                                        DefaultCardsRepo(
+                                            remoteCardsDataSource =
+                                                RemoteCardsDataSource(
+                                                    cardsService = DefaultCardsService(),
+                                                ),
+                                        ),
+                                ),
+                        )
                     DeckDetailScreen(
                         viewModel = deckDetailViewModel,
                     )
