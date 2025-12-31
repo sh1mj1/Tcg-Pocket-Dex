@@ -35,9 +35,8 @@ class DeckDetailViewModel(
             viewModelScope.launch {
                 uiState.update { UiState.Loading }
                 try {
-                    val allDecks = tournamentStatsRepo.getDeckStatistics()
                     val deck =
-                        allDecks.find { it.deckId == deckId }
+                        tournamentStatsRepo.getDeckById(deckId)
                             ?: throw IllegalArgumentException("Deck not found: $deckId")
 
                     val pokemonNames =
