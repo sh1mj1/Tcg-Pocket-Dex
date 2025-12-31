@@ -566,4 +566,155 @@ class DefaultTournamentStatsRepoTest : BehaviorSpec({
             }
         }
     }
+
+    Given("getDeckById with valid deckId") {
+        When("유효한 deckId로 getDeckById를 호출하면") {
+            Then("해당 덱을 반환해야 한다") {
+                coEvery { mockDataSource.getQualifyingTournamentIds() } returns
+                    listOf(
+                        createTournamentId("t1"),
+                    )
+                coEvery { mockDataSource.getTop8Standings(listOf("t1")) } returns
+                    listOf(
+                        createStanding(
+                            placing = 1,
+                            playerName = "Player1",
+                            deckPokemon = listOf("Pikachu", "Mewtwo"),
+                            wins = 6,
+                            losses = 1,
+                        ),
+                        createStanding(
+                            placing = 2,
+                            playerName = "Player2",
+                            deckPokemon = listOf("Mewtwo", "Pikachu"),
+                            wins = 5,
+                            losses = 2,
+                        ),
+                        createStanding(
+                            placing = 3,
+                            playerName = "Player3",
+                            deckPokemon = listOf("Charizard"),
+                            wins = 4,
+                            losses = 3,
+                        ),
+                    )
+
+                val result = repo.getDeckById("Mewtwo|Pikachu")
+
+                result shouldBe repo.getDeckStatistics().find { it.deckId == "Mewtwo|Pikachu" }
+                result?.deckId shouldBe "Mewtwo|Pikachu"
+                result?.deckName shouldBe "Mewtwo + Pikachu"
+                result?.appearances shouldBe 2
+            }
+        }
+    }
+
+    Given("getDeckById with non-existent deckId") {
+        When("존재하지 않는 deckId로 getDeckById를 호출하면") {
+            Then("null을 반환해야 한다") {
+                coEvery { mockDataSource.getQualifyingTournamentIds() } returns
+                    listOf(
+                        createTournamentId("t1"),
+                    )
+                coEvery { mockDataSource.getTop8Standings(listOf("t1")) } returns
+                    listOf(
+                        createStanding(
+                            deckPokemon = listOf("Pikachu"),
+                            wins = 5,
+                            losses = 2,
+                        ),
+                        createStanding(
+                            deckPokemon = listOf("Charizard"),
+                            wins = 4,
+                            losses = 3,
+                        ),
+                    )
+
+                val result = repo.getDeckById("NonExistent")
+
+                result shouldBe null
+            }
+        }
+    }
+
+    Given("getDeckById with empty deck list") {
+        When("빈 리스트에서 getDeckById를 호출하면") {
+            Then("null을 반환해야 한다") {
+                coEvery { mockDataSource.getQualifyingTournamentIds() } returns emptyList()
+                coEvery { mockDataSource.getTop8Standings(emptyList()) } returns emptyList()
+
+                val result = repo.getDeckById("AnyDeck")
+
+                result shouldBe null
+            }
+        }
+    }
+
+    Given("getDeckById with multiple decks") {
+        When("여러 덱 중에서 특정 덱을 찾으면") {
+            Then("정확히 일치하는 덱만 반환해야 한다") {
+                coEvery { mockDataSource.getQualifyingTournamentIds() } returns
+                    listOf(
+                        createTournamentId("t1"),
+                    )
+                coEvery { mockDataSource.getTop8Standings(listOf("t1")) } returns
+                    listOf(
+                        createStanding(
+                            placing = 1,
+                            deckPokemon = listOf("Pikachu", "Mewtwo"),
+                            wins = 6,
+                            losses = 1,
+                        ),
+                        createStanding(
+                            placing = 2,
+                            deckPokemon = listOf("Charizard", "Blastoise"),
+                            wins = 5,
+                            losses = 2,
+                        ),
+                        createStanding(
+                            placing = 3,
+                            deckPokemon = listOf("Venusaur"),
+                            wins = 4,
+                            losses = 3,
+                        ),
+                        createStanding(
+                            placing = 4,
+                            deckPokemon = listOf("Mewtwo", "Pikachu"),
+                            wins = 4,
+                            losses = 3,
+                        ),
+                    )
+
+                val result = repo.getDeckById("Blastoise|Charizard")
+
+                result?.deckId shouldBe "Blastoise|Charizard"
+                result?.deckName shouldBe "Blastoise + Charizard"
+                result?.appearances shouldBe 1
+            }
+        }
+    }
+
+    Given("getDeckById verification") {
+        When("getDeckById를 호출할 때") {
+            Then("getDeckStatistics가 정확히 한 번 호출되어야 한다") {
+                coEvery { mockDataSource.getQualifyingTournamentIds() } returns
+                    listOf(
+                        createTournamentId("t1"),
+                    )
+                coEvery { mockDataSource.getTop8Standings(listOf("t1")) } returns
+                    listOf(
+                        createStanding(
+                            deckPokemon = listOf("Pikachu"),
+                            wins = 5,
+                            losses = 2,
+                        ),
+                    )
+
+                repo.getDeckById("Pikachu")
+
+                coVerify(exactly = 1) { mockDataSource.getQualifyingTournamentIds() }
+                coVerify(exactly = 1) { mockDataSource.getTop8Standings(listOf("t1")) }
+            }
+        }
+    }
 })
