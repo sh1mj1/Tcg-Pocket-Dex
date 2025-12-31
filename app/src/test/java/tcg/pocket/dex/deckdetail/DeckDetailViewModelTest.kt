@@ -45,7 +45,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val pikachuCard = createCardDetail(name = "Pikachu")
                     val mewtwoCard = createCardDetail(name = "Mewtwo")
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } returns pikachuCard
                     coEvery { mockCardsRepo.cardDetail("Mewtwo") } returns mewtwoCard
 
@@ -71,7 +71,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
         When("덱이 존재하지 않으면") {
             Then("Error 상태가 되어야 한다") {
                 runTest(testDispatcher) {
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns emptyList()
+                    coEvery { mockTournamentStatsRepo.getDeckById("NonExistent") } returns null
 
                     val viewModel =
                         DeckDetailViewModel(
@@ -91,8 +91,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
         When("덱 통계에서 일치하는 덱이 없으면") {
             Then("Error 상태가 되어야 한다") {
                 runTest(testDispatcher) {
-                    val differentDeck = createCalculatedDeck(deckId = "Charizard|Blastoise")
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(differentDeck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns null
 
                     val viewModel =
                         DeckDetailViewModel(
@@ -122,7 +121,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val pikachuCard = createCardDetail(name = "Pikachu")
                     val mewtwoCard = createCardDetail(name = "Mewtwo")
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } returns pikachuCard
                     coEvery { mockCardsRepo.cardDetail("Mewtwo") } returns mewtwoCard
                     coEvery { mockCardsRepo.cardDetail("Charizard") } throws RuntimeException("Card not found")
@@ -161,7 +160,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                 runTest(testDispatcher) {
                     val deck = createCalculatedDeck(deckId = deckId)
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } throws RuntimeException("Card not found")
                     coEvery { mockCardsRepo.cardDetail("Pikachu ex") } throws RuntimeException("Card not found")
                     coEvery { mockCardsRepo.cardDetail("Mewtwo") } throws RuntimeException("Card not found")
@@ -196,7 +195,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val deck = createCalculatedDeck(deckId = deckId)
                     val mewtwoExCard = createCardDetail(name = "Mewtwo ex")
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Mewtwo") } throws RuntimeException("Card not found")
                     coEvery { mockCardsRepo.cardDetail("Mewtwo ex") } returns mewtwoExCard
 
@@ -226,7 +225,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val deck = createCalculatedDeck(deckId = deckId)
                     val mewtwoCard = createCardDetail(name = "Mewtwo")
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Mewtwo") } returns mewtwoCard
 
                     val viewModel =
@@ -253,7 +252,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val deck = createCalculatedDeck(deckId = deckIdWithSpaces)
                     val pikachuCard = createCardDetail(name = "Pikachu")
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckIdWithSpaces) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } returns pikachuCard
 
                     val viewModel =
@@ -281,7 +280,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
         When("TournamentStatsRepo에서 예외가 발생하면") {
             Then("Error 상태가 되어야 한다") {
                 runTest(testDispatcher) {
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } throws RuntimeException("Network error")
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } throws RuntimeException("Network error")
 
                     val viewModel =
                         DeckDetailViewModel(
@@ -301,7 +300,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
         When("예외 메시지가 null이면") {
             Then("기본 에러 메시지를 사용해야 한다") {
                 runTest(testDispatcher) {
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } throws RuntimeException()
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } throws RuntimeException()
 
                     val viewModel =
                         DeckDetailViewModel(
@@ -327,8 +326,8 @@ class DeckDetailViewModelTest : BehaviorSpec({
         When("Error 상태에서 retry를 호출하면") {
             Then("데이터를 다시 로드해야 한다") {
                 runTest(testDispatcher) {
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } throws RuntimeException("Network error") andThen
-                        listOf(createCalculatedDeck(deckId = deckId))
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } throws RuntimeException("Network error") andThen
+                        createCalculatedDeck(deckId = deckId)
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } returns createCardDetail(name = "Pikachu")
 
                     val viewModel =
@@ -348,7 +347,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val successState = viewModel.uiState.value
                     successState.shouldBeInstanceOf<UiState.Success<DeckDetailData>>()
 
-                    coVerify(exactly = 2) { mockTournamentStatsRepo.getDeckStatistics() }
+                    coVerify(exactly = 2) { mockTournamentStatsRepo.getDeckById(deckId) }
                 }
             }
         }
@@ -359,7 +358,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val deck = createCalculatedDeck(deckId = deckId)
                     val pikachuCard = createCardDetail(name = "Pikachu")
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } returns pikachuCard
                     coEvery { mockCardsRepo.cardDetail("Pikachu ex") } returns createCardDetail(name = "Pikachu ex")
 
@@ -380,7 +379,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val retryState = viewModel.uiState.value
                     retryState.shouldBeInstanceOf<UiState.Success<DeckDetailData>>()
 
-                    coVerify(atLeast = 2) { mockTournamentStatsRepo.getDeckStatistics() }
+                    coVerify(atLeast = 2) { mockTournamentStatsRepo.getDeckById(deckId) }
                     coVerify(atLeast = 2) { mockCardsRepo.cardDetail("Pikachu") }
                 }
             }
@@ -401,7 +400,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
                     val charizardCard = createCardDetail(name = "Charizard")
                     val blastoiseCard = createCardDetail(name = "Blastoise")
 
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } returns pikachuCard
                     coEvery { mockCardsRepo.cardDetail("Mewtwo") } returns mewtwoCard
                     coEvery { mockCardsRepo.cardDetail("Charizard") } returns charizardCard
@@ -437,7 +436,7 @@ class DeckDetailViewModelTest : BehaviorSpec({
             Then("초기 상태는 Loading이어야 한다") {
                 runTest(testDispatcher) {
                     val deck = createCalculatedDeck(deckId = deckId)
-                    coEvery { mockTournamentStatsRepo.getDeckStatistics() } returns listOf(deck)
+                    coEvery { mockTournamentStatsRepo.getDeckById(deckId) } returns deck
                     coEvery { mockCardsRepo.cardDetail("Pikachu") } returns createCardDetail(name = "Pikachu")
 
                     val viewModel =

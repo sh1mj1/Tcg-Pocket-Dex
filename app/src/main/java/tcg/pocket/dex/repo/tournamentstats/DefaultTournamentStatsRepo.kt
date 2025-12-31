@@ -27,4 +27,8 @@ class DefaultTournamentStatsRepo(
 
         return deckStats.toCalculatedDecks()
     }
+
+    override suspend fun getDeckById(deckId: String): CalculatedDeck? {
+        return getDeckStatistics().find { it.deckId == deckId }
+    }
 }
