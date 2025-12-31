@@ -426,4 +426,126 @@ class CalculatedDeckTest : BehaviorSpec({
             }
         }
     }
+
+    Given("pokemonNames computed property") {
+        When("deckId에 단일 포켓몬이 있을 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "Pikachu",
+                    deckName = "Pikachu Deck",
+                    winRate = "50.0%",
+                    usageShare = "10.0%",
+                    appearances = 50,
+                )
+
+            Then("포켓몬 이름 리스트를 반환해야 한다") {
+                deck.pokemonNames shouldBe listOf("Pikachu")
+            }
+        }
+
+        When("deckId에 여러 포켓몬이 파이프로 구분되어 있을 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "Pikachu|Mewtwo|Charizard",
+                    deckName = "Multi Pokemon Deck",
+                    winRate = "55.0%",
+                    usageShare = "25.0%",
+                    appearances = 100,
+                )
+
+            Then("모든 포켓몬 이름을 파싱해야 한다") {
+                deck.pokemonNames shouldBe listOf("Pikachu", "Mewtwo", "Charizard")
+            }
+        }
+
+        When("deckId가 빈 문자열일 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "",
+                    deckName = "Empty Deck",
+                    winRate = "0.0%",
+                    usageShare = "0.0%",
+                    appearances = 0,
+                )
+
+            Then("빈 리스트를 반환해야 한다") {
+                deck.pokemonNames shouldBe emptyList()
+            }
+        }
+
+        When("deckId에 빈 문자열 항목이 포함되어 있을 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "Pikachu||Mewtwo",
+                    deckName = "Deck with Empty Entry",
+                    winRate = "50.0%",
+                    usageShare = "15.0%",
+                    appearances = 75,
+                )
+
+            Then("빈 문자열은 필터링되어야 한다") {
+                deck.pokemonNames shouldBe listOf("Pikachu", "Mewtwo")
+            }
+        }
+
+        When("deckId가 파이프만 있을 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "|||",
+                    deckName = "Only Pipes",
+                    winRate = "0.0%",
+                    usageShare = "0.0%",
+                    appearances = 0,
+                )
+
+            Then("빈 리스트를 반환해야 한다") {
+                deck.pokemonNames shouldBe emptyList()
+            }
+        }
+
+        When("deckId에 단일 파이프가 있을 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "|",
+                    deckName = "Single Pipe",
+                    winRate = "0.0%",
+                    usageShare = "0.0%",
+                    appearances = 0,
+                )
+
+            Then("빈 리스트를 반환해야 한다") {
+                deck.pokemonNames shouldBe emptyList()
+            }
+        }
+
+        When("deckId에 앞뒤로 빈 문자열이 있을 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "|Pikachu|Mewtwo|",
+                    deckName = "Leading and Trailing Pipes",
+                    winRate = "50.0%",
+                    usageShare = "20.0%",
+                    appearances = 80,
+                )
+
+            Then("앞뒤 빈 문자열은 필터링되어야 한다") {
+                deck.pokemonNames shouldBe listOf("Pikachu", "Mewtwo")
+            }
+        }
+
+        When("실제 덱 ID 형식을 사용할 때") {
+            val deck =
+                CalculatedDeck(
+                    deckId = "Pikachu ex|Mewtwo ex",
+                    deckName = "Pikachu ex + Mewtwo ex",
+                    winRate = "54.7%",
+                    usageShare = "32.1%",
+                    appearances = 456,
+                )
+
+            Then("ex 포함된 이름도 정확히 파싱해야 한다") {
+                deck.pokemonNames shouldBe listOf("Pikachu ex", "Mewtwo ex")
+            }
+        }
+    }
 })

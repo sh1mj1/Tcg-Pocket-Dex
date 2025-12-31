@@ -23,4 +23,7 @@ data class CalculatedDeck(
     init {
         require(appearances >= 0) { "Appearances must be non-negative, but was $appearances" }
     }
+
+    val pokemonNames: List<String>
+        get() = deckId.split("|").filter { it.isNotBlank() }
 }

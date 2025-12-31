@@ -39,10 +39,7 @@ class DeckDetailViewModel(
                         tournamentStatsRepo.getDeckById(deckId)
                             ?: throw IllegalArgumentException("Deck not found: $deckId")
 
-                    val pokemonNames =
-                        deck.deckId
-                            .split("|")
-                            .filter { it.isNotBlank() }
+                    val pokemonNames = deck.pokemonNames
                     Timber.d("Loading cards for Pokemon: $pokemonNames")
 
                     val pokemonCards =
