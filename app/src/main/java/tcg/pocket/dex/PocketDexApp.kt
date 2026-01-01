@@ -186,6 +186,9 @@ fun PocketDexApp(openUrl: () -> Unit = {}) {
                         )
                     DeckDetailScreen(
                         viewModel = deckDetailViewModel,
+                        onCardClick = { cardName ->
+                            navController.navigate(CardDetail.routeWithArgs(cardName))
+                        },
                     )
                 }
                 composable(
